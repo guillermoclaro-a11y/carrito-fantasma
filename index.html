@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrito Fantasma — Compra sin comprar</title>
+  <meta name="description" content="Llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. La dopamina de comprar, sin gastar un centavo y sin que nadie te estafe.">
+  <meta name="theme-color" content="#6d5efc">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+  <meta property="og:title" content="Carrito Fantasma — Compra sin comprar">
+  <meta property="og:description" content="La emoción de comprar, sin gastar ni recibir nada. Sin cookies, sin anuncios, sin estafas.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-mode="all">
+
+  <header class="topbar">
+    <a class="brand" href="#" data-action="nav" data-view="home" aria-label="Inicio">
+      <span class="brand-mark">🛒</span>
+      <span class="brand-name">Carrito<em>Fantasma</em></span>
+    </a>
+
+    <nav class="modes" id="modesNav" aria-label="Tiendas"></nav>
+
+    <div class="top-actions">
+      <button class="pill" data-action="nav" data-view="savings" title="Lo que te has ahorrado">
+        💸 <span>Ahorrado: <b id="savingsTop">$0</b></span>
+      </button>
+      <button class="cart-btn" id="cartBtn" data-action="open-cart" aria-label="Abrir carrito">
+        🛒<span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="app" class="app"></main>
+
+  <footer class="site-footer">
+    <p><b>Carrito Fantasma</b> es un experimento satírico y gratuito. No hay pagos reales, no hay entregas y ningún dato sale de tu navegador.</p>
+    <p class="muted">Si estás luchando contra las compras compulsivas, esto no sustituye ayuda profesional.</p>
+  </footer>
+
+  <!-- Cart drawer -->
+  <div class="scrim" id="scrim" data-action="close-cart"></div>
+  <aside id="cartDrawer" class="drawer" aria-hidden="true" aria-label="Carrito">
+    <div class="drawer-head">
+      <h2>Tu carrito</h2>
+      <button class="icon" data-action="close-cart" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="ship">
+      <div class="ship-text" id="shipText"></div>
+      <div class="ship-bar"><span id="shipFill"></span></div>
+    </div>
+    <div class="drawer-body" id="cartBody"></div>
+    <div class="drawer-foot">
+      <div class="total-row"><span>Subtotal</span><b id="cartSubtotal">$0</b></div>
+      <p class="muted tiny">Envío fantasma: gratis · Entrega: nunca.</p>
+      <button class="primary big" id="payBtn" data-action="checkout">Tramitar pedido 💳</button>
+      <button class="link" data-action="clear-cart">Vaciar carrito</button>
+    </div>
+  </aside>
+
+  <!-- Product modal -->
+  <div class="modal" id="modal" hidden></div>
+
+  <!-- Processing overlay -->
+  <div class="processing" id="processing" hidden>
+    <div class="proc-card">
+      <div class="spinner" aria-hidden="true"></div>
+      <p id="procText">Procesando pago fantasma…</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+
+  <noscript>Necesitas activar JavaScript para vivir la experiencia (falsa).</noscript>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
