@@ -4,6 +4,11 @@ Sitio estático que recrea la experiencia de comprar online (catálogo, carrito,
 seguimiento de envío) **sin cobrar nada, sin entregar nada y sin recoger datos**.
 Basado en la tendencia de los *dopamine sites*.
 
+## 🌐 En vivo
+
+- **GitHub Pages:** https://guillermoclaro-a11y.github.io/carrito-fantasma/
+- **Repositorio:** https://github.com/guillermoclaro-a11y/carrito-fantasma
+
 ## Estructura
 
 ```
@@ -50,6 +55,9 @@ reutilizas el proyecto: revisa `credits.json`.
 - **Colores**: en `styles.css`, las variables `--accent` por tienda al inicio del archivo.
 
 ## Publicar gratis
+
+> ✅ **Ya está publicado:** https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> (GitHub Pages, rama `master`). Para actualizarlo: `git push`.
 
 ### Opción A — Netlify Drop (30 segundos, sin cuenta de código)
 1. Entra en https://app.netlify.com/drop
