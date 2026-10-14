@@ -125,6 +125,9 @@ Cada entrada puede llevar un `hint` (español) y un `hint_en` (inglés).
 
 > 💡 **Cafecito** va muy bien para el público hispano (especialmente Argentina/LatAm).
 > Para el público inglés puedes añadir también Ko-fi o Buy Me a Coffee.
+>
+> ¿Quieres personalizar tu perfil de Cafecito con buenos textos? Mira
+> [`CAFECITO.md`](CAFECITO.md) (descripción, objetivo, mensaje de agradecimiento… en ES y EN).
 
 **¿Por qué no anuncios?** Además del problema ético (anunciar consumo en una web
 anti-consumo), la publicidad exige cookies y rastreadores, y AdSense suele **rechazar**
