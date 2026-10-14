@@ -1,10 +1,23 @@
 # 🌐 Poner un dominio propio a Carrito Fantasma
 
-Guía para servir la tienda en un dominio tipo `carritofantasma.es` en lugar de
+Guía para servir la tienda en un dominio propio en lugar de
 `guillermoclaro-a11y.github.io/carrito-fantasma/`.
 
-> ⚠️ **Comprar el dominio solo lo puedes hacer tú** (cuesta dinero, ~10-15 €/año). Yo dejo
-> todo lo demás listo. Cuando lo tengas, avísame y yo activo el `CNAME` y verifico el HTTPS.
+## ✅ Estado: HECHO
+
+- **Dominio:** `carritofantasma.app` (comprado en Cloudflare).
+- **DNS:** gestionado por Cloudflare (NS `duke`/`athena.ns.cloudflare.com`).
+- **GitHub Pages:** dominio personalizado configurado y archivo `CNAME` en el repo.
+- **En vivo:** https://carritofantasma.app/ · https://carritofantasma.app/?lang=en
+- **`www`:** redirige a la raíz. ✔
+
+> 🔧 **Pendiente de un ajuste opcional de DNS** (ver sección 3):
+> con la nube **naranja** (proxy) de Cloudflare activada, el HTTPS funciona con el
+> certificado de Cloudflare, pero GitHub no puede emitir el suyo. Lo ideal es poner los
+> registros en **DNS only (nube gris)** para que GitHub gestione el certificado solo.
+
+> ⚠️ **Recuerda:** comprar el dominio solo puede hacerlo el dueño (conlleva pago). El resto
+> ya está automatizado.
 
 ---
 
