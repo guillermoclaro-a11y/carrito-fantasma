@@ -74,7 +74,7 @@ para que puedas personalizarlos; cámbialos a tu gusto.
 > ¡Hola! Gracias por seguir Carrito Fantasma 👻
 > Si te gusta la idea, compartir el proyecto ayuda un montón. Y si querés aportar, un
 > cafecito se convierte directamente en horas de trabajo (y en más productos de mentira).
-> Pruébalo aquí: https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> Pruébalo aquí: https://carritofantasma.app/
 
 ---
 
