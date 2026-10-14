@@ -9,6 +9,9 @@ Basado en la tendencia de los *dopamine sites*.
 - **GitHub Pages:** https://guillermoclaro-a11y.github.io/carrito-fantasma/
 - **Repositorio:** https://github.com/guillermoclaro-a11y/carrito-fantasma
 
+> 📣 ¿Quieres darlo a conocer? Tienes textos listos para copiar y pegar en
+> Reddit, Hacker News, X y TikTok en [`DIFUSION.md`](DIFUSION.md).
+
 ## Estructura
 
 ```
