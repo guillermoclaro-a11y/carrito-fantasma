@@ -1,0 +1,7 @@
+# Assets de promoción generados localmente (vídeo/GIF). No hacen falta para la web.
+media/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.swp
