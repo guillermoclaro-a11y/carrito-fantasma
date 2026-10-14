@@ -10,22 +10,36 @@ Guía para servir la tienda en un dominio tipo `carritofantasma.es` en lugar de
 
 ## 0. Estado de disponibilidad (comprobado)
 
-| Dominio | Estado |
-|---------|--------|
-| `carritofantasma.com` | ❌ Registrado (no disponible) |
-| `carritofantasma.es` | ✅ Probablemente libre |
-| `carritofantasma.net` | ✅ Probablemente libre |
-| `carritofantasma.org` | ✅ Probablemente libre |
-| `carritofantasma.app` | ✅ Probablemente libre |
-| `carritofantasma.dev` | ✅ Probablemente libre |
-| `carritofantasma.com.ar` | ✅ Libre |
+> ❌ **`.es` no está disponible** (ya registrado), y además **Cloudflare Registrar no vende `.es`**
+> (tiene una petición abierta, aún sin soporte). Si algún día quieres `.es`, tendrías que
+> comprarlo en otro registrador (DonDominio, IONOS, Nominalia…).
 
-> La disponibilidad final la confirma el registrador al comprar. `.es` es la opción más
-> natural para el público hispano; `.app`/`.dev` obligan a HTTPS (bien) y son más baratos.
+✅ **Alternativas libres que SÍ puedes comprar en Cloudflare** (comprobado):
 
-**Registradores recomendados:** Cloudflare Registrar (al coste, requiere su DNS), Porkbun
-(buen precio, WHOIS privado gratis), Namecheap. Para `.es` también DonDominio, IONOS o
-Nominalia.
+| Dominio | Estado | Notas |
+|---------|--------|-------|
+| `carrito-fantasma.com` | ✅ Libre | Un `.com` con guion (lo más reconocible) |
+| `carritofantasma.app` | ✅ Libre | Sin guion · obliga HTTPS · moderno |
+| `carritofantasma.dev` | ✅ Libre | Sin guion · obliga HTTPS · público técnico |
+| `carritofantasma.org` | ✅ Libre | Buena imagen "proyecto sin ánimo de lucro" |
+| `carritofantasma.net` | ✅ Libre | Clásico |
+| `carritofantasma.shop` | ✅ Libre | Temático (¡es una tienda!) |
+| `carritofantasma.store` | ✅ Libre | Temático |
+| `carritofantasma.io` | ✅ Libre | Moderno pero **caro** |
+| `carritofantasma.xyz` | ✅ Libre | Barato, pero menos de fiar |
+| `carritofantasma.website` · `.site` · `.online` · `.space` · `.page` · `.blog` · `.link` · `.tienda` | ✅ Libres | Alternativas baratas |
+
+❌ **Ocupados:** `carritofantasma.com`, `tiendafantasma.com`, `ghostcart.com`, `ghostcart.app`,
+`ghostcart.io`, `theghostcart.com`.
+
+**Mi recomendación:** si quieres `.com` → **`carrito-fantasma.com`**; si prefieres sin guion →
+**`carritofantasma.app`** o **`carritofantasma.org`**.
+
+> La disponibilidad final la confirma el registrador al comprar.
+
+**Registrador:** como ya tienes **Cloudflare**, cómpralo ahí (vende **a coste, sin sobreprecio**;
+lo malo: no hay descuentos de primer año). Para `.es` necesitarías otro registrador.
+
 
 ---
 
@@ -53,6 +67,15 @@ Antes de tocar el DNS, para evitar *domain takeovers*:
 ---
 
 ## 3. Crea los registros DNS en tu registrador
+
+> ### 🧡 Si usas Cloudflare (tu caso)
+>
+> 1. Entra en **Cloudflare → tu dominio → DNS → Records**.
+> 2. Crea los registros de abajo.
+> 3. **Deja la nube en GRIS ("DNS only")**, no naranja. Con el proxy naranja activo, GitHub
+>    Pages suele fallar al emitir el certificado HTTPS. Cuando funcione todo (paso 5),
+>    puedes activar el proxy naranja si quieres (SSL/TLS → **Full (strict)**).
+> 4. Borra cualquier registro A/AAAA por defecto que Cloudflare haya creado.
 
 ### Dominio raíz (apex, `carritofantasma.es`)
 
