@@ -393,6 +393,19 @@
   function openCart() { document.body.classList.add('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'false'); }
   function closeCart() { document.body.classList.remove('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'true'); }
 
+  /* ---------- compartir ---------- */
+  async function share() {
+    const data = {
+      title: 'Carrito Fantasma',
+      text: 'Llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Comprar sin gastar ni un centavo 🛒',
+      url: location.href,
+    };
+    try {
+      if (navigator.share) await navigator.share(data);
+      else { await navigator.clipboard.writeText(location.href); toast('Enlace copiado 🔗'); }
+    } catch (e) { /* el usuario canceló */ }
+  }
+
   /* ---------- apoyo / donaciones ---------- */
   function viewSupport() {
     const links = (typeof DONATIONS !== 'undefined' ? DONATIONS : []).filter(d => d.url);
@@ -422,7 +435,7 @@
       </div>
       <div class="row" style="justify-content:center">
         <button class="primary" data-action="nav" data-view="catalog">Volver a comprar (de mentira)</button>
-        <button class="ghost" data-action="nav" data-view="home">Inicio</button>
+        <button class="ghost" data-action="share">🔗 Compartir el sitio</button>
       </div>
     </section>`;
   }
@@ -577,6 +590,7 @@
       case 'dec': setQty(t.dataset.id, -1); break;
       case 'remove': removeItem(t.dataset.id); break;
       case 'clear-cart': clearCart(); break;
+      case 'share': share(); break;
       case 'checkout': closeCart(); state.checkout.step = 1; state.view = 'checkout'; render(); break;
       case 'step': {
         if (state.checkout.step === 1) {
