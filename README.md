@@ -129,6 +129,9 @@ Cada entrada puede llevar un `hint` (español) y un `hint_en` (inglés).
 > ¿Quieres personalizar tu perfil de Cafecito con buenos textos? Mira
 > [`CAFECITO.md`](CAFECITO.md) (descripción, objetivo, mensaje de agradecimiento… en ES y EN).
 
+> 🌐 ¿Quieres tu propio dominio (`carritofantasma.es`)? Tienes la guía completa paso a paso
+> en [`DOMINIO.md`](DOMINIO.md) y un verificador de DNS en `tools/check-domain.sh`.
+
 **¿Por qué no anuncios?** Además del problema ético (anunciar consumo en una web
 anti-consumo), la publicidad exige cookies y rastreadores, y AdSense suele **rechazar**
 sitios sin artículos de contenido como este. Ver la conversación del proyecto para el
