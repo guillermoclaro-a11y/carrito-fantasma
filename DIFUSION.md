@@ -9,6 +9,9 @@
 ## 0. Antes de publicar (checklist)
 
 - [ ] **Enlaces de donación listos.** Si no, el botón muestra "en configuración".
+- [x] **Tarjeta de vista previa social** ya lista (`assets/img/og.jpg`, 1200×630): al pegar el
+      enlace en X, WhatsApp, Telegram o Reddit sale una tarjeta con el título y los
+      distintivos. ✅ *(hecho)*
 - [ ] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
 - [ ] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
       cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
@@ -18,6 +21,29 @@
 
 **Orden recomendado:** primero comunidades **en español** (el sitio está en español),
 y después las internacionales.
+
+---
+
+## 0.1 Enlaces por canal (con UTM)
+
+Usa un enlace distinto en cada sitio para saber de dónde viene la gente **sin** poner
+rastreadores en la web. Sustituye el enlace del post por el que corresponda:
+
+| Canal | Enlace |
+|-------|--------|
+| X / Twitter | `https://carritofantasma.app/?utm_source=twitter&utm_medium=social&utm_campaign=lanzamiento` |
+| Reddit (ES) | `https://carritofantasma.app/?utm_source=reddit&utm_medium=social&utm_campaign=lanzamiento&utm_content=es` |
+| Reddit (EN) | `https://carritofantasma.app/?utm_source=reddit&utm_medium=social&utm_campaign=lanzamiento&utm_content=en` |
+| Hacker News | `https://carritofantasma.app/?utm_source=hn&utm_medium=social&utm_campaign=lanzamiento` |
+| TikTok / Reels | `https://carritofantasma.app/?utm_source=tiktok&utm_medium=social&utm_campaign=lanzamiento` |
+| Product Hunt | `https://carritofantasma.app/?utm_source=producthunt&utm_medium=social&utm_campaign=lanzamiento` |
+| WhatsApp / Telegram | `https://carritofantasma.app/?utm_source=whatsapp&utm_medium=social&utm_campaign=lanzamiento` |
+
+> ⚠️ **Ojo:** los UTM son inofensivos y no rastrean al usuario, pero **por sí solos no dan
+> datos**: GitHub Pages no guarda estadísticas y el sitio no usa analítica. Sirven como
+> "etiqueta" para el día que conectes un contador **sin cookies** (p. ej. GoatCounter,
+> autohospedado) y lo menciones en la web. Mientras tanto, tus señales reales son:
+> **estrellas/forks del repo, comentarios y upvotes, y los apoyos de Cafecito.**
 
 ---
 
