@@ -12,7 +12,7 @@
 - [ ] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
 - [ ] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
       cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
-      (p. ej. `https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en`).
+      (p. ej. `https://carritofantasma.app/?lang=en`).
 - [ ] **Cuenta con algo de karma/antigüedad** en la red donde vayas a publicar.
 - [ ] **Crea el repo en "Destacados"** de tu perfil de GitHub y ponle descripción.
 
@@ -30,7 +30,7 @@ y después las internacionales.
 > Carrito Fantasma es una tienda online de mentira que te da el subidón de comprar
 > sin pagar nada. Sin anuncios, sin cookies, sin datos. 👻
 >
-> https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> https://carritofantasma.app/
 
 **Hilo (ES) — pégalo como respuesta encadenada:**
 
@@ -45,7 +45,7 @@ y después las internacionales.
 > 4/ Es gratis, no recoge ni un dato y no tiene publicidad. Nada. Todo vive en tu navegador.
 >
 > 5/ Pruébalo y cuéntame si te quita las ganas de comprar de verdad 👇
->    https://guillermoclaro-a11y.github.io/carrito-fantasma/
+>    https://carritofantasma.app/
 
 ---
 
@@ -68,7 +68,7 @@ y después las internacionales.
 >
 > Es gratis, sin anuncios, sin cookies y sin guardar datos (todo en tu navegador).
 > Es mi proyecto, así que cualquier crítica me viene bien. 👇
-> https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> https://carritofantasma.app/
 
 ### r/espana (Español)
 
@@ -81,7 +81,7 @@ y después las internacionales.
 > tiendas: moda, comida, tech y lujo absurdo (hay un yate, por si acaso 🛥️).
 >
 > Cero anuncios, cero rastreadores, cero datos. Es un proyecto personal sin ánimo de lucro.
-> https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> https://carritofantasma.app/
 
 ### r/Anticonsumption (English)
 
@@ -99,7 +99,7 @@ y después las internacionales.
 > It's free, has no ads, no cookies, and stores nothing (everything runs in your
 > browser). It's my own project and it's bilingual (ES/EN) — there's a language
 > switch in the header, or open the English link directly.
-> https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
+> https://carritofantasma.app/?lang=en
 
 ### r/nobuy (English)
 
@@ -112,7 +112,7 @@ y después las internacionales.
 > it shows how much money I didn't spend.
 >
 > No ads, no tracking, no account. If it helps anyone else on a no-buy, great.
-> (My own project →) https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> (My own project →) https://carritofantasma.app/
 
 ### r/InternetIsBeautiful (English)
 
@@ -122,7 +122,7 @@ y después las internacionales.
 
 > A satirical e-commerce site where everything is imaginary: cart, payment, even a
 > package tracker. Purely for the fun/psychology of it. No ads, no cookies, no signup.
-> https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> https://carritofantasma.app/
 
 ### r/SideProject (English)
 
@@ -136,7 +136,7 @@ y después las internacionales.
 > header toggle and a `?lang=en` deep link.
 >
 > Repo: https://github.com/guillermoclaro-a11y/carrito-fantasma
-> Demo: https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
+> Demo: https://carritofantasma.app/?lang=en
 > Happy to answer anything about how it's built.
 
 > 🚫 **r/shoppingaddiction**: sensible con esta. Es una comunidad de apoyo, no un
@@ -163,7 +163,7 @@ y después las internacionales.
 >
 > Product images come from Wikimedia Commons (there's a credits page). The site is
 > bilingual ES/EN — there's a language switch in the header, or you can go straight
-> to the English version: https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
+> to the English version: https://carritofantasma.app/?lang=en
 >
 > Code: https://github.com/guillermoclaro-a11y/carrito-fantasma
 

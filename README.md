@@ -6,9 +6,10 @@ Basado en la tendencia de los *dopamine sites*.
 
 ## 🌐 En vivo
 
-- **GitHub Pages:** https://guillermoclaro-a11y.github.io/carrito-fantasma/
-- **En inglés:** https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
+- **Web (dominio propio):** https://carritofantasma.app/
+- **En inglés:** https://carritofantasma.app/?lang=en
 - **Repositorio:** https://github.com/guillermoclaro-a11y/carrito-fantasma
+- *(espejo GitHub Pages: https://guillermoclaro-a11y.github.io/carrito-fantasma/)*
 
 > 🌎 El sitio es **bilingüe (ES/EN)**. El botón `EN`/`ES` de la cabecera cambia el idioma y
 > se recuerda en el navegador. También puedes enlazar directo con `?lang=en` o `?lang=es`.
@@ -74,7 +75,7 @@ reutilizas el proyecto: revisa `credits.json`.
 
 ## Publicar gratis
 
-> ✅ **Ya está publicado:** https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> ✅ **Ya está publicado:** https://carritofantasma.app/
 > (GitHub Pages, rama `master`). Para actualizarlo: `git push`.
 
 ### Opción A — Netlify Drop (30 segundos, sin cuenta de código)
