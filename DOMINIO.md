@@ -10,11 +10,13 @@ Guía para servir la tienda en un dominio propio en lugar de
 - **GitHub Pages:** dominio personalizado configurado y archivo `CNAME` en el repo.
 - **En vivo:** https://carritofantasma.app/ · https://carritofantasma.app/?lang=en
 - **`www`:** redirige a la raíz. ✔
+- **HTTPS:** gestionado por GitHub (Let's Encrypt para `carritofantasma.app` y
+  `www.carritofantasma.app`) con **Enforce HTTPS** activado. ✔
+- **Redirecciones:** `http://` → `https://` y el espejo `github.io` → dominio propio. ✔
 
-> 🔧 **Pendiente de un ajuste opcional de DNS** (ver sección 3):
-> con la nube **naranja** (proxy) de Cloudflare activada, el HTTPS funciona con el
-> certificado de Cloudflare, pero GitHub no puede emitir el suyo. Lo ideal es poner los
-> registros en **DNS only (nube gris)** para que GitHub gestione el certificado solo.
+> ✅ **Todo terminado.** El DNS está en **DNS only (nube gris)** para que GitHub emita y
+> renueve el certificado solo. Si algún día quieres el proxy/CDN de Cloudflare, se puede
+> reactivar (con SSL/TLS en **Full**), pero entonces el certificado lo gestiona Cloudflare.
 
 > ⚠️ **Recuerda:** comprar el dominio solo puede hacerlo el dueño (conlleva pago). El resto
 > ya está automatizado.
