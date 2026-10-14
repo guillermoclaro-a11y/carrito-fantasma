@@ -132,6 +132,9 @@ Cada entrada puede llevar un `hint` (español) y un `hint_en` (inglés).
 
 > 🌐 ¿Quieres tu propio dominio (`carritofantasma.es`)? Tienes la guía completa paso a paso
 > en [`DOMINIO.md`](DOMINIO.md) y un verificador de DNS en `tools/check-domain.sh`.
+>
+> 📣 ¿Vas a difundirlo? Mira [`DIFUSION.md`](DIFUSION.md) (kit por canal) y
+> [`MENSAJES.md`](MENSAJES.md) (textos listos para copiar y pegar en Facebook, X y WhatsApp).
 
 **¿Por qué no anuncios?** Además del problema ético (anunciar consumo en una web
 anti-consumo), la publicidad exige cookies y rastreadores, y AdSense suele **rechazar**
