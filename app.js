@@ -12,6 +12,9 @@
   const modeById = Object.fromEntries(MODES.map(m => [m.id, m]));
   const byId = new Map(PRODUCTS.map(p => [p.id, p]));
   const acc = p => (modeById[p.mode] || modeById.all).accent;
+  const imgOf = p => `assets/img/${p.id}.jpg`;
+  // imagen con foto real + emoji de respaldo (si la foto no carga)
+  const photo = p => `<img class="photo" src="${imgOf(p)}" alt="${p.name}" loading="lazy" decoding="async" onerror="this.remove()">`;
 
   const persisted = (() => {
     try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { return {}; }
@@ -77,13 +80,14 @@
     document.body.dataset.mode = state.mode;
     renderModesNav();
     updateTop();
-    const views = { home: viewHome, catalog: viewCatalog, savings: viewSavings, checkout: viewCheckout, confirm: viewConfirm, tracking: viewTracking };
+    const views = { home: viewHome, catalog: viewCatalog, savings: viewSavings, checkout: viewCheckout, confirm: viewConfirm, tracking: viewTracking, credits: viewCredits };
     app.innerHTML = (views[state.view] || viewHome)();
     renderModal();
     renderCart();
     window.scrollTo(0, 0);
     if (state.view === 'tracking') startTracking();
     if (state.view === 'confirm') celebrate();
+    if (state.view === 'credits') loadCredits();
   }
 
   function renderModesNav() {
@@ -165,6 +169,7 @@
     <article class="card" data-action="product" data-id="${p.id}">
       <div class="card-img" style="--c:${acc(p)}">
         <span class="emoji">${p.emoji}</span>
+        ${photo(p)}
         ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
       </div>
       <div class="card-body">
@@ -336,7 +341,7 @@
     el.hidden = false;
     el.innerHTML = `
       <div class="modal-card">
-        <div class="modal-img" style="--c:${acc(p)}">${p.emoji}</div>
+        <div class="modal-img" style="--c:${acc(p)}"><span class="emoji">${p.emoji}</span>${photo(p)}</div>
         <div class="modal-info">
           <button class="icon" data-action="close-modal" aria-label="Cerrar" style="align-self:flex-end">✕</button>
           ${p.badge ? `<span class="badge" style="position:static;align-self:flex-start;background:${acc(p)};color:#fff;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:800">${p.badge}</span>` : ''}
@@ -362,7 +367,7 @@
     } else {
       body.innerHTML = lines.map(l => `
         <div class="line">
-          <div class="line-img" style="--c:${acc(l)}">${l.emoji}</div>
+          <div class="line-img" style="--c:${acc(l)}"><span class="emoji">${l.emoji}</span>${photo(l)}</div>
           <div class="line-info"><strong>${l.name}</strong><span class="muted tiny">${money(l.price)}</span></div>
           <div class="qty">
             <button data-action="dec" data-id="${l.id}" aria-label="Quitar uno">−</button>
@@ -386,6 +391,39 @@
 
   function openCart() { document.body.classList.add('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'false'); }
   function closeCart() { document.body.classList.remove('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'true'); }
+
+  /* ---------- créditos de imágenes ---------- */
+  function viewCredits() {
+    return `
+    <section class="page credits">
+      <button class="link-back" data-action="nav" data-view="home">← Inicio</button>
+      <h1>Créditos de las imágenes</h1>
+      <p class="muted">Las fotos son la imagen principal de artículos de Wikipedia y archivos de Wikimedia Commons, usadas bajo sus respectivas licencias. Se descargaron al propio sitio: tu navegador no pide nada a terceros.</p>
+      <div id="creditsList" class="credits-list">Cargando…</div>
+    </section>`;
+  }
+  let creditsCache = null;
+  async function loadCredits() {
+    const box = $('#creditsList');
+    if (!box) return;
+    try {
+      creditsCache = creditsCache || await (await fetch('assets/img/credits.json')).json();
+      const rows = Object.entries(creditsCache).map(([id, c]) => {
+        const p = byId.get(id);
+        const lic = c.licenseUrl ? `<a href="${c.licenseUrl}" target="_blank" rel="noopener">${c.license || 'licencia'}</a>` : (c.license || '');
+        return `<tr>
+          <td><img src="assets/img/${id}.jpg" alt="" loading="lazy"></td>
+          <td>${p ? p.name : id}</td>
+          <td>${c.author || '—'}</td>
+          <td>${lic}</td>
+          <td><a href="${c.source}" target="_blank" rel="noopener">fuente</a></td>
+        </tr>`;
+      }).join('');
+      box.innerHTML = `<table class="credits-table"><thead><tr><th></th><th>Producto</th><th>Autor</th><th>Licencia</th><th>Origen</th></tr></thead><tbody>${rows}</tbody></table>`;
+    } catch (e) {
+      box.innerHTML = '<p class="muted">No se pudieron cargar los créditos.</p>';
+    }
+  }
 
   /* ---------- pago ---------- */
   function pay() {
