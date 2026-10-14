@@ -13,16 +13,19 @@
   const byId = new Map(PRODUCTS.map(p => [p.id, p]));
   const acc = p => (modeById[p.mode] || modeById.all).accent;
   const imgOf = p => `assets/img/${p.id}.jpg`;
-  // imagen con foto real + emoji de respaldo (si la foto no carga)
-  const photo = p => `<img class="photo" src="${imgOf(p)}" alt="${p.name}" loading="lazy" decoding="async" onerror="this.remove()">`;
 
   const persisted = (() => {
     try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { return {}; }
+  })();
+  // Permite enlazar directo a un idioma: ?lang=en  (útil para compartir)
+  const urlLang = (() => {
+    try { return (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); } catch (e) { return ''; }
   })();
 
   const state = {
     view: 'home',
     mode: persisted.mode || 'all',
+    lang: urlLang ? (urlLang === 'en' ? 'en' : 'es') : (persisted.lang === 'en' ? 'en' : 'es'),
     query: '',
     sort: 'pop',
     cart: Array.isArray(persisted.cart) ? persisted.cart : [],
@@ -30,24 +33,66 @@
     calories: Number(persisted.calories) || 0,
     orders: Number(persisted.orders) || 0,
     product: null,
-    checkout: { step: 1, address: {}, pay: 'Tarjeta fantasma •••• 4242' },
+    checkout: { step: 1, address: {}, pay: 0 },
     lastOrder: null,
   };
 
+  /* ---------- idioma / i18n ---------- */
+  const locale = () => (state.lang === 'en' ? 'en-US' : 'es-ES');
+  const dict = () => (UI[state.lang] || UI.es);
+
+  function t(key, vars) {
+    let s = dict()[key] != null ? dict()[key] : (UI.es[key] != null ? UI.es[key] : key);
+    if (vars) for (const k in vars) s = s.replace(new RegExp('\\{' + k + '\\}', 'g'), () => String(vars[k]));
+    return s;
+  }
+  // campos localizados de un producto / tienda / insignia
+  const tr = (map, id, field, fallback) => {
+    const e = map && map[state.lang] && map[state.lang][id];
+    return (e && e[field]) || fallback;
+  };
+  const pname  = p => tr(PRODUCT_I18N, p.id, 'name', p.name);
+  const pdesc  = p => tr(PRODUCT_I18N, p.id, 'desc', p.desc);
+  const mname  = m => tr(MODE_I18N, m.id, 'name', m.name);
+  const mtag   = m => tr(MODE_I18N, m.id, 'tagline', m.tagline);
+  const pbadge = p => (state.lang === 'en' && BADGE_I18N.en[p.badge]) || p.badge;
+  const dHint  = d => (state.lang === 'en' && d.hint_en) || d.hint || '';
+
+  // imagen con foto real + emoji de respaldo (si la foto no carga)
+  const photo = p => `<img class="photo" src="${imgOf(p)}" alt="${pname(p)}" loading="lazy" decoding="async" onerror="this.remove()">`;
+
   /* ---------- utilidades ---------- */
   function save() {
-    const { cart, savings, calories, orders, mode } = state;
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ cart, savings, calories, orders, mode })); } catch (e) {}
+    const { cart, savings, calories, orders, mode, lang } = state;
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ cart, savings, calories, orders, mode, lang })); } catch (e) {}
   }
   function money(n) {
     const opts = Number.isInteger(n)
       ? { maximumFractionDigits: 0 }
       : { minimumFractionDigits: 2, maximumFractionDigits: 2 };
-    return '$' + n.toLocaleString('es-ES', opts);
+    return '$' + n.toLocaleString(locale(), opts);
   }
+  const num = n => n.toLocaleString(locale());
   function stars(r) { return '★'.repeat(Math.round(r)) + '☆'.repeat(5 - Math.round(r)); }
-  function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
   function pick(a) { return a[Math.random() * a.length | 0]; }
+
+  function applyMeta() {
+    document.documentElement.lang = dict().html_lang;
+    document.title = t('title');
+    const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
+    setMeta('meta[name="description"]', t('meta_desc'));
+    setMeta('meta[property="og:title"]', t('title'));
+    setMeta('meta[property="og:description"]', t('meta_desc'));
+  }
+  function applyStatic() {
+    $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+    $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+    $$('[data-i18n-title]').forEach(el => el.setAttribute('title', t(el.dataset.i18nTitle)));
+    const lt = $('#langToggle');
+    if (lt) { lt.textContent = state.lang === 'es' ? 'EN' : 'ES'; lt.setAttribute('title', t('lang_toggle')); lt.setAttribute('aria-label', t('lang_toggle')); }
+    applyMeta();
+  }
+  function setLang(l) { state.lang = l === 'en' ? 'en' : 'es'; save(); applyStatic(); render(); }
 
   /* ---------- carrito ---------- */
   const cartLines = () => state.cart
@@ -63,7 +108,7 @@
     save(); renderCart();
     const btn = $('#cartBtn');
     if (btn) { btn.classList.remove('bump'); void btn.offsetWidth; btn.classList.add('bump'); }
-    if (!silent) { const p = byId.get(id); toast(`${p.emoji} ${p.name} añadido`); }
+    if (!silent) { const p = byId.get(id); toast(t('added', { emoji: p.emoji, name: pname(p) })); }
   }
   function setQty(id, delta) {
     const it = state.cart.find(ci => ci.id === id);
@@ -73,7 +118,7 @@
     save(); renderCart();
   }
   function removeItem(id) { state.cart = state.cart.filter(ci => ci.id !== id); save(); renderCart(); }
-  function clearCart() { state.cart = []; save(); renderCart(); toast('Carrito vaciado 🧹'); }
+  function clearCart() { state.cart = []; save(); renderCart(); toast(t('cart_cleared')); }
 
   /* ---------- render principal ---------- */
   function render() {
@@ -93,7 +138,7 @@
   function renderModesNav() {
     $('#modesNav').innerHTML = MODES.map(m => `
       <button class="mode-btn ${state.mode === m.id ? 'active' : ''}" data-action="mode" data-mode="${m.id}">
-        <span>${m.emoji}</span> ${m.name}
+        <span>${m.emoji}</span> ${mname(m)}
       </button>`).join('');
   }
 
@@ -105,46 +150,46 @@
   /* ---------- vistas ---------- */
   function viewHome() {
     const saved = state.savings > 0
-      ? `<div class="saved-pill">💸 Ya te has ahorrado <b>${money(state.savings)}</b> en ${state.orders} pedido(s) fantasma</div>`
+      ? `<div class="saved-pill">${t('saved_pill', { money: money(state.savings), n: state.orders })}</div>`
       : '';
     return `
     <section class="page">
       <div class="hero">
-        <h1>Compra todo lo que quieras.<br>No pagues nada.<br>No llegará nada.</h1>
-        <p>Carrito Fantasma replica todo el ritual de comprar online —catálogo, carrito, pago y hasta el seguimiento del repartidor— y se detiene justo antes de la parte que te cuesta dinero. La dopamina, sin arruinarte y sin que nadie te estafe.</p>
+        <h1>${t('home_h1')}</h1>
+        <p>${t('home_p')}</p>
         <div class="row">
-          <button class="primary" data-action="nav" data-view="catalog">Empezar a llenar el carrito 🛒</button>
-          <button class="ghost" data-action="nav" data-view="savings">Ver cuánto ahorras 💸</button>
+          <button class="primary" data-action="nav" data-view="catalog">${t('home_cta_catalog')}</button>
+          <button class="ghost" data-action="nav" data-view="savings">${t('home_cta_savings')}</button>
         </div>
         ${saved}
       </div>
 
-      <h2 class="section-title">Elige tu tienda</h2>
+      <h2 class="section-title">${t('choose_store')}</h2>
       <div class="mode-grid">
         ${MODES.filter(m => m.id !== 'all').map(m => `
           <button class="mode-card" data-action="mode" data-mode="${m.id}">
             <span class="stripe" style="--m:${m.accent}"></span>
             <span class="big-emoji">${m.emoji}</span>
-            <h3>${m.name}</h3>
-            <p>${m.tagline}</p>
+            <h3>${mname(m)}</h3>
+            <p>${mtag(m)}</p>
           </button>`).join('')}
       </div>
 
-      <h2 class="section-title">Cómo funciona</h2>
+      <h2 class="section-title">${t('how_it_works')}</h2>
       <div class="features">
-        <div class="feature"><b>1 · Llena el carrito</b><span>Añade ropa, comida, tecnología o caprichos imposibles sin límite.</span></div>
-        <div class="feature"><b>2 · Paga de mentira</b><span>Dirección ficticia y "tarjeta fantasma". El botón de pagar no cobra nada.</span></div>
-        <div class="feature"><b>3 · Sigue el envío</b><span>Mira cómo tu pedido avanza… y se queda para siempre "en reparto".</span></div>
-        <div class="feature"><b>4 · Cuenta tu ahorro</b><span>La app suma todo lo que no gastaste y las calorías que no te comiste.</span></div>
+        <div class="feature"><b>${t('f1t')}</b><span>${t('f1s')}</span></div>
+        <div class="feature"><b>${t('f2t')}</b><span>${t('f2s')}</span></div>
+        <div class="feature"><b>${t('f3t')}</b><span>${t('f3s')}</span></div>
+        <div class="feature"><b>${t('f4t')}</b><span>${t('f4s')}</span></div>
       </div>
 
       <div class="manifesto">
-        <h3>Nuestro compromiso</h3>
+        <h3>${t('commitment')}</h3>
         <ul>
-          <li>✅ Cero pagos reales. Cero entregas. Cero artículos.</li>
-          <li>✅ Cero cookies, cero anuncios, cero rastreadores. Nada sale de tu navegador.</li>
-          <li>✅ Gratis y sin registro. No hay letra pequeña.</li>
-          <li>💡 Funciona mejor para un antojo puntual, no como escape de tus emociones.</li>
+          <li>${t('c1')}</li>
+          <li>${t('c2')}</li>
+          <li>${t('c3')}</li>
+          <li>${t('c4')}</li>
         </ul>
       </div>
     </section>`;
@@ -154,7 +199,7 @@
     let list = PRODUCTS.filter(p => state.mode === 'all' || p.mode === state.mode);
     if (state.query) {
       const q = state.query.toLowerCase();
-      list = list.filter(p => (p.name + ' ' + p.desc).toLowerCase().includes(q));
+      list = list.filter(p => (pname(p) + ' ' + pdesc(p)).toLowerCase().includes(q));
     }
     if (state.sort === 'price-asc') list = [...list].sort((a, b) => a.price - b.price);
     else if (state.sort === 'price-desc') list = [...list].sort((a, b) => b.price - a.price);
@@ -170,15 +215,15 @@
       <div class="card-img" style="--c:${acc(p)}">
         <span class="emoji">${p.emoji}</span>
         ${photo(p)}
-        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+        ${p.badge ? `<span class="badge">${pbadge(p)}</span>` : ''}
       </div>
       <div class="card-body">
-        <h3>${p.name}</h3>
-        <p class="desc">${p.desc}</p>
-        <div class="rate">${stars(p.rating)} <span>${p.rating.toFixed(1)} (${p.reviews.toLocaleString('es-ES')})</span></div>
+        <h3>${pname(p)}</h3>
+        <p class="desc">${pdesc(p)}</p>
+        <div class="rate">${stars(p.rating)} <span>${p.rating.toFixed(1)} (${num(p.reviews)})</span></div>
         <div class="price-row">
           <div class="price">${money(p.price)}${old}</div>
-          <button class="add" data-action="add" data-id="${p.id}" aria-label="Añadir ${p.name} al carrito">＋</button>
+          <button class="add" data-action="add" data-id="${p.id}" aria-label="${t('add_aria', { name: pname(p) })}">＋</button>
         </div>
       </div>
     </article>`;
@@ -186,7 +231,7 @@
 
   function gridHTML() {
     const list = filtered();
-    if (!list.length) return `<div class="empty-grid"><span class="big">🔍</span>No encontramos nada con ese nombre. Prueba otra búsqueda.</div>`;
+    if (!list.length) return `<div class="empty-grid">${t('empty_grid')}</div>`;
     return list.map(card).join('');
   }
 
@@ -195,20 +240,20 @@
     return `
     <section class="page">
       <div class="catalog-head">
-        <h1>${m.emoji} ${m.name}</h1>
-        <span class="flash">⚡ Oferta fantasma termina en <b class="js-flash">09:59</b></span>
+        <h1>${m.emoji} ${mname(m)}</h1>
+        <span class="flash">${t('flash')}</span>
       </div>
-      <p class="muted">${m.tagline}. Precios de mentira, satisfacción real.</p>
+      <p class="muted">${t('catalog_sub', { tagline: mtag(m) })}</p>
       <div class="toolbar">
-        <input id="searchInput" type="search" placeholder="Buscar productos…" value="${state.query.replace(/"/g, '&quot;')}" aria-label="Buscar">
-        <select id="sortSel" aria-label="Ordenar">
-          <option value="pop" ${state.sort === 'pop' ? 'selected' : ''}>Más populares</option>
-          <option value="price-asc" ${state.sort === 'price-asc' ? 'selected' : ''}>Precio: menor a mayor</option>
-          <option value="price-desc" ${state.sort === 'price-desc' ? 'selected' : ''}>Precio: mayor a menor</option>
-          <option value="rating" ${state.sort === 'rating' ? 'selected' : ''}>Mejor valorados</option>
+        <input id="searchInput" type="search" placeholder="${t('search_ph')}" value="${state.query.replace(/"/g, '&quot;')}" aria-label="${t('search_aria')}">
+        <select id="sortSel" aria-label="${t('sort_aria')}">
+          <option value="pop" ${state.sort === 'pop' ? 'selected' : ''}>${t('sort_pop')}</option>
+          <option value="price-asc" ${state.sort === 'price-asc' ? 'selected' : ''}>${t('sort_asc')}</option>
+          <option value="price-desc" ${state.sort === 'price-desc' ? 'selected' : ''}>${t('sort_desc')}</option>
+          <option value="rating" ${state.sort === 'rating' ? 'selected' : ''}>${t('sort_rating')}</option>
         </select>
       </div>
-      <p class="results"><span id="resultCount">${filtered().length}</span> productos</p>
+      <p class="results"><span id="resultCount">${filtered().length}</span> ${t('results', { n: '' }).trim()}</p>
       <div class="grid" id="grid">${gridHTML()}</div>
     </section>`;
   }
@@ -216,26 +261,32 @@
   function viewSavings() {
     return `
     <section class="page savings">
-      <h1>Tu ahorro fantasma 💸</h1>
-      <p class="muted">Todo lo que has "comprado" sin gastar un centavo.</p>
+      <h1>${t('savings_h1')}</h1>
+      <p class="muted">${t('savings_p')}</p>
       <div class="stat-grid">
-        <div class="stat"><div class="n">${money(state.savings)}</div><div class="l">Dinero que no gastaste</div></div>
-        <div class="stat"><div class="n">${state.orders}</div><div class="l">Pedidos fantasma</div></div>
-        <div class="stat"><div class="n">${Math.round(state.calories).toLocaleString('es-ES')}</div><div class="l">Calorías que no comiste</div></div>
+        <div class="stat"><div class="n">${money(state.savings)}</div><div class="l">${t('stat_money')}</div></div>
+        <div class="stat"><div class="n">${state.orders}</div><div class="l">${t('stat_orders')}</div></div>
+        <div class="stat"><div class="n">${num(Math.round(state.calories))}</div><div class="l">${t('stat_cal')}</div></div>
       </div>
       <div class="manifesto">
-        <h3>Recuerda</h3>
+        <h3>${t('remember')}</h3>
         <ul>
-          <li>Esto es un juego. Los pedidos no existen y no salvan tu presupuesto real por sí solos.</li>
-          <li>Si el antojo de comprar es constante, habla con alguien de confianza o un profesional.</li>
-          <li>Aquí nunca se ha enviado ni un solo dato tuyo a ningún servidor. Lo prometemos.</li>
+          <li>${t('s1')}</li>
+          <li>${t('s2')}</li>
+          <li>${t('s3')}</li>
         </ul>
       </div>
       <div class="row">
-        <button class="primary" data-action="nav" data-view="catalog">Seguir comprando</button>
-        <button class="ghost" data-action="clear-history">Borrar historial</button>
+        <button class="primary" data-action="nav" data-view="catalog">${t('keep_shopping')}</button>
+        <button class="ghost" data-action="clear-history">${t('clear_history')}</button>
       </div>
     </section>`;
+  }
+
+  function methodList() {
+    return state.lang === 'en'
+      ? ['Ghost card •••• 4242', 'Imaginary instant transfer', 'Monopoly cash', 'A chocolate bill']
+      : ['Tarjeta fantasma •••• 4242', 'Bizum imaginario', 'Efectivo de Monopoly', 'Un billete de chocolate'];
   }
 
   function viewCheckout() {
@@ -243,41 +294,41 @@
     const lines = cartLines();
     const total = cartTotal();
     const a = state.checkout.address;
-    const methods = ['Tarjeta fantasma •••• 4242', 'Bizum imaginario', 'Efectivo de Monopoly', 'Un billete de chocolate'];
+    const methods = methodList();
     return `
     <section class="page checkout">
-      <button class="link-back" data-action="open-cart">← Volver al carrito</button>
-      <h1>Tramitar pedido (de mentira)</h1>
+      <button class="link-back" data-action="open-cart">${t('back_cart')}</button>
+      <h1>${t('checkout_h1')}</h1>
       <div class="steps-ind">${[1, 2, 3].map(n => `<span class="dot ${n <= step ? 'on' : ''}"></span>`).join('')}</div>
 
       ${step === 1 ? `
         <div class="panel">
-          <h2>1 · ¿A dónde nunca llegará?</h2>
-          <div class="field"><label for="f-name">Nombre</label><input id="f-name" placeholder="Tu nombre" value="${a.name || ''}"></div>
-          <div class="field"><label for="f-address">Dirección</label><input id="f-address" placeholder="Calle Imaginaria 123" value="${a.address || ''}"></div>
-          <div class="field"><label for="f-city">Ciudad</label><input id="f-city" placeholder="Neverlandia" value="${a.city || ''}"></div>
-          <button class="primary big" data-action="step" data-step="2">Continuar</button>
+          <h2>${t('st1')}</h2>
+          <div class="field"><label for="f-name">${t('f_name')}</label><input id="f-name" placeholder="${t('f_name_ph')}" value="${a.name || ''}"></div>
+          <div class="field"><label for="f-address">${t('f_address')}</label><input id="f-address" placeholder="${t('f_address_ph')}" value="${a.address || ''}"></div>
+          <div class="field"><label for="f-city">${t('f_city')}</label><input id="f-city" placeholder="${t('f_city_ph')}" value="${a.city || ''}"></div>
+          <button class="primary big" data-action="step" data-step="2">${t('continue')}</button>
         </div>` : ''}
 
       ${step === 2 ? `
         <div class="panel">
-          <h2>2 · Método de pago ficticio</h2>
-          ${methods.map(m => `<label class="radio"><input type="radio" name="pay" value="${m}" ${state.checkout.pay === m ? 'checked' : ''}> ${m}</label>`).join('')}
+          <h2>${t('st2')}</h2>
+          ${methods.map((m, i) => `<label class="radio"><input type="radio" name="pay" value="${i}" ${state.checkout.pay === i ? 'checked' : ''}> ${m}</label>`).join('')}
           <div class="row">
-            <button class="ghost" data-action="step" data-step="1">Atrás</button>
-            <button class="primary" data-action="step" data-step="3">Continuar</button>
+            <button class="ghost" data-action="step" data-step="1">${t('back')}</button>
+            <button class="primary" data-action="step" data-step="3">${t('continue')}</button>
           </div>
         </div>` : ''}
 
       ${step === 3 ? `
         <div class="panel">
-          <h2>3 · Revisa tu pedido imaginario</h2>
-          <ul class="review">${lines.map(l => `<li><span>${l.emoji} ${l.name} ×${l.qty}</span><b>${money(l.price * l.qty)}</b></li>`).join('')}</ul>
-          <div class="total-row"><span>Total</span><b>${money(total)}</b></div>
-          <p class="muted">Método: ${state.checkout.pay}. No se cobrará nada. Nunca.</p>
+          <h2>${t('st3')}</h2>
+          <ul class="review">${lines.map(l => `<li><span>${l.emoji} ${pname(l)} ×${l.qty}</span><b>${money(l.price * l.qty)}</b></li>`).join('')}</ul>
+          <div class="total-row"><span>${t('total')}</span><b>${money(total)}</b></div>
+          <p class="muted">${t('method_note', { pay: methods[state.checkout.pay] || methods[0] })}</p>
           <div class="row">
-            <button class="ghost" data-action="step" data-step="2">Atrás</button>
-            <button class="primary big" data-action="pay">Pagar ${money(total)} 💳</button>
+            <button class="ghost" data-action="step" data-step="2">${t('back')}</button>
+            <button class="primary big" data-action="pay">${t('pay_btn', { money: money(total) })}</button>
           </div>
         </div>` : ''}
     </section>`;
@@ -289,33 +340,33 @@
     return `
     <section class="page confirm">
       <div class="tick">🎉</div>
-      <h1>¡Pedido realizado!</h1>
-      <p class="muted">En tu imaginación. No te hemos cobrado nada y no recibirás nada.</p>
+      <h1>${t('confirm_h1')}</h1>
+      <p class="muted">${t('confirm_p')}</p>
       <div class="order-box">
-        <p>Pedido <span class="order-id">${o.id}</span></p>
-        <ul class="review">${o.lines.map(l => `<li><span>${l.emoji} ${l.name} ×${l.qty}</span><b>${money(l.price * l.qty)}</b></li>`).join('')}</ul>
-        <div class="total-row"><span>Te has ahorrado</span><b>${money(o.total)}</b></div>
+        <p>${t('order_label', { id: `<span class="order-id">${o.id}</span>` })}</p>
+        <ul class="review">${o.lines.map(l => `<li><span>${l.emoji} ${pname(l)} ×${l.qty}</span><b>${money(l.price * l.qty)}</b></li>`).join('')}</ul>
+        <div class="total-row"><span>${t('saved_label2')}</span><b>${money(o.total)}</b></div>
       </div>
       <div class="row" style="justify-content:center">
-        <button class="primary" data-action="nav" data-view="tracking">Seguir el envío fantasma 🚚</button>
-        <button class="ghost" data-action="nav" data-view="catalog">Seguir comprando</button>
+        <button class="primary" data-action="nav" data-view="tracking">${t('track_btn')}</button>
+        <button class="ghost" data-action="nav" data-view="catalog">${t('keep_shopping')}</button>
       </div>
-      <p class="muted tiny" style="margin-top:18px">¿Te ha servido el truco? <button class="link" data-action="nav" data-view="support">Apoya el proyecto ❤️</button></p>
+      <p class="muted tiny" style="margin-top:18px">${t('try_it')} <button class="link" data-action="nav" data-view="support">${t('footer_support')}</button></p>
     </section>`;
   }
 
   function viewTracking() {
     const o = state.lastOrder;
     const steps = [
-      ['Pedido confirmado', 'Recibimos tu pedido que no existe'],
-      ['Preparando el paquete', 'Alguien en algún lugar no está haciendo nada'],
-      ['En camino', 'Tu paquete fantasma avanza a toda velocidad'],
-      ['En reparto', 'El repartidor se detuvo a ver una serie. Puede tardar.'],
+      [t('ts1t'), t('ts1s')],
+      [t('ts2t'), t('ts2s')],
+      [t('ts3t'), t('ts3s')],
+      [t('ts4t'), t('ts4s')],
     ];
     return `
     <section class="page tracking">
-      <h1>Seguimiento del pedido ${o ? `<span class="order-id">${o.id}</span>` : ''}</h1>
-      <p class="muted">Spoiler: nunca llegará. Pero qué bien se siente mirarlo.</p>
+      <h1>${t('tracking_h1', { id: o ? `<span class="order-id">${o.id}</span>` : '' })}</h1>
+      <p class="muted">${t('tracking_p')}</p>
       <ul class="track-list" id="tracking">
         ${steps.map((s, i) => `
           <li class="step" data-i="${i}">
@@ -324,11 +375,11 @@
           </li>`).join('')}
       </ul>
       <div class="track-note" id="tracknote" hidden>
-        📭 Tu paquete sigue "en reparto" desde hace 47 minutos. Tómalo como una señal. 😌
+        ${t('track_note')}
       </div>
       <div class="row">
-        <button class="primary" data-action="nav" data-view="savings">Ver mi ahorro 💸</button>
-        <button class="ghost" data-action="nav" data-view="catalog">Seguir comprando</button>
+        <button class="primary" data-action="nav" data-view="savings">${t('view_savings_btn')}</button>
+        <button class="ghost" data-action="nav" data-view="catalog">${t('keep_shopping')}</button>
       </div>
     </section>`;
   }
@@ -344,14 +395,14 @@
       <div class="modal-card">
         <div class="modal-img" style="--c:${acc(p)}"><span class="emoji">${p.emoji}</span>${photo(p)}</div>
         <div class="modal-info">
-          <button class="icon" data-action="close-modal" aria-label="Cerrar" style="align-self:flex-end">✕</button>
-          ${p.badge ? `<span class="badge" style="position:static;align-self:flex-start;background:${acc(p)};color:#fff;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:800">${p.badge}</span>` : ''}
-          <h2>${p.name}</h2>
-          <div class="rate">${stars(p.rating)} <span>${p.rating.toFixed(1)} · ${p.reviews.toLocaleString('es-ES')} reseñas</span></div>
-          <p class="desc">${p.desc}</p>
+          <button class="icon" data-action="close-modal" aria-label="${t('close')}" style="align-self:flex-end">✕</button>
+          ${p.badge ? `<span class="badge" style="position:static;align-self:flex-start;background:${acc(p)};color:#fff;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:800">${pbadge(p)}</span>` : ''}
+          <h2>${pname(p)}</h2>
+          <div class="rate">${stars(p.rating)} <span>${t('reviews', { rating: p.rating.toFixed(1), n: num(p.reviews) })}</span></div>
+          <p class="desc">${pdesc(p)}</p>
           <div class="price">${money(p.price)} ${p.oldPrice ? `<s>${money(p.oldPrice)}</s>` : ''}</div>
-          <p class="muted tiny">Envío fantasma gratis · Llega nunca · Devoluciones: tampoco</p>
-          <button class="primary big" data-action="add" data-id="${p.id}">Añadir al carrito 🛒</button>
+          <p class="muted tiny">${t('modal_note')}</p>
+          <button class="primary big" data-action="add" data-id="${p.id}">${t('add_cart')}</button>
         </div>
       </div>`;
     el.onclick = e => { if (e.target === el) closeModal(); };
@@ -364,18 +415,18 @@
     const body = $('#cartBody');
     const lines = cartLines();
     if (!lines.length) {
-      body.innerHTML = `<div class="empty">Tu carrito está vacío.<br><br>Llena el carrito todo lo que quieras.<br>Luego cierra la pestaña. 😌</div>`;
+      body.innerHTML = `<div class="empty">${t('cart_empty')}</div>`;
     } else {
       body.innerHTML = lines.map(l => `
         <div class="line">
           <div class="line-img" style="--c:${acc(l)}"><span class="emoji">${l.emoji}</span>${photo(l)}</div>
-          <div class="line-info"><strong>${l.name}</strong><span class="muted tiny">${money(l.price)}</span></div>
+          <div class="line-info"><strong>${pname(l)}</strong><span class="muted tiny">${money(l.price)}</span></div>
           <div class="qty">
-            <button data-action="dec" data-id="${l.id}" aria-label="Quitar uno">−</button>
+            <button data-action="dec" data-id="${l.id}" aria-label="${t('dec_aria')}">−</button>
             <span>${l.qty}</span>
-            <button data-action="inc" data-id="${l.id}" aria-label="Añadir uno">＋</button>
+            <button data-action="inc" data-id="${l.id}" aria-label="${t('inc_aria')}">＋</button>
           </div>
-          <button class="rm" data-action="remove" data-id="${l.id}" aria-label="Eliminar">✕</button>
+          <button class="rm" data-action="remove" data-id="${l.id}" aria-label="${t('remove_aria')}">✕</button>
         </div>`).join('');
     }
     const total = cartTotal();
@@ -383,10 +434,10 @@
     $('#payBtn').disabled = !lines.length;
     const remaining = Math.max(0, SHIP_FREE - total);
     $('#shipText').innerHTML = total <= 0
-      ? `Añade ${money(SHIP_FREE)} para el envío fantasma gratis`
+      ? t('ship_add', { money: money(SHIP_FREE) })
       : (remaining > 0
-        ? `Te faltan <b>${money(remaining)}</b> para el envío fantasma gratis`
-        : `🎉 Envío fantasma gratis desbloqueado`);
+        ? t('ship_left', { money: money(remaining) })
+        : t('ship_free'));
     $('#shipFill').style.width = Math.min(100, (total / SHIP_FREE) * 100) + '%';
   }
 
@@ -395,14 +446,10 @@
 
   /* ---------- compartir ---------- */
   async function share() {
-    const data = {
-      title: 'Carrito Fantasma',
-      text: 'Llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Comprar sin gastar ni un centavo 🛒',
-      url: location.href,
-    };
+    const data = { title: 'Carrito Fantasma', text: t('share_text'), url: location.href };
     try {
       if (navigator.share) await navigator.share(data);
-      else { await navigator.clipboard.writeText(location.href); toast('Enlace copiado 🔗'); }
+      else { await navigator.clipboard.writeText(location.href); toast(t('link_copied')); }
     } catch (e) { /* el usuario canceló */ }
   }
 
@@ -412,30 +459,30 @@
     return `
     <section class="page support">
       <div class="tick">❤️</div>
-      <h1>Apoya Carrito Fantasma</h1>
-      <p class="muted">Este sitio es gratis, no tiene anuncios, no pone cookies y no vende tus datos. Si te ha gustado, puedes ayudar a mantenerlo sin comprar nada real.</p>
+      <h1>${t('support_h1')}</h1>
+      <p class="muted">${t('support_p')}</p>
       ${links.length ? `
         <div class="support-grid">
           ${links.map(d => `
             <a class="support-card" href="${d.url}" target="_blank" rel="noopener noreferrer">
               <span class="big-emoji">${d.emoji}</span>
               <b>${d.name}</b>
-              ${d.hint ? `<span class="muted tiny">${d.hint}</span>` : ''}
+              ${dHint(d) ? `<span class="muted tiny">${dHint(d)}</span>` : ''}
             </a>`).join('')}
         </div>
-        <p class="muted tiny">Al pulsar abres el sitio del servicio de donaciones (puede usar sus propias cookies). Aquí no se instala ningún script de terceros.</p>`
-      : `<div class="panel"><p class="muted">Los canales de apoyo se están configurando. ¡Vuelve pronto! Mientras tanto, <b>compartir el proyecto también ayuda muchísimo</b>.</p></div>`}
+        <p class="muted tiny">${t('support_ext_note')}</p>`
+      : `<div class="panel"><p class="muted">${t('support_none')}</p></div>`}
       <div class="manifesto">
-        <h3>¿Por qué no hay anuncios?</h3>
+        <h3>${t('why_no_ads')}</h3>
         <ul>
-          <li>La publicidad exige rastreo y cookies: justo lo que este sitio promete no hacer.</li>
-          <li>Anunciar consumo en una web anti-consumo no tendría ningún sentido.</li>
-          <li>Tu apoyo va directo al creador, sin intermediarios que te perfilen.</li>
+          <li>${t('ads1')}</li>
+          <li>${t('ads2')}</li>
+          <li>${t('ads3')}</li>
         </ul>
       </div>
       <div class="row" style="justify-content:center">
-        <button class="primary" data-action="nav" data-view="catalog">Volver a comprar (de mentira)</button>
-        <button class="ghost" data-action="share">🔗 Compartir el sitio</button>
+        <button class="primary" data-action="nav" data-view="catalog">${t('support_back')}</button>
+        <button class="ghost" data-action="share">${t('support_share')}</button>
       </div>
     </section>`;
   }
@@ -444,10 +491,10 @@
   function viewCredits() {
     return `
     <section class="page credits">
-      <button class="link-back" data-action="nav" data-view="home">← Inicio</button>
-      <h1>Créditos de las imágenes</h1>
-      <p class="muted">Las fotos son la imagen principal de artículos de Wikipedia y archivos de Wikimedia Commons, usadas bajo sus respectivas licencias. Se descargaron al propio sitio: tu navegador no pide nada a terceros.</p>
-      <div id="creditsList" class="credits-list">Cargando…</div>
+      <button class="link-back" data-action="nav" data-view="home">${t('credits_back')}</button>
+      <h1>${t('credits_h1')}</h1>
+      <p class="muted">${t('credits_p')}</p>
+      <div id="creditsList" class="credits-list">${t('credits_loading')}</div>
     </section>`;
   }
   let creditsCache = null;
@@ -461,21 +508,21 @@
         const lic = c.licenseUrl ? `<a href="${c.licenseUrl}" target="_blank" rel="noopener">${c.license || 'licencia'}</a>` : (c.license || '');
         return `<tr>
           <td><img src="assets/img/${id}.jpg" alt="" loading="lazy"></td>
-          <td>${p ? p.name : id}</td>
+          <td>${p ? pname(p) : id}</td>
           <td>${c.author || '—'}</td>
           <td>${lic}</td>
-          <td><a href="${c.source}" target="_blank" rel="noopener">fuente</a></td>
+          <td><a href="${c.source}" target="_blank" rel="noopener">${t('source_link')}</a></td>
         </tr>`;
       }).join('');
-      box.innerHTML = `<table class="credits-table"><thead><tr><th></th><th>Producto</th><th>Autor</th><th>Licencia</th><th>Origen</th></tr></thead><tbody>${rows}</tbody></table>`;
+      box.innerHTML = `<table class="credits-table"><thead><tr><th></th><th>${t('th_product')}</th><th>${t('th_author')}</th><th>${t('th_license')}</th><th>${t('th_source')}</th></tr></thead><tbody>${rows}</tbody></table>`;
     } catch (e) {
-      box.innerHTML = '<p class="muted">No se pudieron cargar los créditos.</p>';
+      box.innerHTML = `<p class="muted">${t('credits_error')}</p>`;
     }
   }
 
   /* ---------- pago ---------- */
   function pay() {
-    if (!cartLines().length) { toast('El carrito está vacío'); return; }
+    if (!cartLines().length) { toast(t('cart_empty_toast')); return; }
     closeCart();
     showProcessing(() => {
       const total = cartTotal();
@@ -494,7 +541,9 @@
 
   function showProcessing(cb) {
     const box = $('#processing'); const txt = $('#procText');
-    const msgs = ['Conectando con el banco imaginario…', 'Verificando fondos que no existen…', 'Autorizando compra ficticia…', '¡Listo! Nada fue cobrado.'];
+    const msgs = state.lang === 'en'
+      ? ['Connecting to the imaginary bank…', 'Verifying funds that do not exist…', 'Authorizing a fictional purchase…', 'Done! Nothing was charged.']
+      : ['Conectando con el banco imaginario…', 'Verificando fondos que no existen…', 'Autorizando compra ficticia…', '¡Listo! Nada fue cobrado.'];
     let i = 0; txt.textContent = msgs[0];
     box.hidden = false;
     const iv = setInterval(() => { i++; if (msgs[i]) txt.textContent = msgs[i]; }, 550);
@@ -524,8 +573,8 @@
   /* ---------- toast ---------- */
   let toastTimer;
   function toast(msg) {
-    const t = $('#toast'); t.textContent = msg; t.classList.add('show');
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    const tst = $('#toast'); tst.textContent = msg; tst.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => tst.classList.remove('show'), 2200);
   }
 
   /* ---------- confeti ---------- */
@@ -570,27 +619,28 @@
 
   /* ---------- eventos ---------- */
   document.addEventListener('click', e => {
-    const t = e.target.closest('[data-action]');
-    if (!t) return;
-    const a = t.dataset.action;
+    const tgt = e.target.closest('[data-action]');
+    if (!tgt) return;
+    const a = tgt.dataset.action;
     switch (a) {
       case 'nav':
         e.preventDefault();
-        state.view = t.dataset.view;
-        if (state.view === 'catalog' && t.dataset.mode) state.mode = t.dataset.mode;
+        state.view = tgt.dataset.view;
+        if (state.view === 'catalog' && tgt.dataset.mode) state.mode = tgt.dataset.mode;
         render(); break;
       case 'mode':
-        state.mode = t.dataset.mode; state.view = 'catalog'; render(); break;
-      case 'product': state.product = t.dataset.id; renderModal(); break;
+        state.mode = tgt.dataset.mode; state.view = 'catalog'; render(); break;
+      case 'product': state.product = tgt.dataset.id; renderModal(); break;
       case 'close-modal': closeModal(); break;
-      case 'add': addToCart(t.dataset.id); break;
+      case 'add': addToCart(tgt.dataset.id); break;
       case 'open-cart': openCart(); break;
       case 'close-cart': closeCart(); break;
-      case 'inc': setQty(t.dataset.id, 1); break;
-      case 'dec': setQty(t.dataset.id, -1); break;
-      case 'remove': removeItem(t.dataset.id); break;
+      case 'inc': setQty(tgt.dataset.id, 1); break;
+      case 'dec': setQty(tgt.dataset.id, -1); break;
+      case 'remove': removeItem(tgt.dataset.id); break;
       case 'clear-cart': clearCart(); break;
       case 'share': share(); break;
+      case 'lang': setLang(state.lang === 'es' ? 'en' : 'es'); break;
       case 'checkout': closeCart(); state.checkout.step = 1; state.view = 'checkout'; render(); break;
       case 'step': {
         if (state.checkout.step === 1) {
@@ -600,18 +650,18 @@
             city: ($('#f-city') || {}).value || '',
           };
         }
-        state.checkout.step = +t.dataset.step; render(); break;
+        state.checkout.step = +tgt.dataset.step; render(); break;
       }
       case 'pay': pay(); break;
       case 'clear-history':
         state.savings = 0; state.calories = 0; state.orders = 0; state.lastOrder = null;
-        save(); render(); toast('Historial borrado'); break;
+        save(); render(); toast(t('history_cleared')); break;
     }
   });
 
   document.addEventListener('change', e => {
     if (e.target.id === 'sortSel') { state.sort = e.target.value; updateGrid(); }
-    if (e.target.name === 'pay') state.checkout.pay = e.target.value;
+    if (e.target.name === 'pay') state.checkout.pay = +e.target.value;
   });
 
   document.addEventListener('input', e => {
@@ -629,5 +679,6 @@
   });
 
   /* ---------- arranque ---------- */
+  applyStatic();
   render();
 })();

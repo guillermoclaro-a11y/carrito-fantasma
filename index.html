@@ -14,18 +14,19 @@
 <body data-mode="all">
 
   <header class="topbar">
-    <a class="brand" href="#" data-action="nav" data-view="home" aria-label="Inicio">
+    <a class="brand" href="#" data-action="nav" data-view="home" data-i18n-aria="nav_home" aria-label="Inicio">
       <span class="brand-mark">🛒</span>
       <span class="brand-name">Carrito<em>Fantasma</em></span>
     </a>
 
-    <nav class="modes" id="modesNav" aria-label="Tiendas"></nav>
+    <nav class="modes" id="modesNav" data-i18n-aria="stores" aria-label="Tiendas"></nav>
 
     <div class="top-actions">
-      <button class="pill" data-action="nav" data-view="savings" title="Lo que te has ahorrado">
-        💸 <span>Ahorrado: <b id="savingsTop">$0</b></span>
+      <button class="pill lang" id="langToggle" data-action="lang" data-i18n-title="lang_toggle" aria-label="Switch to English" title="Switch to English">EN</button>
+      <button class="pill" data-action="nav" data-view="savings" data-i18n-title="saved_title" title="Lo que te has ahorrado">
+        💸 <span><span data-i18n="saved_label">Ahorrado:</span> <b id="savingsTop">$0</b></span>
       </button>
-      <button class="cart-btn" id="cartBtn" data-action="open-cart" aria-label="Abrir carrito">
+      <button class="cart-btn" id="cartBtn" data-action="open-cart" data-i18n-aria="cart_open" aria-label="Abrir carrito">
         🛒<span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
@@ -34,17 +35,17 @@
   <main id="app" class="app"></main>
 
   <footer class="site-footer">
-    <p><b>Carrito Fantasma</b> es un experimento satírico y gratuito. No hay pagos reales, no hay entregas y ningún dato sale de tu navegador.</p>
-    <p><button class="link" data-action="nav" data-view="support">❤️ Apoyar el proyecto</button> · <button class="link" data-action="share">🔗 Compartir</button> · <button class="link" data-action="nav" data-view="credits">Créditos de las imágenes</button></p>
-    <p class="muted">Si estás luchando contra las compras compulsivas, esto no sustituye ayuda profesional.</p>
+    <p data-i18n="footer_about"><b>Carrito Fantasma</b> es un experimento satírico y gratuito. No hay pagos reales, no hay entregas y ningún dato sale de tu navegador.</p>
+    <p><button class="link" data-action="nav" data-view="support" data-i18n="footer_support">❤️ Apoyar el proyecto</button> · <button class="link" data-action="share" data-i18n="footer_share">🔗 Compartir</button> · <button class="link" data-action="nav" data-view="credits" data-i18n="footer_credits">Créditos de las imágenes</button></p>
+    <p class="muted" data-i18n="footer_note">Si estás luchando contra las compras compulsivas, esto no sustituye ayuda profesional.</p>
   </footer>
 
   <!-- Cart drawer -->
   <div class="scrim" id="scrim" data-action="close-cart"></div>
   <aside id="cartDrawer" class="drawer" aria-hidden="true" aria-label="Carrito">
     <div class="drawer-head">
-      <h2>Tu carrito</h2>
-      <button class="icon" data-action="close-cart" aria-label="Cerrar carrito">✕</button>
+      <h2 data-i18n="cart_title">Tu carrito</h2>
+      <button class="icon" data-action="close-cart" data-i18n-aria="cart_close" aria-label="Cerrar carrito">✕</button>
     </div>
     <div class="ship">
       <div class="ship-text" id="shipText"></div>
@@ -52,10 +53,10 @@
     </div>
     <div class="drawer-body" id="cartBody"></div>
     <div class="drawer-foot">
-      <div class="total-row"><span>Subtotal</span><b id="cartSubtotal">$0</b></div>
-      <p class="muted tiny">Envío fantasma: gratis · Entrega: nunca.</p>
-      <button class="primary big" id="payBtn" data-action="checkout">Tramitar pedido 💳</button>
-      <button class="link" data-action="clear-cart">Vaciar carrito</button>
+      <div class="total-row"><span data-i18n="subtotal">Subtotal</span><b id="cartSubtotal">$0</b></div>
+      <p class="muted tiny" data-i18n="ship_note">Envío fantasma: gratis · Entrega: nunca.</p>
+      <button class="primary big" id="payBtn" data-action="checkout" data-i18n="checkout_btn">Tramitar pedido 💳</button>
+      <button class="link" data-action="clear-cart" data-i18n="clear_cart">Vaciar carrito</button>
     </div>
   </aside>
 
@@ -66,16 +67,17 @@
   <div class="processing" id="processing" hidden>
     <div class="proc-card">
       <div class="spinner" aria-hidden="true"></div>
-      <p id="procText">Procesando pago fantasma…</p>
+      <p id="procText" data-i18n="proc_default">Procesando pago fantasma…</p>
     </div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
 
-  <noscript>Necesitas activar JavaScript para vivir la experiencia (falsa).</noscript>
+  <noscript data-i18n="noscript">Necesitas activar JavaScript para vivir la experiencia (falsa).</noscript>
 
   <script src="data.js"></script>
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

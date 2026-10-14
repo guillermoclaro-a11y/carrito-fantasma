@@ -8,10 +8,10 @@
    Se muestran como enlaces simples: sin scripts ni rastreadores.
    ============================================================ */
 const DONATIONS = [
-  { name: 'Ko-fi',          emoji: '☕', url: '', hint: 'Donación puntual o mensual' },
-  { name: 'Buy Me a Coffee', emoji: '🍩', url: '', hint: 'Rápido con tarjeta o PayPal' },
-  { name: 'Liberapay',      emoji: '🤝', url: '', hint: 'Suscripción recurrente, sin ánimo de lucro' },
-  { name: 'GitHub Sponsors', emoji: '💚', url: '', hint: 'Si alojas el proyecto en GitHub' },
+  { name: 'Ko-fi',          emoji: '☕', url: '', hint: 'Donación puntual o mensual', hint_en: 'One-off or monthly donation' },
+  { name: 'Buy Me a Coffee', emoji: '🍩', url: '', hint: 'Rápido con tarjeta o PayPal', hint_en: 'Quick with card or PayPal' },
+  { name: 'Liberapay',      emoji: '🤝', url: '', hint: 'Suscripción recurrente, sin ánimo de lucro', hint_en: 'Recurring subscription, non-profit' },
+  { name: 'GitHub Sponsors', emoji: '💚', url: '', hint: 'Si alojas el proyecto en GitHub', hint_en: 'If you host the project on GitHub' },
 ];
 
 const MODES = [
