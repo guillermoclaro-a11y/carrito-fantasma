@@ -80,7 +80,7 @@
     document.body.dataset.mode = state.mode;
     renderModesNav();
     updateTop();
-    const views = { home: viewHome, catalog: viewCatalog, savings: viewSavings, checkout: viewCheckout, confirm: viewConfirm, tracking: viewTracking, credits: viewCredits };
+    const views = { home: viewHome, catalog: viewCatalog, savings: viewSavings, checkout: viewCheckout, confirm: viewConfirm, tracking: viewTracking, credits: viewCredits, support: viewSupport };
     app.innerHTML = (views[state.view] || viewHome)();
     renderModal();
     renderCart();
@@ -300,6 +300,7 @@
         <button class="primary" data-action="nav" data-view="tracking">Seguir el envío fantasma 🚚</button>
         <button class="ghost" data-action="nav" data-view="catalog">Seguir comprando</button>
       </div>
+      <p class="muted tiny" style="margin-top:18px">¿Te ha servido el truco? <button class="link" data-action="nav" data-view="support">Apoya el proyecto ❤️</button></p>
     </section>`;
   }
 
@@ -391,6 +392,40 @@
 
   function openCart() { document.body.classList.add('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'false'); }
   function closeCart() { document.body.classList.remove('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'true'); }
+
+  /* ---------- apoyo / donaciones ---------- */
+  function viewSupport() {
+    const links = (typeof DONATIONS !== 'undefined' ? DONATIONS : []).filter(d => d.url);
+    return `
+    <section class="page support">
+      <div class="tick">❤️</div>
+      <h1>Apoya Carrito Fantasma</h1>
+      <p class="muted">Este sitio es gratis, no tiene anuncios, no pone cookies y no vende tus datos. Si te ha gustado, puedes ayudar a mantenerlo sin comprar nada real.</p>
+      ${links.length ? `
+        <div class="support-grid">
+          ${links.map(d => `
+            <a class="support-card" href="${d.url}" target="_blank" rel="noopener noreferrer">
+              <span class="big-emoji">${d.emoji}</span>
+              <b>${d.name}</b>
+              ${d.hint ? `<span class="muted tiny">${d.hint}</span>` : ''}
+            </a>`).join('')}
+        </div>
+        <p class="muted tiny">Al pulsar abres el sitio del servicio de donaciones (puede usar sus propias cookies). Aquí no se instala ningún script de terceros.</p>`
+      : `<div class="panel"><p class="muted">Los canales de apoyo se están configurando. ¡Vuelve pronto! Mientras tanto, <b>compartir el proyecto también ayuda muchísimo</b>.</p></div>`}
+      <div class="manifesto">
+        <h3>¿Por qué no hay anuncios?</h3>
+        <ul>
+          <li>La publicidad exige rastreo y cookies: justo lo que este sitio promete no hacer.</li>
+          <li>Anunciar consumo en una web anti-consumo no tendría ningún sentido.</li>
+          <li>Tu apoyo va directo al creador, sin intermediarios que te perfilen.</li>
+        </ul>
+      </div>
+      <div class="row" style="justify-content:center">
+        <button class="primary" data-action="nav" data-view="catalog">Volver a comprar (de mentira)</button>
+        <button class="ghost" data-action="nav" data-view="home">Inicio</button>
+      </div>
+    </section>`;
+  }
 
   /* ---------- créditos de imágenes ---------- */
   function viewCredits() {

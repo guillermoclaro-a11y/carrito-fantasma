@@ -1,6 +1,19 @@
 /* Catálogo y configuración de Carrito Fantasma.
    Todo es ficticio. Los precios son de mentira (obviamente). */
 
+/* ============================================================
+   DONACIONES — ¡RELLENA TUS ENLACES AQUÍ!
+   Crea tus cuentas en las plataformas que quieras y pega tu URL.
+   Deja url:'' en las que no uses (se ocultan solas).
+   Se muestran como enlaces simples: sin scripts ni rastreadores.
+   ============================================================ */
+const DONATIONS = [
+  { name: 'Ko-fi',          emoji: '☕', url: '', hint: 'Donación puntual o mensual' },
+  { name: 'Buy Me a Coffee', emoji: '🍩', url: '', hint: 'Rápido con tarjeta o PayPal' },
+  { name: 'Liberapay',      emoji: '🤝', url: '', hint: 'Suscripción recurrente, sin ánimo de lucro' },
+  { name: 'GitHub Sponsors', emoji: '💚', url: '', hint: 'Si alojas el proyecto en GitHub' },
+];
+
 const MODES = [
   { id: 'all',      name: 'Todo',       emoji: '✨', tagline: 'Todo el catálogo',        accent: '#6d5efc' },
   { id: 'moda',     name: 'Moda',       emoji: '👕', tagline: 'Ropa, calzado, accesorios', accent: '#ff4d8d' },

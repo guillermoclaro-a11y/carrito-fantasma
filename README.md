@@ -76,6 +76,30 @@ npx vercel --prod
 ```
 (Es un sitio estático: acepta todos los valores por defecto.)
 
+## Monetizar con donaciones (sin anuncios)
+
+El sitio incluye una página de apoyo (`#/support`) pensada para **no romper la promesa de
+privacidad**: son enlaces simples, sin scripts ni rastreadores de terceros.
+
+Para activarla, crea tus cuentas y rellena el array `DONATIONS` al inicio de `data.js`:
+
+```js
+const DONATIONS = [
+  { name: 'Ko-fi',           emoji: '☕', url: 'https://ko-fi.com/TU_USUARIO', hint: 'Donación puntual o mensual' },
+  { name: 'Buy Me a Coffee',  emoji: '🍩', url: 'https://buymeacoffee.com/TU_USUARIO', hint: 'Rápido con tarjeta o PayPal' },
+  { name: 'Liberapay',       emoji: '🤝', url: '', hint: 'Suscripción recurrente' },
+  { name: 'GitHub Sponsors', emoji: '💚', url: '', hint: 'Si alojas en GitHub' },
+];
+```
+
+Las entradas con `url: ''` se ocultan. Si no hay ninguna, se muestra un mensaje de
+"próximamente". Los enlaces aparecen en el pie de página y tras confirmar un pedido.
+
+**¿Por qué no anuncios?** Además del problema ético (anunciar consumo en una web
+anti-consumo), la publicidad exige cookies y rastreadores, y AdSense suele **rechazar**
+sitios sin artículos de contenido como este. Ver la conversación del proyecto para el
+análisis completo y las alternativas (blog + AdSense, redes de bajo umbral, patrocinio).
+
 ## Notas legales y éticas
 
 - El sitio **no debe** cobrar dinero real por "compras" ficticias ni pedir datos personales.
