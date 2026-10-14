@@ -8,19 +8,44 @@ Basado en la tendencia de los *dopamine sites*.
 
 ```
 carrito-fantasma/
-├── index.html      # estructura de la página
-├── styles.css      # estilos (modo claro/oscuro, responsive)
-├── data.js         # catálogo y tiendas (edítalo para añadir productos)
-└── app.js          # lógica: carrito, pago ficticio, seguimiento, ahorro
+├── index.html            # estructura de la página
+├── styles.css            # estilos (modo claro/oscuro, responsive)
+├── data.js               # catálogo y tiendas (edítalo para añadir productos)
+├── app.js                # lógica: carrito, pago ficticio, seguimiento, ahorro
+├── assets/img/           # fotos reales de los productos + credits.json
+└── tools/fetch-images.mjs # script que descarga las fotos desde Wikimedia
 ```
 
 No hay dependencias, ni build, ni backend. Abre `index.html` en el navegador y ya funciona.
+
+## Imágenes de los productos
+
+Las fotos son la **imagen principal de artículos de Wikipedia** (y archivos de Wikimedia
+Commons), descargadas al propio proyecto para que el sitio siga siendo autocontenido y no
+haga peticiones a terceros en tiempo de ejecución.
+
+- Se guardan en `assets/img/<id>.jpg` (una por producto, `id` = el de `data.js`).
+- Las atribuciones y licencias están en `assets/img/credits.json` y se muestran en el
+  enlace **«Créditos de las imágenes»** del pie de página.
+- Si una imagen no existe o no carga, se muestra el emoji del producto como respaldo.
+
+Para **regenerar o cambiar** las fotos, edita el mapa `MAP` en `tools/fetch-images.mjs`
+(producto → artículo de Wikipedia, o `File:Nombre exacto.jpg` de Commons para elegir un
+archivo concreto) y ejecuta:
+
+```bash
+node tools/fetch-images.mjs
+```
+
+Requiere Node 18+ e ImageMagick (`magick`). Respeta las licencias de cada imagen si
+reutilizas el proyecto: revisa `credits.json`.
 
 ## Personalización rápida
 
 - **Nombre / marca**: cámbialo en `index.html` (`.brand-name` y `<title>`).
 - **Productos**: añade objetos al array `PRODUCTS` en `data.js`.
   Campos: `id, mode, name, emoji, price, oldPrice?, rating, reviews, badge?, desc, calories?`.
+  Si añades un producto, créale una imagen en `assets/img/<id>.jpg` (o deja el emoji de respaldo).
 - **Tiendas/modos**: edita el array `MODES` en `data.js` (el `accent` es su color).
 - **Colores**: en `styles.css`, las variables `--accent` por tienda al inicio del archivo.
 
