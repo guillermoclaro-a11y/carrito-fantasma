@@ -8,7 +8,8 @@
    Se muestran como enlaces simples: sin scripts ni rastreadores.
    ============================================================ */
 const DONATIONS = [
-  { name: 'Ko-fi',          emoji: '☕', url: '', hint: 'Donación puntual o mensual', hint_en: 'One-off or monthly donation' },
+  { name: 'Cafecito',       emoji: '☕', url: 'https://cafecito.app/c4rrofantasma', hint: 'Invitame un cafecito (donación puntual o mensual)', hint_en: 'Buy me a coffee (one-off or monthly)' },
+  { name: 'Ko-fi',          emoji: '🫖', url: '', hint: 'Donación puntual o mensual', hint_en: 'One-off or monthly donation' },
   { name: 'Buy Me a Coffee', emoji: '🍩', url: '', hint: 'Rápido con tarjeta o PayPal', hint_en: 'Quick with card or PayPal' },
   { name: 'Liberapay',      emoji: '🤝', url: '', hint: 'Suscripción recurrente, sin ánimo de lucro', hint_en: 'Recurring subscription, non-profit' },
   { name: 'GitHub Sponsors', emoji: '💚', url: '', hint: 'Si alojas el proyecto en GitHub', hint_en: 'If you host the project on GitHub' },

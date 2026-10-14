@@ -111,15 +111,20 @@ Para activarla, crea tus cuentas y rellena el array `DONATIONS` al inicio de `da
 
 ```js
 const DONATIONS = [
-  { name: 'Ko-fi',           emoji: '☕', url: 'https://ko-fi.com/TU_USUARIO', hint: 'Donación puntual o mensual' },
-  { name: 'Buy Me a Coffee',  emoji: '🍩', url: 'https://buymeacoffee.com/TU_USUARIO', hint: 'Rápido con tarjeta o PayPal' },
-  { name: 'Liberapay',       emoji: '🤝', url: '', hint: 'Suscripción recurrente' },
-  { name: 'GitHub Sponsors', emoji: '💚', url: '', hint: 'Si alojas en GitHub' },
+  { name: 'Cafecito',        emoji: '☕', url: 'https://cafecito.app/TU_USUARIO', hint: 'Invitame un cafecito', hint_en: 'Buy me a coffee' },
+  { name: 'Ko-fi',           emoji: '🫖', url: '', hint: 'Donación puntual o mensual', hint_en: 'One-off or monthly donation' },
+  { name: 'Buy Me a Coffee',  emoji: '🍩', url: '', hint: 'Rápido con tarjeta o PayPal', hint_en: 'Quick with card or PayPal' },
+  { name: 'Liberapay',       emoji: '🤝', url: '', hint: 'Suscripción recurrente', hint_en: 'Recurring subscription' },
+  { name: 'GitHub Sponsors', emoji: '💚', url: '', hint: 'Si alojas en GitHub', hint_en: 'If you host on GitHub' },
 ];
 ```
 
 Las entradas con `url: ''` se ocultan. Si no hay ninguna, se muestra un mensaje de
 "próximamente". Los enlaces aparecen en el pie de página y tras confirmar un pedido.
+Cada entrada puede llevar un `hint` (español) y un `hint_en` (inglés).
+
+> 💡 **Cafecito** va muy bien para el público hispano (especialmente Argentina/LatAm).
+> Para el público inglés puedes añadir también Ko-fi o Buy Me a Coffee.
 
 **¿Por qué no anuncios?** Además del problema ético (anunciar consumo en una web
 anti-consumo), la publicidad exige cookies y rastreadores, y AdSense suele **rechazar**
