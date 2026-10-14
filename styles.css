@@ -59,6 +59,7 @@ h1,h2,h3{ line-height:1.15; margin:0 0 .4em; }
   padding:8px 13px; border-radius:999px; font-weight:600; white-space:nowrap;
 }
 .pill b{ color:var(--accent); }
+.pill.lang{ font-weight:800; letter-spacing:.04em; min-width:46px; text-align:center; }
 .cart-btn{
   position:relative; border:none; background:var(--ink); color:#fff;
   width:44px; height:44px; border-radius:999px; font-size:1.15rem;
@@ -325,7 +326,7 @@ body.cart-open .drawer{ transform:none; }
 }
 @media (max-width:560px){
   .pill span{ display:none; }
-  .pill::after{ content:"💸"; }
+  .pill:not(.lang)::after{ content:"💸"; }
   .modes{ order:3; flex-basis:100%; }
   .topbar{ flex-wrap:wrap; }
 }

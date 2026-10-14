@@ -7,7 +7,11 @@ Basado en la tendencia de los *dopamine sites*.
 ## 🌐 En vivo
 
 - **GitHub Pages:** https://guillermoclaro-a11y.github.io/carrito-fantasma/
+- **En inglés:** https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
 - **Repositorio:** https://github.com/guillermoclaro-a11y/carrito-fantasma
+
+> 🌎 El sitio es **bilingüe (ES/EN)**. El botón `EN`/`ES` de la cabecera cambia el idioma y
+> se recuerda en el navegador. También puedes enlazar directo con `?lang=en` o `?lang=es`.
 
 > 📣 ¿Quieres darlo a conocer? Tienes textos listos para copiar y pegar en
 > Reddit, Hacker News, X y TikTok en [`DIFUSION.md`](DIFUSION.md).
@@ -19,12 +23,23 @@ carrito-fantasma/
 ├── index.html            # estructura de la página
 ├── styles.css            # estilos (modo claro/oscuro, responsive)
 ├── data.js               # catálogo y tiendas (edítalo para añadir productos)
+├── i18n.js               # traducciones ES/EN (textos, tiendas y 44 productos)
 ├── app.js                # lógica: carrito, pago ficticio, seguimiento, ahorro
 ├── assets/img/           # fotos reales de los productos + credits.json
 └── tools/fetch-images.mjs # script que descarga las fotos desde Wikimedia
 ```
 
 No hay dependencias, ni build, ni backend. Abre `index.html` en el navegador y ya funciona.
+
+## Idiomas (ES/EN)
+
+El español es el idioma original. Los textos en inglés y las traducciones de los productos
+viven en `i18n.js` (`UI`, `MODE_I18N`, `BADGE_I18N`, `PRODUCT_I18N`).
+
+- Para **añadir un idioma nuevo**: duplica el bloque dentro de `UI`, `MODE_I18N`,
+  `BADGE_I18N` y `PRODUCT_I18N`, y añade el botón correspondiente.
+- Para **traducir un producto**: busca su `id` (p. ej. `m1`) en `PRODUCT_I18N`.
+- Para **cambiar el texto de interfaz**: edita la clave en `UI.es` / `UI.en`.
 
 ## Imágenes de los productos
 

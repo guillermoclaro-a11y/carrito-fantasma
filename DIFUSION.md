@@ -10,9 +10,9 @@
 
 - [ ] **Enlaces de donación listos.** Si no, el botón muestra "en configuración".
 - [ ] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
-- [ ] **Ten claro el idioma.** El sitio está en español. Para Twitter global y
-      Hacker News funciona muchísimo mejor una **versión en inglés**; te la puedo
-      montar con un botón ES/EN (dímelo).
+- [ ] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
+      cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
+      (p. ej. `https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en`).
 - [ ] **Cuenta con algo de karma/antigüedad** en la red donde vayas a publicar.
 - [ ] **Crea el repo en "Destacados"** de tu perfil de GitHub y ponle descripción.
 
@@ -97,9 +97,9 @@ y después las internacionales.
 > At the end it tallies up what you "saved".
 >
 > It's free, has no ads, no cookies, and stores nothing (everything runs in your
-> browser). It's my own project — the site is in Spanish, but it's mostly emoji and
-> prices so it's easy to use. Feedback welcome.
-> https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> browser). It's my own project and it's bilingual (ES/EN) — there's a language
+> switch in the header, or open the English link directly.
+> https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
 
 ### r/nobuy (English)
 
@@ -126,16 +126,17 @@ y después las internacionales.
 
 ### r/SideProject (English)
 
-**Title:** I built a Spanish-language "dopamine store" — fake shopping, zero spending, zero tracking
+**Title:** I built a bilingual "dopamine store" — fake shopping, zero spending, zero tracking
 
 **Body:**
 
 > Static site (HTML/CSS/JS, no build, no backend). 4 store modes, 44 products,
 > cart + fake checkout + fake tracking, savings tally, localStorage persistence,
-> real product photos from Wikimedia (with credits page).
+> real product photos from Wikimedia (with credits page). Bilingual ES/EN with a
+> header toggle and a `?lang=en` deep link.
 >
 > Repo: https://github.com/guillermoclaro-a11y/carrito-fantasma
-> Demo: https://guillermoclaro-a11y.github.io/carrito-fantasma/
+> Demo: https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
 > Happy to answer anything about how it's built.
 
 > 🚫 **r/shoppingaddiction**: sensible con esta. Es una comunidad de apoyo, no un
@@ -160,9 +161,9 @@ y después las internacionales.
 > It tallies up what you didn't spend. Everything runs client-side; no ads, no
 > cookies, no analytics, nothing leaves the browser.
 >
-> Product images come from Wikimedia Commons (there's a credits page). It's in
-> Spanish, which I know limits the HN audience — happy to hear if an English version
-> would be useful.
+> Product images come from Wikimedia Commons (there's a credits page). The site is
+> bilingual ES/EN — there's a language switch in the header, or you can go straight
+> to the English version: https://guillermoclaro-a11y.github.io/carrito-fantasma/?lang=en
 >
 > Code: https://github.com/guillermoclaro-a11y/carrito-fantasma
 
