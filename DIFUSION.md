@@ -256,6 +256,24 @@ Sugerencias para activarlo:
 
 ---
 
+## 6.1 Contenido recurrente: la tienda cambia sola
+
+El catálogo **se renueva cada día** sin que hagas nada (ver *Tienda viva* en el README). Eso te
+da excusa para publicar sin inventarte nada, y una razón para que la gente vuelva:
+
+- **Un post corto por semana:** *"Las ofertas fantasma de hoy: [producto] al 45 % 👻"* con una
+  captura de la sección **«⚡ Ofertas fantasma de hoy»** de la portada.
+- **Historias/Estados diarios** (IG Stories, Estado de WhatsApp): la captura de los chollos del
+  día, "hoy toca…". Es lo más fácil de sostener en el tiempo.
+- **El gancho para volver:** *"El catálogo cambia cada día a medianoche"*. Dilo en la bio y en
+  los posts: convierte una visita en una costumbre.
+- **Captura de pantalla a medianoche** (si estás despierto) para enseñar el catálogo cambiando:
+  buen vídeo corto.
+- ⚠️ Mantenlo **honesto**: son ofertas de mentira sobre precios de mentira. No lo presentes como
+  un chollo real ni enlaces a tiendas de verdad.
+
+---
+
 ## 7. Calendario sugerido (2 semanas)
 
 | Día | Acción |

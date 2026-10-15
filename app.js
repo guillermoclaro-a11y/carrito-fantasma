@@ -10,7 +10,91 @@
   const app = $('#app');
 
   const modeById = Object.fromEntries(MODES.map(m => [m.id, m]));
-  const byId = new Map(PRODUCTS.map(p => [p.id, p]));
+
+  /* ============================================================
+     TIENDA VIVA — rotación automática del catálogo
+     Cada día cambian solas las ofertas y las insignias. Todo se
+     calcula en el navegador a partir de la FECHA LOCAL, así que:
+       · no hace falta servidor ni proceso que se ejecute por ahí,
+       · la "oferta del día" es la misma para todo el mundo ese día,
+       · no se guarda ni se envía ningún dato de quien visita.
+     ============================================================ */
+
+  // clave del día en hora local: "2026-10-15"
+  const dayKey = (d = new Date()) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  // generador pseudoaleatorio determinista (mulberry32) sembrado con el día
+  function seededRandom(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    let a = h >>> 0;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // precio "de tienda": siempre termina en ,99
+  const pretty = n => {
+    const base = n >= 1000 ? Math.round(n / 50) * 50 : n >= 100 ? Math.round(n) : Math.round(n * 10) / 10;
+    return Math.max(0.49, +(base - 0.01).toFixed(2));
+  };
+
+  let DAILY = null;
+  function buildDaily() {
+    if (DAILY && DAILY.key === dayKey()) return DAILY;
+    const rnd = seededRandom('carrito-fantasma|' + dayKey());
+    const shuffle = arr => {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) { const j = (rnd() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; }
+      return a;
+    };
+
+    // 2 chollos por tienda, con descuento del 20 % al 55 %
+    const deals = new Map();
+    MODES.filter(m => m.id !== 'all').forEach(m => {
+      shuffle(PRODUCTS.filter(p => p.mode === m.id)).slice(0, 2).forEach(p => {
+        const off = 0.2 + rnd() * 0.35;
+        deals.set(p.id, { price: Math.min(pretty(p.price * (1 - off)), p.price - 0.01), oldPrice: p.price });
+      });
+    });
+
+    // 2 "recién llegados" del día (solo productos sin insignia propia, para no pisarla)
+    const nuevos = new Set(
+      shuffle(PRODUCTS.filter(p => !p.badge && !deals.has(p.id))).slice(0, 2).map(p => p.id)
+    );
+
+    DAILY = { key: dayKey(), deals, nuevos, count: deals.size };
+    return DAILY;
+  }
+
+  // copia del producto con los valores de HOY aplicados
+  function dailyAdjust(p) {
+    const d = buildDaily();
+    const of = d.deals.get(p.id);
+    if (of) return { ...p, price: of.price, oldPrice: of.oldPrice, badge: 'Oferta', daily: true };
+    if (d.nuevos.has(p.id)) return { ...p, badge: 'Nuevo', daily: true };
+    return { ...p };
+  }
+
+  let CATALOG = PRODUCTS.map(dailyAdjust);
+  let byId = new Map(CATALOG.map(p => [p.id, p]));
+
+  // ofertas de hoy, de mayor a menor descuento
+  const todayDeals = () =>
+    [...buildDaily().deals.keys()]
+      .map(id => byId.get(id))
+      .sort((a, b) => (a.price / a.oldPrice) - (b.price / b.oldPrice));
+
+  // vuelve a calcular el catálogo (se usa al cambiar el día, a medianoche)
+  function rotateDaily() {
+    DAILY = null;
+    CATALOG = PRODUCTS.map(dailyAdjust);
+    byId = new Map(CATALOG.map(p => [p.id, p]));
+  }
   const acc = p => (modeById[p.mode] || modeById.all).accent;
   const imgOf = p => `assets/img/${p.id}.jpg`;
 
@@ -170,6 +254,16 @@
         ${saved}
       </div>
 
+      <div class="daily-head">
+        <h2>${t('daily_title')}</h2>
+        <span class="flash">${t('flash')}</span>
+      </div>
+      <p class="muted">${t('daily_sub', { n: buildDaily().count })}</p>
+      <div class="grid">${todayDeals().slice(0, 4).map(card).join('')}</div>
+      <div class="row" style="margin-top:16px">
+        <button class="ghost" data-action="nav" data-view="catalog">${t('daily_cta')}</button>
+      </div>
+
       <h2 class="section-title">${t('choose_store')}</h2>
       <div class="mode-grid">
         ${MODES.filter(m => m.id !== 'all').map(m => `
@@ -202,7 +296,7 @@
   }
 
   function filtered() {
-    let list = PRODUCTS.filter(p => state.mode === 'all' || p.mode === state.mode);
+    let list = CATALOG.filter(p => state.mode === 'all' || p.mode === state.mode);
     if (state.query) {
       const q = state.query.toLowerCase();
       list = list.filter(p => (pname(p) + ' ' + pdesc(p)).toLowerCase().includes(q));
@@ -743,16 +837,21 @@
     else { raf = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
   }
 
-  /* ---------- contador de "oferta" ---------- */
-  let flashLeft = 599;
+  /* ---------- contador: las ofertas duran hasta medianoche ---------- */
+  function msToMidnight() {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1, 0, 0, 0, 0) - d;
+  }
+  function hms(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    return [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
+      .map(n => String(n).padStart(2, '0')).join(':');
+  }
   setInterval(() => {
-    flashLeft--; if (flashLeft <= 0) flashLeft = 599;
-    const el = $('.js-flash');
-    if (el) {
-      const m = String(Math.floor(flashLeft / 60)).padStart(2, '0');
-      const s = String(flashLeft % 60).padStart(2, '0');
-      el.textContent = `${m}:${s}`;
-    }
+    const txt = hms(msToMidnight());
+    $$('.js-flash').forEach(el => { el.textContent = txt; });
+    // al cambiar el día, el catálogo se renueva solo
+    if (DAILY && DAILY.key !== dayKey()) { rotateDaily(); render(); }
   }, 1000);
 
   /* ---------- eventos ---------- */

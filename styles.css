@@ -116,6 +116,8 @@ h1,h2,h3{ line-height:1.15; margin:0 0 .4em; }
 
 /* ---------- tarjetas de modo ---------- */
 .section-title{ margin:44px 0 16px; font-size:1.5rem; }
+.daily-head{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin:44px 0 16px; }
+.daily-head h2{ margin:0; font-size:1.5rem; }
 .mode-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
 .mode-card{
   text-align:left; border:1px solid var(--line); background:var(--card);
