@@ -8,7 +8,9 @@
 
 ## 0. Antes de publicar (checklist)
 
-- [ ] **Enlaces de donación listos.** Si no, el botón muestra "en configuración".
+- [x] **Enlaces de donación listos.** ✅ *(hecho)* Cafecito configurado y en producción
+      (`cafecito.app/c4rrofantasma`). Las demás plataformas quedan vacías a propósito y se ocultan
+      solas.
 - [x] **Vista previa social de la web** ya lista (`assets/img/og.jpg`, 1200×630): al pegar el
       enlace `carritofantasma.app` en X, WhatsApp, Telegram o Reddit sale una tarjeta con el
       título y los distintivos. ✅ *(hecho, mediante etiquetas Open Graph del `index.html`)*
@@ -20,7 +22,7 @@
       Verificación:
       `gh api graphql -f query='{repository(owner:"guillermoclaro-a11y",name:"carrito-fantasma"){usesCustomOpenGraphImage}}'`
       → `true`; y la imagen que sirve GitHub es byte a byte idéntica a la local.
-- [ ] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
+- [x] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
       ✅ *(hechos, en local)* Vídeos y portada disponibles para subir a la red social
       (GitHub no los incluye: están en `.gitignore`):
       | Archivo | Formato | Para qué |
@@ -29,7 +31,7 @@
       | `media/carrito-fantasma-vertical-poster.jpg` | 1080×1920 | Portada/miniatura del vídeo |
       | `media/carrito-fantasma-flujo.mp4` | 1000×1000, ~25 s | X/Twitter, Facebook (en el muro) |
       | `media/carrito-fantasma-flujo.gif` | 1000×1000, 4 MB | WhatsApp, donde no se pueden subir vídeos |
-- [ ] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
+- [x] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
       cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
       (p. ej. `https://carritofantasma.app/?lang=en`).
 - [ ] **Cuenta con algo de karma/antigüedad** en la red donde vayas a publicar.
