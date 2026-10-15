@@ -83,6 +83,12 @@
     setMeta('meta[name="description"]', t('meta_desc'));
     setMeta('meta[property="og:title"]', t('title'));
     setMeta('meta[property="og:description"]', t('meta_desc'));
+    // canonical autorreferencial: cada versión de idioma se canoniza a sí misma
+    // (necesario para que hreflang ES/EN sea válido para Google).
+    const canon = document.querySelector('link[rel="canonical"]');
+    if (canon && location.protocol.startsWith('http')) {
+      canon.setAttribute('href', location.origin + location.pathname + (state.lang === 'en' ? '?lang=en' : ''));
+    }
   }
   function applyStatic() {
     $$('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
@@ -268,6 +274,9 @@
         <div class="stat"><div class="n">${state.orders}</div><div class="l">${t('stat_orders')}</div></div>
         <div class="stat"><div class="n">${num(Math.round(state.calories))}</div><div class="l">${t('stat_cal')}</div></div>
       </div>
+      <div class="row share-row">
+        <button class="primary big" data-action="share-savings">${t('share_savings')}</button>
+      </div>
       <div class="manifesto">
         <h3>${t('remember')}</h3>
         <ul>
@@ -451,6 +460,135 @@
       if (navigator.share) await navigator.share(data);
       else { await navigator.clipboard.writeText(location.href); toast(t('link_copied')); }
     } catch (e) { /* el usuario canceló */ }
+  }
+
+  /* ---------- imagen compartible de tu ahorro (bucle viral) ----------
+     Dibuja una tarjeta cuadrada 1080x1080 con el ahorro total y, si el
+     navegador lo permite, la comparte con la Web Share API (móvil).
+     Si no, la descarga como PNG para que la suba a mano. Todo local:
+     no se sube nada a ningún servidor. */
+  function rr(x, px, py, w, h, r) {
+    if (x.roundRect) { x.beginPath(); x.roundRect(px, py, w, h, r); return; }
+    x.beginPath();
+    x.moveTo(px + r, py);
+    x.arcTo(px + w, py, px + w, py + h, r);
+    x.arcTo(px + w, py + h, px, py + h, r);
+    x.arcTo(px, py + h, px, py, r);
+    x.arcTo(px, py, px + w, py, r);
+    x.closePath();
+  }
+  function drawCartGlyph(x, cx, cy, s, color) {
+    x.save(); x.translate(cx, cy); x.scale(s, s);
+    x.strokeStyle = color; x.lineWidth = 2.1; x.lineCap = 'round'; x.lineJoin = 'round';
+    x.beginPath();
+    x.moveTo(-9, -8); x.lineTo(-6.6, -8); x.lineTo(-4.2, 4.3);
+    x.lineTo(6.1, 6); x.lineTo(9.5, -3); x.lineTo(-6, -3);
+    x.stroke();
+    x.lineWidth = 2.4;
+    x.beginPath(); x.arc(-4, 8.4, 1.4, 0, Math.PI * 2); x.stroke();
+    x.beginPath(); x.arc(4.5, 8.4, 1.4, 0, Math.PI * 2); x.stroke();
+    x.restore();
+  }
+  function drawSavingsCard() {
+    const S = 1080, ACC = '#6d5efc', INK = '#15142b', MUT = '#5b5a78';
+    const c = document.createElement('canvas');
+    c.width = S; c.height = S;
+    const x = c.getContext('2d');
+    const face = '"Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif';
+
+    // fondo
+    const g = x.createLinearGradient(0, 0, S, S);
+    g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#f1f0fb');
+    x.fillStyle = g; x.fillRect(0, 0, S, S);
+
+    // manchas de color
+    const blob = (cx, cy, r, col) => {
+      const rg = x.createRadialGradient(cx, cy, 10, cx, cy, r);
+      rg.addColorStop(0, col); rg.addColorStop(1, col.replace(/[\d.]+\)$/, '0)'));
+      x.fillStyle = rg; x.fillRect(0, 0, S, S);
+    };
+    blob(S * 0.9, 70, 640, 'rgba(109,94,252,.30)');
+    blob(40, S, 560, 'rgba(255,77,141,.20)');
+    blob(S * 0.12, S * 0.34, 380, 'rgba(47,168,255,.14)');
+
+    // rejilla de puntos
+    x.fillStyle = 'rgba(216,214,238,.7)';
+    for (let px = 46; px < S; px += 46)
+      for (let py = 46; py < S; py += 46) { x.beginPath(); x.arc(px, py, 1.6, 0, Math.PI * 2); x.fill(); }
+
+    // marca
+    const rx = 84, ry = 92, rs = 106;
+    x.fillStyle = ACC; rr(x, rx, ry, rs, rs, 26); x.fill();
+    drawCartGlyph(x, rx + rs / 2, ry + rs / 2, 2.4, '#fff');
+    x.textAlign = 'left'; x.textBaseline = 'middle';
+    x.font = '800 56px ' + face;
+    x.fillStyle = INK;
+    x.fillText('Carrito ', rx + rs + 28, ry + rs / 2);
+    const w1 = x.measureText('Carrito ').width;
+    x.fillStyle = ACC;
+    x.fillText('Fantasma', rx + rs + 28 + w1, ry + rs / 2);
+
+    // etiqueta + cifra
+    x.textAlign = 'center';
+    x.fillStyle = MUT;
+    x.font = '600 46px ' + face;
+    x.fillText(t('card_label'), S / 2, 420);
+    // la cifra se reduce sola si el ahorro es muy alto (nunca se sale del lienzo)
+    const amount = money(state.savings);
+    let size = 160;
+    x.font = '800 ' + size + 'px ' + face;
+    while (x.measureText(amount).width > 880 && size > 72) { size -= 6; x.font = '800 ' + size + 'px ' + face; }
+    x.fillStyle = ACC;
+    x.fillText(amount, S / 2, 566);
+
+    // estadísticas
+    x.fillStyle = INK;
+    x.font = '700 42px ' + face;
+    x.fillText(`${num(state.orders)} ${t('card_orders')}   ·   ${num(Math.round(state.calories))} ${t('card_cal')}`, S / 2, 668);
+
+    // panel inferior con la dirección
+    const pw = 780, ph = 190, px2 = (S - pw) / 2, py2 = 760;
+    x.fillStyle = '#ffffff'; rr(x, px2, py2, pw, ph, 34); x.fill();
+    x.fillStyle = 'rgba(109,94,252,.14)'; x.lineWidth = 3; x.strokeStyle = 'rgba(109,94,252,.35)';
+    rr(x, px2, py2, pw, ph, 34); x.stroke();
+    x.fillStyle = ACC; x.font = '800 58px ' + face;
+    x.fillText('carritofantasma.app', S / 2, py2 + 74);
+    x.fillStyle = MUT; x.font = '500 32px ' + face;
+    x.fillText(t('card_note'), S / 2, py2 + 134);
+
+    return c;
+  }
+  async function shareSavings() {
+    const text = t('share_savings_text', { amount: money(state.savings) });
+    try {
+      const canvas = drawSavingsCard();
+      const done = async blob => {
+        if (!blob) { toast(t('share_error')); return; }
+        const file = new File([blob], 'carrito-fantasma-ahorro.png', { type: 'image/png', lastModified: Date.now() });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try { await navigator.share({ files: [file], text, title: 'Carrito Fantasma' }); return; }
+          catch (e) { if (e && e.name === 'AbortError') return; }
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'carrito-fantasma-ahorro.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 6000);
+        toast(t('savings_img_saved'));
+      };
+      if (canvas.toBlob) canvas.toBlob(done, 'image/png');
+      else done(dataURLtoBlob(canvas.toDataURL('image/png')));
+    } catch (e) {
+      toast(t('share_error'));
+    }
+  }
+  function dataURLtoBlob(d) {
+    const [head, b64] = d.split(',');
+    const mime = (head.match(/:(.*?);/) || [, 'image/png'])[1];
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
   }
 
   /* ---------- apoyo / donaciones ---------- */
@@ -640,6 +778,7 @@
       case 'remove': removeItem(tgt.dataset.id); break;
       case 'clear-cart': clearCart(); break;
       case 'share': share(); break;
+      case 'share-savings': shareSavings(); break;
       case 'lang': setLang(state.lang === 'es' ? 'en' : 'es'); break;
       case 'checkout': closeCart(); state.checkout.step = 1; state.view = 'checkout'; render(); break;
       case 'step': {

@@ -13,6 +13,9 @@
       enlace en X, WhatsApp, Telegram o Reddit sale una tarjeta con el título y los
       distintivos. ✅ *(hecho)*
 - [ ] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
+      ✅ *(hechos, en local)* `media/carrito-fantasma-flujo.mp4` (~25 s) y
+      `media/carrito-fantasma-flujo.gif` — sube el que quieras a la red social
+      (GitHub no los incluye: están en `.gitignore`).
 - [ ] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
       cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
       (p. ej. `https://carritofantasma.app/?lang=en`).
@@ -210,7 +213,26 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 
 ---
 
-## 5. Otros canales
+## 5. Bucle viral — pide que compartan su ahorro
+
+El sitio tiene un botón **«🖼️ Comparte tu ahorro»** en la pantalla de ahorro: genera una
+imagen con lo que la persona "ahorró" y la comparte con el menú nativo del móvil (o la
+descarga en escritorio). Es la palanca más rentable: **cada persona que la comparte trae a la suya.**
+
+Sugerencias para activarlo:
+
+- En tus posts, **invita a compartir el resultado** en vez de solo el enlace. Ejemplo:
+  > Puedes compartir lo que "ahorraste" con el botón de la pantalla final 👻
+  > Etiquétame y lo reposteo.
+- En el **texto de X/WhatsApp** incluye algo como:
+  > Márcate un carrito de 2.000 € y comparte tu ahorro. No gastas nada, prometido.
+- **Repostea** los ahorros que te etiqueten (te da contenido gratis y prueba social).
+- En **Instagram/Stories**, la imagen cuadrada (1080×1080) entra perfecta en formato vertical
+  de 9:16 si la pones centrada con fondo.
+
+---
+
+## 6. Otros canales
 
 - **Product Hunt:** buen día para lanzar (martes-jueves). Tagline:
   *"Shop all you want. Spend nothing."* Captura del flujo + GIF de 20 s.
@@ -222,7 +244,7 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 
 ---
 
-## 6. Calendario sugerido (2 semanas)
+## 7. Calendario sugerido (2 semanas)
 
 | Día | Acción |
 |-----|--------|
@@ -237,12 +259,19 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 
 ---
 
-## 7. ¿Cómo mido resultados si no uso analytics?
+## 8. ¿Cómo mido resultados si no uso analytics?
 
 GitHub Pages **no** da estadísticas y el sitio promete no rastrear. Opciones honestas:
 
-1. **Contar estrellas/forks del repo** y comentarios en redes (señal cualitativa).
-2. **Enlaces con UTM** en tus posts (te dicen desde dónde llegan **sin** tocar el sitio).
-3. Si algún día quieres métricas, usa una **alternativa sin cookies** (p. ej. un contador
-   propio) y **dilo en la web** para no romper la promesa. Nunca metas scripts que
-   rastreen usuarios.
+1. **Google Search Console** (lo primero que yo haría): es gratis, se verifica con un
+   registro **TXT** en el DNS de Cloudflare y **no añade ningún script a la web**. Te dice
+   *qué búsquedas* te traen visitas, impresiones y clics, y si el sitio está indexado.
+2. **Contar estrellas/forks del repo** y comentarios en redes (señal cualitativa).
+3. **Enlaces con UTM** en tus posts (te dicen desde dónde llegan **sin** tocar el sitio).
+4. Si algún día quieres métricas de páginas vistas, usa una **alternativa sin cookies** (p. ej.
+   un contador propio o GoatCounter) y **dilo en la web** para no romper la promesa. Nunca
+   metas scripts que rastreen usuarios.
+
+> 💡 Cloudflare puede darte las **consultas DNS** de tu dominio (gratis, sin scripts), pero
+> como tienes el DNS en modo «solo DNS» las peticiones no pasan por Cloudflare: sirven como
+> aproximación, no como número exacto de visitas.

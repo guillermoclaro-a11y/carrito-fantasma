@@ -26,6 +26,8 @@ carrito-fantasma/
 ├── data.js               # catálogo y tiendas (edítalo para añadir productos)
 ├── i18n.js               # traducciones ES/EN (textos, tiendas y 44 productos)
 ├── app.js                # lógica: carrito, pago ficticio, seguimiento, ahorro
+├── robots.txt            # SEO: permite el rastreo e indica el sitemap
+├── sitemap.xml           # SEO: mapa del sitio (con hreflang ES/EN)
 ├── assets/img/           # fotos reales de los productos + credits.json
 └── tools/fetch-images.mjs # script que descarga las fotos desde Wikimedia
 ```
@@ -103,6 +105,35 @@ npx vercel --prod
 ```
 (Es un sitio estático: acepta todos los valores por defecto.)
 
+## Compartir tu ahorro (bucle viral)
+
+La pantalla de ahorro tiene un botón **«🖼️ Comparte tu ahorro»** que genera, en el propio
+navegador, una imagen cuadrada (1080×1080) con el dinero ahorrado, el número de pedidos y las
+calorías. Después:
+
+- en móvil, abre el **menú nativo de compartir** (WhatsApp, Instagram, X…) con la imagen adjunta;
+- en escritorio, **descarga el PNG** para que lo subas a mano.
+
+Todo ocurre en local: la imagen se dibuja con `<canvas>` y **no se sube a ningún servidor**.
+El texto del botón y de la tarjeta se traducen desde `i18n.js`
+(`share_savings`, `card_label`, `card_orders`, `card_cal`, `card_note`).
+
+## SEO
+
+El sitio es estático y su contenido se genera con JavaScript, así que se han añadido los
+básicos para que los buscadores lo entiendan:
+
+- **`robots.txt`** y **`sitemap.xml`** (con anotaciones `hreflang` ES/EN).
+- **`hreflang`** y **canonical autorreferencial** por idioma (`/` y `/?lang=en`) en `index.html`;
+  `app.js` actualiza el canonical según el idioma activo.
+- **Datos estructurados JSON-LD** (`WebSite` + `WebApplication`) en el `<head>`.
+- **Título y descripción** con las palabras que busca la gente («tienda online falsa»,
+  «comprar sin gastar», «fake store»), en `UI.es` / `UI.en` de `i18n.js`.
+- Un **`<noscript>`** con texto real para rastreadores y usuarios sin JavaScript.
+
+Para dar de alta el sitio en Google, usa **Search Console** (se verifica con un registro TXT
+en el DNS de Cloudflare). No se añade ningún script de analítica: sigue sin cookies.
+
 ## Monetizar con donaciones (sin anuncios)
 
 El sitio incluye una página de apoyo (`#/support`) pensada para **no romper la promesa de
@@ -149,6 +180,7 @@ análisis completo y las alternativas (blog + AdSense, redes de bajo umbral, pat
 
 ## Ideas para ampliar
 
+- ✅ *(hecho)* **Compartir tu ahorro como imagen** (bucle viral) — ver «Compartir tu ahorro».
 - Cuentas de usuario con historial de "pedidos fantasma".
 - Modo "caja de la compra": suena un click al añadir.
 - Compartir tu carrito imaginario por enlace.

@@ -8,8 +8,8 @@
 const UI = {
   es: {
     html_lang: 'es',
-    title: 'Carrito Fantasma — Compra sin comprar',
-    meta_desc: 'Llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. La dopamina de comprar, sin gastar un centavo y sin que nadie te estafe.',
+    title: 'Carrito Fantasma — tienda online falsa para comprar sin gastar',
+    meta_desc: 'Tienda online falsa para darte la dopamina de comprar sin gastar nada: llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Gratis, sin anuncios y sin datos.',
 
     nav_home: 'Inicio',
     stores: 'Tiendas',
@@ -120,6 +120,14 @@ const UI = {
     history_cleared: 'Historial borrado',
     link_copied: 'Enlace copiado 🔗',
     share_text: 'Llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Comprar sin gastar ni un centavo 🛒',
+    share_savings: '🖼️ Comparte tu ahorro',
+    share_savings_text: 'He ahorrado {amount} comprando sin comprar en Carrito Fantasma. Pruébalo tú también 👻',
+    savings_img_saved: 'Imagen guardada 🖼️ lista para publicar',
+    share_error: 'No se pudo compartir la imagen',
+    card_label: 'He ahorrado comprando sin comprar',
+    card_orders: 'pedidos',
+    card_cal: 'calorías',
+    card_note: 'Tienda online falsa · gratis · sin anuncios y sin datos',
 
     support_h1: 'Apoya Carrito Fantasma',
     support_p: 'Este sitio es gratis, no tiene anuncios, no pone cookies y no vende tus datos. Si te ha gustado, puedes ayudar a mantenerlo sin comprar nada real.',
@@ -143,8 +151,8 @@ const UI = {
 
   en: {
     html_lang: 'en',
-    title: 'Carrito Fantasma — Shop without buying',
-    meta_desc: 'Fill your cart, pay with a ghost card and track a delivery that never arrives. The thrill of shopping without spending a cent — and without anyone scamming you.',
+    title: 'Carrito Fantasma — fake store to shop without buying',
+    meta_desc: 'A fake online store for the thrill of shopping without spending a cent: fill your cart, pay with a ghost card and track a delivery that never arrives. Free, no ads.',
 
     nav_home: 'Home',
     stores: 'Stores',
@@ -255,6 +263,14 @@ const UI = {
     history_cleared: 'History cleared',
     link_copied: 'Link copied 🔗',
     share_text: 'Fill your cart, pay with a ghost card and track a delivery that never arrives. Shop without spending a cent 🛒',
+    share_savings: '🖼️ Share your savings',
+    share_savings_text: 'I saved {amount} without buying anything at Carrito Fantasma. Try it yourself 👻',
+    savings_img_saved: 'Image saved 🖼️ ready to post',
+    share_error: 'Could not share the image',
+    card_label: 'I saved without buying anything',
+    card_orders: 'orders',
+    card_cal: 'calories',
+    card_note: 'Fake store · free · no ads, no data',
 
     support_h1: 'Support Carrito Fantasma',
     support_p: "This site is free, has no ads, sets no cookies and never sells your data. If you liked it, you can help keep it running without buying anything real.",

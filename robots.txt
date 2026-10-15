@@ -1,0 +1,6 @@
+# Carrito Fantasma — https://carritofantasma.app/
+# Experimento satírico: tienda online falsa. No vende, no cobra y no rastrea.
+User-agent: *
+Allow: /
+
+Sitemap: https://carritofantasma.app/sitemap.xml
