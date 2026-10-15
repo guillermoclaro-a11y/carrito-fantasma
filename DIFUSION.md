@@ -13,9 +13,14 @@
       enlace en X, WhatsApp, Telegram o Reddit sale una tarjeta con el título y los
       distintivos. ✅ *(hecho)*
 - [ ] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
-      ✅ *(hechos, en local)* `media/carrito-fantasma-flujo.mp4` (~25 s) y
-      `media/carrito-fantasma-flujo.gif` — sube el que quieras a la red social
-      (GitHub no los incluye: están en `.gitignore`).
+      ✅ *(hechos, en local)* Vídeos y portada disponibles para subir a la red social
+      (GitHub no los incluye: están en `.gitignore`):
+      | Archivo | Formato | Para qué |
+      |---------|---------|----------|
+      | `media/carrito-fantasma-vertical.mp4` | **1080×1920 (9:16)**, 39 s, 9 MB | TikTok, Reels, Shorts, Estado de WhatsApp |
+      | `media/carrito-fantasma-vertical-poster.jpg` | 1080×1920 | Portada/miniatura del vídeo |
+      | `media/carrito-fantasma-flujo.mp4` | 1000×1000, ~25 s | X/Twitter, Facebook (en el muro) |
+      | `media/carrito-fantasma-flujo.gif` | 1000×1000, 4 MB | WhatsApp, donde no se pueden subir vídeos |
 - [ ] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
       cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
       (p. ej. `https://carritofantasma.app/?lang=en`).
@@ -201,6 +206,12 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 ## 4. TikTok / Instagram Reels (guion corto)
 
 > Formato: pantalla grabada + texto en pantalla, ~20-30 s.
+>
+> ✅ **Ya tienes el vídeo hecho:** `media/carrito-fantasma-vertical.mp4`
+> (**1080×1920, 9:16**, 39 s, recorre el flujo completo ES). Súbelo tal cual a TikTok,
+> Reels, Shorts o Estado de WhatsApp. La miniatura es
+> `media/carrito-fantasma-vertical-poster.jpg`. El guion de abajo es por si quieres
+> grabarte tú (con tu voz o tu mano) en vez de usar la grabación de pantalla.
 
 1. **[0-3 s]** Texto: "Cuando tienes ganas de gastar pero estás a dos días de cobrar."
    (grabas tu mano entrando a la web)
@@ -228,7 +239,8 @@ Sugerencias para activarlo:
   > Márcate un carrito de 2.000 € y comparte tu ahorro. No gastas nada, prometido.
 - **Repostea** los ahorros que te etiqueten (te da contenido gratis y prueba social).
 - En **Instagram/Stories**, la imagen cuadrada (1080×1080) entra perfecta en formato vertical
-  de 9:16 si la pones centrada con fondo.
+  de 9:16 si la pones centrada con fondo. Y si prefieres vídeo, usa directamente
+  `media/carrito-fantasma-vertical.mp4` (ya es 9:16).
 
 ---
 
