@@ -35,7 +35,14 @@
       cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
       (p. ej. `https://carritofantasma.app/?lang=en`).
 - [ ] **Cuenta con algo de karma/antigüedad** en la red donde vayas a publicar.
-- [ ] **Crea el repo en "Destacados"** de tu perfil de GitHub y ponle descripción.
+- [x] **Descripción, web y topics del repo.** ✅ *(hecho)* Descripción en español, homepage
+      `https://carritofantasma.app/` y 8 topics (`anticonsumption`, `dopamine`, `nobuy`,
+      `simulator`, `spanish`, `static-site`, `vanilla-js`, `ecommerce`).
+- [ ] **Fija el repo en "Destacados"** de tu perfil: entra en https://github.com/guillermoclaro-a11y
+      → **Customize your pins** → marca `carrito-fantasma` → **Save**. Es otro ajuste que solo
+      existe en la web (no hay mutación; solo `pinIssue`). Comprobar después:
+      `gh api graphql -f query='{viewer{pinnedItems(first:6,types:[REPOSITORY]){nodes{... on Repository{name}}}}}'`
+      → debe listar `carrito-fantasma`.
 
 **Orden recomendado:** primero comunidades **en español** (el sitio está en español),
 y después las internacionales.
