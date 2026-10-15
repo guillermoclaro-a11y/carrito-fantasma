@@ -48,7 +48,10 @@ const UI = {
     c3: '✅ Gratis y sin registro. No hay letra pequeña.',
     c4: '💡 Funciona mejor para un antojo puntual, no como escape de tus emociones.',
 
-    flash: '⚡ Oferta fantasma termina en <b class="js-flash">09:59</b>',
+    flash: '⚡ Ofertas fantasma del día · rotan en <b class="js-flash">00:00:00</b>',
+    daily_title: '⚡ Ofertas fantasma de hoy',
+    daily_sub: 'Cambian solas cada día a medianoche. Hoy hay {n} chollos que no existen.',
+    daily_cta: 'Ver todas las ofertas de hoy',
     catalog_sub: '{tagline}. Precios de mentira, satisfacción real.',
     search_ph: 'Buscar productos…',
     search_aria: 'Buscar',
@@ -191,7 +194,10 @@ const UI = {
     c3: '✅ Free and no sign-up. No fine print.',
     c4: '💡 It works best for a passing craving, not as an escape from your emotions.',
 
-    flash: '⚡ Ghost sale ends in <b class="js-flash">09:59</b>',
+    flash: '⚡ Today\'s ghost deals · rotate in <b class="js-flash">00:00:00</b>',
+    daily_title: '⚡ Today\'s ghost deals',
+    daily_sub: 'They rotate by themselves at midnight. Today: {n} bargains that do not exist.',
+    daily_cta: 'See all of today\'s deals',
     catalog_sub: '{tagline}. Fake prices, real satisfaction.',
     search_ph: 'Search products…',
     search_aria: 'Search',

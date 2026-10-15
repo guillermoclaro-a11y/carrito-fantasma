@@ -105,6 +105,26 @@ npx vercel --prod
 ```
 (Es un sitio estático: acepta todos los valores por defecto.)
 
+## Tienda viva (el catálogo cambia solo cada día)
+
+No hay servidor ni proceso programado: **el catálogo se renueva solo dentro del navegador** a
+partir de la fecha local.
+
+- Cada día se eligen **8 chollos** (2 por tienda) con descuentos del 20 % al 55 %, se les pone la
+  insignia **«Oferta»** y el precio anterior tachado.
+- Otros **2 productos** reciben la insignia **«Nuevo»** (solo si no tenían ya una propia).
+- La portada muestra la sección **«⚡ Ofertas fantasma de hoy»** con los mejores chollos del día.
+- El contador de la cabecera cuenta **hasta la medianoche**: al llegar, el catálogo se regenera
+  solo, sin recargar la página.
+
+Cómo funciona (bloque *TIENDA VIVA* en `app.js`): la fecha (`2026-10-15`) se convierte en la
+semilla de un generador pseudoaleatorio (mulberry32), así que **la "oferta del día" es la misma
+para todo el mundo** ese día, y distinta al siguiente. La única entrada es la fecha y todo el
+cálculo ocurre en el navegador: **no se recoge ni se envía ningún dato** de quien visita.
+
+Para ajustarlo: `buildDaily()` (cuántos chollos por tienda y el rango de descuento) y
+`pretty()` (el redondeo de los precios).
+
 ## Compartir tu ahorro (bucle viral)
 
 La pantalla de ahorro tiene un botón **«🖼️ Comparte tu ahorro»** que genera, en el propio
