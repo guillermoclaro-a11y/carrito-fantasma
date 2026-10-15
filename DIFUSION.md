@@ -12,14 +12,14 @@
 - [x] **Vista previa social de la web** ya lista (`assets/img/og.jpg`, 1200×630): al pegar el
       enlace `carritofantasma.app` en X, WhatsApp, Telegram o Reddit sale una tarjeta con el
       título y los distintivos. ✅ *(hecho, mediante etiquetas Open Graph del `index.html`)*
-- [ ] **Vista previa social del repositorio de GitHub** (solo importa si vas a compartir el enlace
-      del repo, p. ej. en Show HN). Este ajuste **existe únicamente en la web de GitHub**: la API
-      REST devuelve 404, `gh repo edit` no lo tiene y GraphQL solo lo deja *leer*. Hay que subirlo
-      a mano en 30 s: **Settings → Social preview → Edit → Upload an image…** eligiendo
-      `assets/img/og-1280x640.jpg` (1280×640, 80 KB, el tamaño que GitHub recomienda).
-      Comprobar después que quedó puesto:
+- [x] **Vista previa social del repositorio de GitHub** (importa si compartes el enlace del repo,
+      p. ej. en Show HN). ✅ *(hecho y verificado)* Es un ajuste que **existe únicamente en la web
+      de GitHub** (la API REST devuelve 404, `gh repo edit` no lo tiene y GraphQL solo lo deja
+      *leer*), así que se subió a mano: **Settings → Social preview → Edit → Upload an image…**
+      con `assets/img/og-1280x640.jpg` (1280×640, 80 KB, el tamaño que GitHub recomienda).
+      Verificación:
       `gh api graphql -f query='{repository(owner:"guillermoclaro-a11y",name:"carrito-fantasma"){usesCustomOpenGraphImage}}'`
-      → debe devolver `"usesCustomOpenGraphImage":true`.
+      → `true`; y la imagen que sirve GitHub es byte a byte idéntica a la local.
 - [ ] **Ten una captura o GIF** del flujo (carrito → "pagando" → confeti → camión).
       ✅ *(hechos, en local)* Vídeos y portada disponibles para subir a la red social
       (GitHub no los incluye: están en `.gitignore`):
