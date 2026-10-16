@@ -38,11 +38,11 @@
 - [x] **Descripción, web y topics del repo.** ✅ *(hecho)* Descripción en español, homepage
       `https://carritofantasma.app/` y 8 topics (`anticonsumption`, `dopamine`, `nobuy`,
       `simulator`, `spanish`, `static-site`, `vanilla-js`, `ecommerce`).
-- [ ] **Fija el repo en "Destacados"** de tu perfil: entra en https://github.com/guillermoclaro-a11y
-      → **Customize your pins** → marca `carrito-fantasma` → **Save**. Es otro ajuste que solo
-      existe en la web (no hay mutación; solo `pinIssue`). Comprobar después:
+- [x] **Repo fijado en "Destacados"** de tu perfil. ✅ *(hecho y verificado)* Aparece con
+      `carrito-fantasma` en primera posición en https://github.com/guillermoclaro-a11y
+      (importaba: hay 2 repos públicos). Comprobado con
       `gh api graphql -f query='{viewer{pinnedItems(first:6,types:[REPOSITORY]){nodes{... on Repository{name}}}}}'`
-      → debe listar `carrito-fantasma`.
+      → `carrito-fantasma` + `omarchy-clock-es`.
 
 **Orden recomendado:** primero comunidades **en español** (el sitio está en español),
 y después las internacionales.
