@@ -8,8 +8,8 @@
 const UI = {
   es: {
     html_lang: 'es',
-    title: 'Carrito Fantasma — tienda online falsa para comprar sin gastar',
-    meta_desc: 'Tienda online falsa para darte la dopamina de comprar sin gastar nada: llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Gratis, sin anuncios y sin datos.',
+    title: 'Carrito Fantasma — tienda online falsa: compra sin gastar',
+    meta_desc: 'Tienda online falsa: la dopamina de comprar sin gastar nada. Llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Gratis y sin datos.',
 
     nav_home: 'Inicio',
     stores: 'Tiendas',
