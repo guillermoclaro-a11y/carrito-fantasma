@@ -118,7 +118,7 @@
     orders: Number(persisted.orders) || 0,
     product: null,
     checkout: { step: 1, address: {}, pay: 0 },
-    lastOrder: null,
+    lastOrder: persisted.lastOrder || null,
   };
 
   /* ---------- idioma / i18n ---------- */
@@ -147,8 +147,8 @@
 
   /* ---------- utilidades ---------- */
   function save() {
-    const { cart, savings, calories, orders, mode, lang } = state;
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ cart, savings, calories, orders, mode, lang })); } catch (e) {}
+    const { cart, savings, calories, orders, mode, lang, lastOrder } = state;
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ cart, savings, calories, orders, mode, lang, lastOrder })); } catch (e) {}
   }
   function money(n) {
     const opts = Number.isInteger(n)
@@ -167,6 +167,11 @@
     setMeta('meta[name="description"]', t('meta_desc'));
     setMeta('meta[property="og:title"]', t('title'));
     setMeta('meta[property="og:description"]', t('meta_desc'));
+    setMeta('meta[name="twitter:title"]', t('title'));
+    setMeta('meta[name="twitter:description"]', t('meta_desc'));
+    // og:locale tiene que seguir al idioma activo, igual que <html lang>.
+    setMeta('meta[property="og:locale"]', state.lang === 'en' ? 'en_US' : 'es_ES');
+    setMeta('meta[property="og:locale:alternate"]', state.lang === 'en' ? 'es_ES' : 'en_US');
     // canonical autorreferencial: cada versión de idioma se canoniza a sí misma
     // (necesario para que hreflang ES/EN sea válido para Google).
     const canon = document.querySelector('link[rel="canonical"]');
@@ -182,7 +187,18 @@
     if (lt) { lt.textContent = state.lang === 'es' ? 'EN' : 'ES'; lt.setAttribute('title', t('lang_toggle')); lt.setAttribute('aria-label', t('lang_toggle')); }
     applyMeta();
   }
-  function setLang(l) { state.lang = l === 'en' ? 'en' : 'es'; save(); applyStatic(); render(); }
+  function setLang(l) {
+    state.lang = l === 'en' ? 'en' : 'es';
+    // Mantiene la URL en sintonía con el idioma visible: si alguien copia el
+    // enlace después de pulsar EN, comparte la versión inglesa.
+    try {
+      const u = new URL(location.href);
+      if (state.lang === 'en') u.searchParams.set('lang', 'en');
+      else u.searchParams.delete('lang');
+      history.replaceState(history.state, '', u);
+    } catch (e) {}
+    save(); applyStatic(); render();
+  }
 
   /* ---------- carrito ---------- */
   const cartLines = () => state.cart
@@ -217,6 +233,7 @@
     updateTop();
     const views = { home: viewHome, catalog: viewCatalog, savings: viewSavings, checkout: viewCheckout, confirm: viewConfirm, tracking: viewTracking, credits: viewCredits, support: viewSupport };
     app.innerHTML = (views[state.view] || viewHome)();
+    tickFlash();
     renderModal();
     renderCart();
     window.scrollTo(0, 0);
@@ -227,7 +244,7 @@
 
   function renderModesNav() {
     $('#modesNav').innerHTML = MODES.map(m => `
-      <button class="mode-btn ${state.mode === m.id ? 'active' : ''}" data-action="mode" data-mode="${m.id}">
+      <button class="mode-btn ${state.mode === m.id ? 'active' : ''}" data-action="mode" data-mode="${m.id}" aria-current="${state.mode === m.id ? 'page' : 'false'}">
         <span>${m.emoji}</span> ${mname(m)}
       </button>`).join('');
   }
@@ -309,9 +326,9 @@
   }
 
   function card(p) {
-    const old = p.oldPrice ? `<s>${money(p.oldPrice)}</s>` : '';
+    const old = p.oldPrice ? `<s><span class="sr-only">${t('price_was')} </span>${money(p.oldPrice)}</s>` : '';
     return `
-    <article class="card" data-action="product" data-id="${p.id}">
+    <article class="card" data-action="product" data-id="${p.id}" tabindex="0" aria-label="${t('view_aria', { name: pname(p) })}">
       <div class="card-img" style="--c:${acc(p)}">
         <span class="emoji">${p.emoji}</span>
         ${photo(p)}
@@ -407,9 +424,9 @@
       ${step === 1 ? `
         <div class="panel">
           <h2>${t('st1')}</h2>
-          <div class="field"><label for="f-name">${t('f_name')}</label><input id="f-name" placeholder="${t('f_name_ph')}" value="${a.name || ''}"></div>
-          <div class="field"><label for="f-address">${t('f_address')}</label><input id="f-address" placeholder="${t('f_address_ph')}" value="${a.address || ''}"></div>
-          <div class="field"><label for="f-city">${t('f_city')}</label><input id="f-city" placeholder="${t('f_city_ph')}" value="${a.city || ''}"></div>
+          <div class="field"><label for="f-name">${t('f_name')}</label><input id="f-name" autocomplete="name" enterkeyhint="next" placeholder="${t('f_name_ph')}" value="${a.name || ''}"></div>
+          <div class="field"><label for="f-address">${t('f_address')}</label><input id="f-address" autocomplete="street-address" enterkeyhint="next" placeholder="${t('f_address_ph')}" value="${a.address || ''}"></div>
+          <div class="field"><label for="f-city">${t('f_city')}</label><input id="f-city" autocomplete="address-level2" enterkeyhint="done" placeholder="${t('f_city_ph')}" value="${a.city || ''}"></div>
           <button class="primary big" data-action="step" data-step="2">${t('continue')}</button>
         </div>` : ''}
 
@@ -460,6 +477,16 @@
 
   function viewTracking() {
     const o = state.lastOrder;
+    if (!o) {
+      return `
+      <section class="page tracking">
+        <h1>${t('tracking_h1', { id: '' }).trim()}</h1>
+        <p class="muted">${t('tracking_none')}</p>
+        <div class="row">
+          <button class="primary" data-action="nav" data-view="catalog">${t('keep_shopping')}</button>
+        </div>
+      </section>`;
+    }
     const steps = [
       [t('ts1t'), t('ts1s')],
       [t('ts2t'), t('ts2s')],
@@ -488,12 +515,14 @@
   }
 
   /* ---------- modal de producto ---------- */
+  let modalFocus = null;
   function renderModal() {
     const el = $('#modal');
     if (!state.product) { el.hidden = true; el.innerHTML = ''; return; }
     const p = byId.get(state.product);
     if (!p) { el.hidden = true; return; }
     el.hidden = false;
+    el.setAttribute('aria-label', pname(p));
     el.innerHTML = `
       <div class="modal-card">
         <div class="modal-img" style="--c:${acc(p)}"><span class="emoji">${p.emoji}</span>${photo(p)}</div>
@@ -509,8 +538,15 @@
         </div>
       </div>`;
     el.onclick = e => { if (e.target === el) closeModal(); };
+    const closeBtn = el.querySelector('[data-action="close-modal"]');
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
   }
-  const closeModal = () => { state.product = null; renderModal(); };
+  const closeModal = () => {
+    const wasOpen = !!state.product;
+    state.product = null;
+    renderModal();
+    if (wasOpen && modalFocus && document.contains(modalFocus)) modalFocus.focus({ preventScroll: true });
+  };
 
   /* ---------- carrito (drawer) ---------- */
   function renderCart() {
@@ -544,8 +580,31 @@
     $('#shipFill').style.width = Math.min(100, (total / SHIP_FREE) * 100) + '%';
   }
 
-  function openCart() { document.body.classList.add('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'false'); }
-  function closeCart() { document.body.classList.remove('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'true'); }
+  let cartFocus = null;
+  function openCart() {
+    cartFocus = document.activeElement;
+    const drawer = $('#cartDrawer');
+    drawer.inert = false;
+    drawer.setAttribute('aria-hidden', 'false');
+    const btn = $('#cartBtn');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('cart-open');
+    const closeBtn = drawer.querySelector('.drawer-head .icon');
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
+  }
+  function closeCart() {
+    const wasOpen = document.body.classList.contains('cart-open');
+    const drawer = $('#cartDrawer');
+    document.body.classList.remove('cart-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    drawer.inert = true;
+    const btn = $('#cartBtn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (wasOpen) {
+      if (cartFocus && document.contains(cartFocus) && !drawer.contains(document.activeElement)) cartFocus.focus({ preventScroll: true });
+      else if (btn) btn.focus({ preventScroll: true });
+    }
+  }
 
   /* ---------- compartir ---------- */
   async function share() {
@@ -847,12 +906,13 @@
     return [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
       .map(n => String(n).padStart(2, '0')).join(':');
   }
-  setInterval(() => {
+  function tickFlash() {
     const txt = hms(msToMidnight());
     $$('.js-flash').forEach(el => { el.textContent = txt; });
     // al cambiar el día, el catálogo se renueva solo
     if (DAILY && DAILY.key !== dayKey()) { rotateDaily(); render(); }
-  }, 1000);
+  }
+  setInterval(tickFlash, 1000);
 
   /* ---------- eventos ---------- */
   document.addEventListener('click', e => {
@@ -867,7 +927,7 @@
         render(); break;
       case 'mode':
         state.mode = tgt.dataset.mode; state.view = 'catalog'; render(); break;
-      case 'product': state.product = tgt.dataset.id; renderModal(); break;
+      case 'product': modalFocus = document.activeElement; state.product = tgt.dataset.id; renderModal(); break;
       case 'close-modal': closeModal(); break;
       case 'add': addToCart(tgt.dataset.id); break;
       case 'open-cart': openCart(); break;
@@ -913,7 +973,17 @@
   }
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeModal(); closeCart(); }
+    if (e.key === 'Escape') { closeModal(); closeCart(); return; }
+    // Abre la ficha con Enter/Espacio cuando el foco está en la tarjeta.
+    if (e.key === 'Enter' || e.key === ' ') {
+      const el = e.target;
+      if (el && el.classList && el.classList.contains('card') && el.dataset.id) {
+        e.preventDefault();
+        modalFocus = el;
+        state.product = el.dataset.id;
+        renderModal();
+      }
+    }
   });
 
   /* ---------- arranque ---------- */
