@@ -24,6 +24,8 @@ const UI = {
     footer_note: 'Si estás luchando contra las compras compulsivas, esto no sustituye ayuda profesional.',
     cart_title: 'Tu carrito',
     subtotal: 'Subtotal',
+    price_was: 'antes',
+    view_aria: 'Ver ficha de {name}',
     ship_note: 'Envío fantasma: gratis · Entrega: nunca.',
     checkout_btn: 'Tramitar pedido 💳',
     clear_cart: 'Vaciar carrito',
@@ -99,6 +101,7 @@ const UI = {
 
     tracking_h1: 'Seguimiento del pedido {id}',
     tracking_p: 'Spoiler: nunca llegará. Pero qué bien se siente mirarlo.',
+    tracking_none: 'Todavía no hay ningún pedido fantasma que seguir. Haz una compra que no existe y vuelve por aquí.',
     ts1t: 'Pedido confirmado', ts1s: 'Recibimos tu pedido que no existe',
     ts2t: 'Preparando el paquete', ts2s: 'Alguien en algún lugar no está haciendo nada',
     ts3t: 'En camino', ts3s: 'Tu paquete fantasma avanza a toda velocidad',
@@ -170,6 +173,8 @@ const UI = {
     footer_note: "If you're struggling with compulsive shopping, this is not a substitute for professional help.",
     cart_title: 'Your cart',
     subtotal: 'Subtotal',
+    price_was: 'was',
+    view_aria: 'View details for {name}',
     ship_note: 'Ghost shipping: free · Delivery: never.',
     checkout_btn: 'Checkout 💳',
     clear_cart: 'Empty cart',
@@ -245,6 +250,7 @@ const UI = {
 
     tracking_h1: 'Tracking order {id}',
     tracking_p: 'Spoiler: it will never arrive. But it feels so good to watch.',
+    tracking_none: 'There is no ghost order to track yet. Make a purchase that never happened and come back here.',
     ts1t: 'Order confirmed', ts1s: 'We received your order, which does not exist',
     ts2t: 'Preparing the package', ts2s: 'Someone, somewhere, is doing nothing',
     ts3t: 'On the way', ts3s: 'Your ghost package is speeding along',

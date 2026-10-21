@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Carrito Fantasma — tienda online falsa: compra sin gastar</title>
   <meta name="description" content="Tienda online falsa: la dopamina de comprar sin gastar nada. Llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Gratis y sin datos.">
-  <meta name="theme-color" content="#6d5efc">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#6d5efc">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12111f">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
   <link rel="canonical" href="https://carritofantasma.app/">
   <link rel="alternate" hreflang="es" href="https://carritofantasma.app/">
@@ -51,7 +52,7 @@
         "browserRequirements": "Requiere JavaScript",
         "inLanguage": ["es", "en"],
         "isAccessibleForFree": true,
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
         "description": "Experimento satírico: llena el carrito, paga con tarjeta fantasma y sigue un envío que nunca llega. Sin anuncios, sin cookies y sin recabar datos."
       }
     ]
@@ -74,7 +75,7 @@
       <button class="pill" data-action="nav" data-view="savings" data-i18n-title="saved_title" title="Lo que te has ahorrado">
         💸 <span><span data-i18n="saved_label">Ahorrado:</span> <b id="savingsTop">$0</b></span>
       </button>
-      <button class="cart-btn" id="cartBtn" data-action="open-cart" data-i18n-aria="cart_open" aria-label="Abrir carrito">
+      <button class="cart-btn" id="cartBtn" data-action="open-cart" data-i18n-aria="cart_open" aria-label="Abrir carrito" aria-controls="cartDrawer" aria-expanded="false">
         🛒<span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
@@ -97,10 +98,10 @@
   </footer>
 
   <!-- Cart drawer -->
-  <div class="scrim" id="scrim" data-action="close-cart"></div>
-  <aside id="cartDrawer" class="drawer" aria-hidden="true" aria-label="Carrito">
+  <div class="scrim" id="scrim" data-action="close-cart" aria-hidden="true"></div>
+  <aside id="cartDrawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true" inert>
     <div class="drawer-head">
-      <h2 data-i18n="cart_title">Tu carrito</h2>
+      <h2 id="cartTitle" data-i18n="cart_title">Tu carrito</h2>
       <button class="icon" data-action="close-cart" data-i18n-aria="cart_close" aria-label="Cerrar carrito">✕</button>
     </div>
     <div class="ship">
@@ -117,10 +118,10 @@
   </aside>
 
   <!-- Product modal -->
-  <div class="modal" id="modal" hidden></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Producto" hidden></div>
 
   <!-- Processing overlay -->
-  <div class="processing" id="processing" hidden>
+  <div class="processing" id="processing" role="status" aria-live="assertive" aria-atomic="true" hidden>
     <div class="proc-card">
       <div class="spinner" aria-hidden="true"></div>
       <p id="procText" data-i18n="proc_default">Procesando pago fantasma…</p>
