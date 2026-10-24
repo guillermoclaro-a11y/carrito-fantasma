@@ -153,7 +153,9 @@ h1,h2,h3{ line-height:1.15; margin:0 0 .4em; }
 .hero .row{ margin-top:22px; }
 .saved-pill{
   display:inline-flex; gap:8px; align-items:center; margin-top:18px;
-  background:var(--card); border:1px solid var(--line); border-radius:999px; padding:8px 16px; font-weight:700;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--card) 78%, #ffffff 10%) 0%, color-mix(in srgb, var(--card) 88%, #000 12%) 100%);
+  border:1px solid var(--line); border-radius:999px; padding:8px 16px; font-weight:700; color:var(--ink);
+  box-shadow:var(--shadow);
 }
 .saved-pill b{ color:var(--accent-text); }
 
@@ -468,34 +470,61 @@ body.cart-open .drawer{ transform:none; }
     --accent-text:color-mix(in srgb, var(--accent) 55%, #ffffff);
     --inverse-bg:#08070f;
     --inverse-ink:#f7f6ff;
-    --topbar:rgba(15,14,26,.92);
-    --scrim:rgba(4,3,10,.82);
+    --topbar:rgba(15,14,26,.94);
+    --scrim:rgba(4,3,10,.88);
     --danger:#ffb4ad;
-    --shadow:0 12px 40px rgba(0,0,0,.55);
-    --shadow-lg:0 30px 80px rgba(0,0,0,.8);
+    --shadow:0 12px 40px rgba(0,0,0,.6);
+    --shadow-lg:0 32px 90px rgba(0,0,0,.9);
   }
   body{
-    background:radial-gradient(1400px 900px at 50% -12%, #1d1a33 0%, var(--bg) 62%);
+    background:radial-gradient(1600px 1000px at 50% -14%, #211f38 0%, var(--bg) 68%);
+    color:var(--ink);
     --accent-text:color-mix(in srgb, var(--accent) 55%, #ffffff);
     --star:#fbbf24;
     --focus: var(--accent-text);
   }
-  .topbar{ border-bottom:1px solid color-mix(in srgb, var(--line) 90%, transparent); }
-  .hero{ background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, var(--card)), var(--card)); border:1px solid var(--line); }
-  .panel,.order-box,.stat,.modal-card,.drawer,.proc-card,.saved-pill,.feature,.mode-card,.card,.support-card,.credits-table{
+  .topbar{ background:var(--topbar); border-bottom:1px solid color-mix(in srgb, var(--line) 95%, transparent); }
+  .hero{
+    background:
+      radial-gradient(900px 520px at -10% -20%, color-mix(in srgb, var(--accent) 30%, transparent) 0%, transparent 72%),
+      linear-gradient(150deg, color-mix(in srgb, var(--accent) 28%, var(--card)) 0%, #201e36 100%);
+    color:var(--ink);
+    border:1px solid color-mix(in srgb, var(--line) 95%, transparent);
+    box-shadow:var(--shadow-lg);
+  }
+  .hero p{ color:var(--muted); }
+  .saved-pill{
+    background:linear-gradient(180deg, color-mix(in srgb, var(--card) 86%, #ffffff 10%) 0%, color-mix(in srgb, var(--card) 94%, #000 10%) 100%);
+    color:var(--ink);
+    border:1px solid color-mix(in srgb, var(--line) 98%, transparent);
+    box-shadow:0 12px 44px rgba(0,0,0,.55);
+  }
+  .saved-pill b{ color:var(--accent-text); }
+  .panel,.order-box,.stat,.modal-card,.drawer,.proc-card,.feature,.mode-card,.card,.support-card,.credits-table{
+    background:var(--card);
+    color:var(--ink);
     border:1px solid var(--line);
     box-shadow:var(--shadow-lg);
   }
-  .credits-table th{ background:var(--surface-soft); }
   .toolbar input,.toolbar select,.field input,.qty button,.ghost,.icon,.pill,.filter-check{
-    background:color-mix(in srgb, var(--card) 92%, #ffffff 4%);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--card) 92%, #ffffff 8%) 0%, var(--card) 100%);
     color:var(--ink);
-    border:1px solid color-mix(in srgb, var(--line) 95%, transparent);
+    border:1px solid color-mix(in srgb, var(--line) 98%, transparent);
   }
   .icon{ background:var(--surface-soft); }
-  .manifesto{ background:#05040b; border:1px solid color-mix(in srgb, var(--line) 80%, transparent); }
-  .primary:hover{ filter:brightness(1.16); }
+  .manifesto{ background:radial-gradient(800px 400px at 50% 0%, #151326 0%, #05040b 100%); border:1px solid color-mix(in srgb, var(--line) 85%, transparent); color:var(--ink); }
+  .primary:hover{ filter:brightness(1.18); }
   .badge{ color:#fff; }
-  .track-note{ background:color-mix(in srgb, var(--accent) 14%, var(--card)); }
-  .radio:has(input:checked){ background:color-mix(in srgb, var(--accent) 12%, var(--card)); }
+  .track-note{ background:color-mix(in srgb, var(--accent) 16%, var(--card)); border:1px solid color-mix(in srgb, var(--accent) 62%, var(--line)); color:var(--ink); }
+  .radio:has(input:checked){ background:color-mix(in srgb, var(--accent) 14%, var(--card)); border-color:color-mix(in srgb, var(--accent) 72%, var(--line)); }
+  .toast{
+    background:var(--inverse-bg);
+    color:var(--inverse-ink);
+    border:1px solid color-mix(in srgb, var(--inverse-ink) 26%, transparent);
+    box-shadow:0 24px 70px rgba(0,0,0,.95);
+  }
+  .toast-action{ border:1px solid color-mix(in srgb, var(--inverse-ink) 44%, transparent); color:var(--inverse-ink); }
+  .cart-btn{ background:var(--inverse-bg); color:var(--inverse-ink); box-shadow:0 12px 48px rgba(0,0,0,.75); }
+  .credits-table th{ background:var(--surface-soft); }
+  .modes .mode-btn:hover{ background:color-mix(in srgb, var(--card) 88%, #ffffff 10%); color:var(--ink); }
 }
