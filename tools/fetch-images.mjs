@@ -15,7 +15,7 @@ const run = promisify(execFile);
 const UA = 'CarritoFantasma/1.0 (https://example.org; guillermoclaro@gmail.com)';
 const ROOT = new URL('../', import.meta.url);
 const IMG_DIR = new URL('assets/img/', ROOT);
-const OUT = id => new URL(`assets/img/${id}.jpg`, ROOT);
+const OUT = id => new URL(`assets/img/${id}.webp`, ROOT);
 
 // producto -> artículo de Wikipedia (elegido a mano para máxima relevancia)
 const MAP = {
@@ -79,7 +79,7 @@ async function main() {
       const raw = path.join(tmp, id);
       await writeFile(raw, buf);
 
-      await run('magick', [raw, '-auto-orient', '-resize', '1200x1200>', '-strip', '-quality', '82', OUT(id).pathname]);
+      await run('magick', [raw, '-auto-orient', '-resize', '640x640>', '-strip', '-quality', '76', OUT(id).pathname]);
       await rm(raw, { force: true });
 
       credits[id] = {

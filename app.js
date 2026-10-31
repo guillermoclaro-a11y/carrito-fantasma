@@ -4,6 +4,7 @@
 
   const LS_KEY = 'carrito-fantasma-v1';
   const SHIP_FREE = 50;
+  const HISTORY_MAX = 10;
 
   const $  = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -103,7 +104,7 @@
     byId = new Map(CATALOG.map(p => [p.id, p]));
   }
   const acc = p => (modeById[p.mode] || modeById.all).accent;
-  const imgOf = p => `${ROOT}assets/img/${p.id}.jpg`;
+  const imgOf = p => `${ROOT}assets/img/${p.id}.webp`;
 
   const persisted = (() => {
     try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { return {}; }
@@ -145,6 +146,12 @@
     checkout: { step: 1, address: {}, pay: 0 },
     lastOrder: persisted.lastOrder && Array.isArray(persisted.lastOrder.lines) ? persisted.lastOrder : null,
     achievements: Array.isArray(persisted.achievements) ? persisted.achievements : [],
+    // tiendas en las que ya "compraste", si hubo un pedido de madrugada, y los últimos pedidos
+    stores: Array.isArray(persisted.stores) ? persisted.stores.filter(id => modeById[id]) : [],
+    night: persisted.night === true,
+    history: Array.isArray(persisted.history) ? persisted.history
+      .filter(o => o && typeof o.id === 'string' && Number.isFinite(o.total) && Number.isFinite(o.date))
+      .slice(0, HISTORY_MAX) : [],
   };
   let isProcessing = false;
 
@@ -174,8 +181,8 @@
 
   /* ---------- utilidades ---------- */
   function save() {
-    const { cart, savings, calories, orders, mode, lang, lastOrder, achievements } = state;
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ cart, savings, calories, orders, mode, lang, lastOrder, achievements })); } catch (e) {}
+    const { cart, savings, calories, orders, mode, lang, lastOrder, achievements, stores, night, history } = state;
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ cart, savings, calories, orders, mode, lang, lastOrder, achievements, stores, night, history })); } catch (e) {}
   }
 
   function getAchievements() {
@@ -186,6 +193,10 @@
       { id: 'saver25', icon: '💸', title: t('ach_saver25_title'), desc: t('ach_saver25_desc'), unlocked: state.savings >= 25 },
       { id: 'saver100', icon: '💰', title: t('ach_saver100_title'), desc: t('ach_saver100_desc'), unlocked: state.savings >= 100 },
       { id: 'saver250', icon: '🤑', title: t('ach_saver250_title'), desc: t('ach_saver250_desc'), unlocked: state.savings >= 250 },
+      { id: 'million', icon: '🦕', title: t('ach_million_title'), desc: t('ach_million_desc'), unlocked: state.savings >= 1e6 },
+      { id: 'glutton', icon: '🍩', title: t('ach_glutton_title'), desc: t('ach_glutton_desc'), unlocked: state.calories >= 10000 },
+      { id: 'tourist', icon: '🗺️', title: t('ach_tourist_title'), desc: t('ach_tourist_desc'), unlocked: MODES.every(m => m.id === 'all' || state.stores.includes(m.id)) },
+      { id: 'night', icon: '🌙', title: t('ach_night_title'), desc: t('ach_night_desc'), unlocked: state.night },
     ];
     // guardar nuevos desbloqueados
     const newly = list.filter(a => a.unlocked && !state.achievements.includes(a.id));
@@ -367,10 +378,10 @@
 
       <div class="daily-head">
         <h2>${t('daily_title')}</h2>
-        <span class="flash">${t('flash')}</span>
+        <span class="flash">${t('flash_short')}</span>
       </div>
       <p class="muted">${t('daily_sub', { n: buildDaily().count })}</p>
-      <div class="grid">${todayDeals().slice(0, 4).map(card).join('')}</div>
+      <div class="grid deals">${todayDeals().slice(0, 4).map(card).join('')}</div>
       <div class="row" style="margin-top:16px">
         <button class="ghost" data-action="deals">${t('daily_cta')}</button>
       </div>
@@ -488,6 +499,16 @@
       ${hasHistory ? `<div class="row share-row">
         <button class="primary big" data-action="share-savings">${t('share_savings')}</button>
       </div>` : ''}
+      ${state.history.length ? `
+      <h2 class="section-title">${t('history_title')}</h2>
+      <ul class="history">
+        ${state.history.map(o => `
+          <li>
+            <span class="history-emojis" aria-hidden="true">${esc(o.emojis || '🛒')}</span>
+            <span class="history-main"><b class="order-id">${esc(o.id)}</b><span class="muted tiny">${new Date(o.date).toLocaleDateString(locale(), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · ${t(o.items === 1 ? 'history_item' : 'history_items', { n: num(o.items) })}</span></span>
+            <span class="history-side"><b>${money(o.total)}</b><span class="history-status">${t('history_status')}</span></span>
+          </li>`).join('')}
+      </ul>` : ''}
       <h2 class="section-title" id="achievements">${t('ach_title')} · ${unlocked}/${ach.length}</h2>
       <div class="ach-grid">
         ${ach.map(a => `
@@ -978,7 +999,7 @@
         const p = byId.get(id);
         const lic = c.licenseUrl ? `<a href="${c.licenseUrl}" target="_blank" rel="noopener">${c.license || t('license_fallback')}</a>` : (c.license || '');
         return `<tr>
-          <td><img src="${ROOT}assets/img/${id}.jpg" alt="" loading="lazy"></td>
+          <td><img src="${ROOT}assets/img/${id}.webp" alt="" loading="lazy"></td>
           <td>${p ? pname(p) : id}</td>
           <td>${c.author || '—'}</td>
           <td>${lic}</td>
@@ -1010,10 +1031,22 @@
         id: 'CF-' + Math.random().toString(36).slice(2, 7).toUpperCase(),
         total, lines, date: Date.now(),
       };
+      lines.forEach(l => { if (!state.stores.includes(l.mode)) state.stores.push(l.mode); });
+      if (new Date().getHours() < 5) state.night = true;
+      state.history.unshift({
+        id: state.lastOrder.id, date: state.lastOrder.date, total,
+        items: lines.reduce((n, l) => n + l.qty, 0),
+        emojis: lines.slice(0, 4).map(l => l.emoji).join(''),
+      });
+      state.history.length = Math.min(state.history.length, HISTORY_MAX);
       state.cart = [];
       state.checkout = { step: 1, address: {}, pay: state.checkout.pay };
       isProcessing = false;
       save(); navigate('tracking');
+      // La pantalla de confirmación se saltó a propósito (2c24852); el confeti y
+      // los logros recién desbloqueados se celebran aquí para no perderlos.
+      celebrate();
+      getAchievements();
     });
   }
 
@@ -1126,7 +1159,8 @@
     const txt = hms(msToMidnight());
     $$('.js-flash').forEach(el => { el.textContent = txt; });
     // al cambiar el día, el catálogo se renueva solo
-    if (DAILY && DAILY.key !== dayKey()) { rotateDaily(); render(); }
+    // (sin saltar arriba ni interrumpir un pago en curso)
+    if (DAILY && DAILY.key !== dayKey() && !isProcessing) { rotateDaily(); render({ scroll: false }); }
   }
   setInterval(tickFlash, 1000);
 
@@ -1217,7 +1251,8 @@
       case 'pay': pay(); break;
       case 'clear-history':
         if (!window.confirm(t('clear_history_confirm'))) break;
-        state.savings = 0; state.calories = 0; state.orders = 0; state.lastOrder = null;
+        state.savings = 0; state.calories = 0; state.orders = 0; state.lastOrder = null; state.achievements = [];
+        state.stores = []; state.night = false; state.history = [];
         save(); render({ focus: true }); toast(t('history_cleared'));
         break;
     }

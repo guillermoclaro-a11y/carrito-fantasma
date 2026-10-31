@@ -51,7 +51,7 @@ Las fotos son la **imagen principal de artículos de Wikipedia** (y archivos de 
 Commons), descargadas al propio proyecto para que el sitio siga siendo autocontenido y no
 haga peticiones a terceros en tiempo de ejecución.
 
-- Se guardan en `assets/img/<id>.jpg` (una por producto, `id` = el de `data.js`).
+- Se guardan en `assets/img/<id>.webp` (una por producto, `id` = el de `data.js`).
 - Las atribuciones y licencias están en `assets/img/credits.json` y se muestran en el
   enlace **«Créditos de las imágenes»** del pie de página.
 - Si una imagen no existe o no carga, se muestra el emoji del producto como respaldo.
@@ -72,7 +72,7 @@ reutilizas el proyecto: revisa `credits.json`.
 - **Nombre / marca**: cámbialo en `index.html` (`.brand-name` y `<title>`).
 - **Productos**: añade objetos al array `PRODUCTS` en `data.js`.
   Campos: `id, mode, name, emoji, price, oldPrice?, rating, reviews, badge?, desc, calories?`.
-  Si añades un producto, créale una imagen en `assets/img/<id>.jpg` (o deja el emoji de respaldo).
+  Si añades un producto, créale una imagen en `assets/img/<id>.webp` (o deja el emoji de respaldo).
 - **Tiendas/modos**: edita el array `MODES` en `data.js` (el `accent` es su color).
 - **Colores**: en `styles.css`, las variables `--accent` por tienda al inicio del archivo.
 
