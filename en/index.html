@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" data-lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Carrito Fantasma — fake store to shop without buying</title>
+  <meta name="description" content="A fake online store for the thrill of shopping without spending a cent: fill your cart, pay with a ghost card and track a delivery that never arrives. Free, no ads.">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#6d5efc">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12111f">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+  <link rel="canonical" href="https://carritofantasma.app/en/">
+  <link rel="alternate" hreflang="es" href="https://carritofantasma.app/">
+  <link rel="alternate" hreflang="en" href="https://carritofantasma.app/en/">
+  <link rel="alternate" hreflang="x-default" href="https://carritofantasma.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Carrito Fantasma">
+  <meta property="og:url" content="https://carritofantasma.app/en/">
+  <meta property="og:title" content="Carrito Fantasma — fake store to shop without buying">
+  <meta property="og:description" content="The dopamine of shopping without spending a cent: fill your cart, pay with a ghost card and track a delivery that never arrives. Free, no ads.">
+  <meta property="og:image" content="https://carritofantasma.app/assets/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Carrito Fantasma — Shop without buying">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Carrito Fantasma — fake store to shop without buying">
+  <meta name="twitter:description" content="The dopamine of shopping without spending a cent. Free, no ads, no data.">
+  <meta name="twitter:image" content="https://carritofantasma.app/assets/img/og.jpg">
+
+  <!-- Datos estructurados (SEO) para tarjetas ricas en los resultados de búsqueda -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://carritofantasma.app/#website",
+        "url": "https://carritofantasma.app/",
+        "name": "Carrito Fantasma",
+        "alternateName": "Ghost Cart",
+        "inLanguage": ["es", "en"],
+        "description": "A fake online store for the thrill of shopping without spending a cent."
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://carritofantasma.app/en/#app",
+        "name": "Carrito Fantasma",
+        "url": "https://carritofantasma.app/en/",
+        "applicationCategory": "EntertainmentApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires JavaScript",
+        "inLanguage": ["en"],
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "A satirical experiment: fill your cart, pay with a ghost card and track a delivery that never arrives. No ads, no cookies, no data collection."
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-mode="all">
+
+  <a class="skip-link" href="#app" data-i18n="skip_content">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#" data-action="nav" data-view="home" data-i18n-aria="nav_home" aria-label="Home">
+      <span class="brand-mark">🛒</span>
+      <span class="brand-name">Carrito<em>Fantasma</em></span>
+    </a>
+
+    <nav class="modes" id="modesNav" data-i18n-aria="stores" aria-label="Stores"></nav>
+
+    <div class="top-actions">
+      <button class="pill lang" id="langToggle" data-action="lang" data-i18n-title="lang_toggle" aria-label="Cambiar a español" title="Cambiar a español">ES</button>
+      <button class="pill savings-btn" data-action="nav" data-view="savings" data-i18n-aria="saved_title" data-i18n-title="saved_title" aria-label="What you've saved" title="What you've saved">
+        <span class="savings-icon" aria-hidden="true">💸</span><span class="savings-copy"><span data-i18n="saved_label">Saved:</span> <b id="savingsTop">$0</b></span>
+      </button>
+      <button class="cart-btn" id="cartBtn" data-action="open-cart" data-i18n-aria="cart_open" aria-label="Open cart" aria-controls="cartDrawer" aria-expanded="false">
+        🛒<span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="app" class="app" tabindex="-1">
+    <noscript>
+      <section class="page">
+        <h1>🛒 Carrito Fantasma</h1>
+        <p>A fake online store that gives you the dopamine of shopping without spending a thing. Fill your cart, pay with a ghost card and track a delivery that never arrives. Free, no ads, no cookies and no data collected.</p>
+        <p>You need JavaScript to play. This fake store is also available in <a href="../">Spanish</a>.</p>
+      </section>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <p data-i18n="footer_about"><b>Carrito Fantasma</b> is a free satirical experiment. There are no real payments, no deliveries, and no data ever leaves your browser.</p>
+    <p><button class="link" data-action="nav" data-view="support" data-i18n="footer_support">❤️ Support the project</button> · <button class="link" data-action="share" data-i18n="footer_share">🔗 Share</button> · <button class="link" data-action="nav" data-view="credits" data-i18n="footer_credits">Image credits</button></p>
+    <p class="muted" data-i18n="footer_note">If you're struggling with compulsive shopping, this is not a substitute for professional help.</p>
+  </footer>
+
+  <!-- Cart drawer -->
+  <div class="scrim" id="scrim" data-action="close-cart" aria-hidden="true"></div>
+  <div id="cartDrawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true" inert>
+    <div class="drawer-head">
+      <h2 id="cartTitle" data-i18n="cart_title">Your cart</h2>
+      <button class="icon" data-action="close-cart" data-i18n-aria="cart_close" aria-label="Close cart">✕</button>
+    </div>
+    <div class="ship">
+      <div class="ship-text" id="shipText"></div>
+      <div class="ship-bar"><span id="shipFill"></span></div>
+    </div>
+    <div class="drawer-body" id="cartBody"></div>
+    <div class="drawer-foot">
+      <div class="total-row"><span data-i18n="subtotal">Subtotal</span><b id="cartSubtotal">$0</b></div>
+      <p class="muted tiny" data-i18n="ship_note">Ghost shipping: free · Delivery: never.</p>
+      <button class="primary big" id="payBtn" data-action="checkout" data-i18n="checkout_btn">Checkout 💳</button>
+      <button class="link" data-action="clear-cart" data-i18n="clear_cart">Empty cart</button>
+    </div>
+  </div>
+
+  <!-- Product modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" hidden></div>
+
+  <!-- Processing overlay -->
+  <div class="processing" id="processing" role="status" aria-live="assertive" aria-atomic="true" hidden>
+    <div class="proc-card">
+      <div class="spinner" aria-hidden="true"></div>
+      <p id="procText" data-i18n="proc_default">Processing ghost payment…</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toastText" role="status" aria-live="polite" aria-atomic="true"></span></div>
+  <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+
+  <noscript data-i18n="noscript">You need JavaScript enabled to live the (fake) experience.</noscript>
+
+  <script src="../data.js"></script>
+  <script src="../i18n.js"></script>
+  <script src="../app.js"></script>
+</body>
+</html>
