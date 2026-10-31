@@ -8,7 +8,7 @@ Guía para servir la tienda en un dominio propio en lugar de
 - **Dominio:** `carritofantasma.app` (comprado en Cloudflare).
 - **DNS:** gestionado por Cloudflare (NS `duke`/`athena.ns.cloudflare.com`).
 - **GitHub Pages:** dominio personalizado configurado y archivo `CNAME` en el repo.
-- **En vivo:** https://carritofantasma.app/ · https://carritofantasma.app/?lang=en
+- **En vivo:** https://carritofantasma.app/ · https://carritofantasma.app/en/
 - **`www`:** redirige a la raíz. ✔
 - **HTTPS:** gestionado por GitHub (Let's Encrypt para `carritofantasma.app` y
   `www.carritofantasma.app`) con **Enforce HTTPS** activado. ✔
