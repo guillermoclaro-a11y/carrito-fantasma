@@ -32,8 +32,8 @@
       | `media/carrito-fantasma-flujo.mp4` | 1000×1000, ~25 s | X/Twitter, Facebook (en el muro) |
       | `media/carrito-fantasma-flujo.gif` | 1000×1000, 4 MB | WhatsApp, donde no se pueden subir vídeos |
 - [x] **Idioma:** el sitio es **bilingüe (ES/EN)**; el botón `EN`/`ES` de la cabecera
-      cambia el idioma. Para enlazar directo en inglés usa `?lang=en`
-      (p. ej. `https://carritofantasma.app/?lang=en`).
+      cambia el idioma. Para enlazar directo en inglés usa `/en/`
+      (p. ej. `https://carritofantasma.app/en/`).
 - [ ] **Cuenta con algo de karma/antigüedad** en la red donde vayas a publicar.
 - [x] **Descripción, web y topics del repo.** ✅ *(hecho)* Descripción en español, homepage
       `https://carritofantasma.app/` y 8 topics (`anticonsumption`, `dopamine`, `nobuy`,
@@ -58,8 +58,8 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 |-------|--------|
 | X / Twitter | `https://carritofantasma.app/?utm_source=twitter&utm_medium=social&utm_campaign=lanzamiento` |
 | Reddit (ES) | `https://carritofantasma.app/?utm_source=reddit&utm_medium=social&utm_campaign=lanzamiento&utm_content=es` |
-| Reddit (EN) | `https://carritofantasma.app/?utm_source=reddit&utm_medium=social&utm_campaign=lanzamiento&utm_content=en` |
-| Hacker News | `https://carritofantasma.app/?utm_source=hn&utm_medium=social&utm_campaign=lanzamiento` |
+| Reddit (EN) | `https://carritofantasma.app/en/?utm_source=reddit&utm_medium=social&utm_campaign=lanzamiento&utm_content=en` |
+| Hacker News | `https://carritofantasma.app/en/?utm_source=hn&utm_medium=social&utm_campaign=lanzamiento` |
 | TikTok / Reels | `https://carritofantasma.app/?utm_source=tiktok&utm_medium=social&utm_campaign=lanzamiento` |
 | Product Hunt | `https://carritofantasma.app/?utm_source=producthunt&utm_medium=social&utm_campaign=lanzamiento` |
 | WhatsApp / Telegram | `https://carritofantasma.app/?utm_source=whatsapp&utm_medium=social&utm_campaign=lanzamiento` |
@@ -150,7 +150,7 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 > It's free, has no ads, no cookies, and stores nothing (everything runs in your
 > browser). It's my own project and it's bilingual (ES/EN) — there's a language
 > switch in the header, or open the English link directly.
-> https://carritofantasma.app/?lang=en
+> https://carritofantasma.app/en/
 
 ### r/nobuy (English)
 
@@ -184,10 +184,10 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 > Static site (HTML/CSS/JS, no build, no backend). 4 store modes, 44 products,
 > cart + fake checkout + fake tracking, savings tally, localStorage persistence,
 > real product photos from Wikimedia (with credits page). Bilingual ES/EN with a
-> header toggle and a `?lang=en` deep link.
+> header toggle and an `/en/` deep link.
 >
 > Repo: https://github.com/guillermoclaro-a11y/carrito-fantasma
-> Demo: https://carritofantasma.app/?lang=en
+> Demo: https://carritofantasma.app/en/
 > Happy to answer anything about how it's built.
 
 > 🚫 **r/shoppingaddiction**: sensible con esta. Es una comunidad de apoyo, no un
@@ -214,7 +214,7 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 >
 > Product images come from Wikimedia Commons (there's a credits page). The site is
 > bilingual ES/EN — there's a language switch in the header, or you can go straight
-> to the English version: https://carritofantasma.app/?lang=en
+> to the English version: https://carritofantasma.app/en/
 >
 > Code: https://github.com/guillermoclaro-a11y/carrito-fantasma
 

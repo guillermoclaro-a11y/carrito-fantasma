@@ -110,14 +110,14 @@ I bought a €1,200 TV, a drone and a designer bag. Spent €0.
 
 Carrito Fantasma is a fake online store that gives you the thrill of shopping without spending a cent. No ads, no cookies, no data 👻
 
-https://carritofantasma.app/?lang=en
+https://carritofantasma.app/en/
 ```
 
 **WhatsApp / Facebook (EN):**
 
 ```
 Made this little thing: a fake online store where you can fill the cart and "check out" without spending anything. It even tracks a package that never arrives 🚚😄 Free, no ads, no data:
-https://carritofantasma.app/?lang=en
+https://carritofantasma.app/en/
 ```
 
 ---

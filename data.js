@@ -16,11 +16,11 @@ const DONATIONS = [
 ];
 
 const MODES = [
-  { id: 'all',      name: 'Todo',       emoji: '✨', tagline: 'Todo el catálogo',        accent: '#6d5efc' },
-  { id: 'moda',     name: 'Moda',       emoji: '👕', tagline: 'Ropa, calzado, accesorios', accent: '#ff4d8d' },
-  { id: 'comida',   name: 'Comida',     emoji: '🍕', tagline: 'Delivery que nunca llega', accent: '#ff8a3d' },
-  { id: 'tech',     name: 'Tecnología', emoji: '💻', tagline: 'Gadgets y electrónica',   accent: '#2fa8ff' },
-  { id: 'absurdo',  name: 'Absurdo',    emoji: '🚀', tagline: 'Caprichos imposibles',    accent: '#e8b64c' },
+  { id: 'all',      name: 'Todo',       emoji: '✨', tagline: 'Todo el catálogo',        accent: '#5b4bd8' },
+  { id: 'moda',     name: 'Moda',       emoji: '👕', tagline: 'Ropa, calzado, accesorios', accent: '#cf2e6d' },
+  { id: 'comida',   name: 'Comida',     emoji: '🍕', tagline: 'Delivery que nunca llega', accent: '#b9500b' },
+  { id: 'tech',     name: 'Tecnología', emoji: '💻', tagline: 'Gadgets y electrónica',   accent: '#0875bb' },
+  { id: 'absurdo',  name: 'Absurdo',    emoji: '🚀', tagline: 'Caprichos imposibles',    accent: '#8a6400' },
 ];
 
 const PRODUCTS = [

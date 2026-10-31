@@ -7,12 +7,12 @@ Basado en la tendencia de los *dopamine sites*.
 ## 🌐 En vivo
 
 - **Web (dominio propio):** https://carritofantasma.app/
-- **En inglés:** https://carritofantasma.app/?lang=en
+- **En inglés:** https://carritofantasma.app/en/
 - **Repositorio:** https://github.com/guillermoclaro-a11y/carrito-fantasma
 - *(espejo GitHub Pages: https://guillermoclaro-a11y.github.io/carrito-fantasma/)*
 
-> 🌎 El sitio es **bilingüe (ES/EN)**. El botón `EN`/`ES` de la cabecera cambia el idioma y
-> se recuerda en el navegador. También puedes enlazar directo con `?lang=en` o `?lang=es`.
+> 🌎 El sitio es **bilingüe (ES/EN)**. El botón `EN`/`ES` de la cabecera cambia de URL
+> (`/` ↔ `/en/`). Los enlaces antiguos con `?lang=en` redirigen a `/en/`.
 
 > 📣 ¿Quieres darlo a conocer? Tienes textos listos para copiar y pegar en
 > Reddit, Hacker News, X y TikTok en [`DIFUSION.md`](DIFUSION.md).
@@ -21,7 +21,8 @@ Basado en la tendencia de los *dopamine sites*.
 
 ```
 carrito-fantasma/
-├── index.html            # estructura de la página
+├── index.html            # estructura de la página (ES)
+├── en/index.html         # versión EN con canonical y hreflang propios
 ├── styles.css            # estilos (modo claro/oscuro, responsive)
 ├── data.js               # catálogo y tiendas (edítalo para añadir productos)
 ├── i18n.js               # traducciones ES/EN (textos, tiendas y 44 productos)
@@ -144,8 +145,8 @@ El sitio es estático y su contenido se genera con JavaScript, así que se han a
 básicos para que los buscadores lo entiendan:
 
 - **`robots.txt`** y **`sitemap.xml`** (con anotaciones `hreflang` ES/EN).
-- **`hreflang`** y **canonical autorreferencial** por idioma (`/` y `/?lang=en`) en `index.html`;
-  `app.js` actualiza el canonical según el idioma activo.
+- **`hreflang`** y **canonical autorreferencial** por idioma (`/` y `/en/`) en `index.html`
+  y `en/index.html`.
 - **Datos estructurados JSON-LD** (`WebSite` + `WebApplication`) en el `<head>`.
 - **Título y descripción** con las palabras que busca la gente («tienda online falsa»,
   «comprar sin gastar», «fake store»), en `UI.es` / `UI.en` de `i18n.js`.
