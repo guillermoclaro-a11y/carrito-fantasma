@@ -45,6 +45,15 @@ viven en `i18n.js` (`UI`, `MODE_I18N`, `BADGE_I18N`, `PRODUCT_I18N`).
 - Para **traducir un producto**: busca su `id` (p. ej. `m1`) en `PRODUCT_I18N`.
 - Para **cambiar el texto de interfaz**: edita la clave en `UI.es` / `UI.en`.
 
+## Identidad visual
+
+- **Logo:** el fantasma-carrito es un SVG en línea dentro de `index.html` y `en/index.html`
+  (también como favicon). Toma el color de la tienda activa (`--accent`).
+- **Tipografía de titulares:** [Bricolage Grotesque](https://fonts.google.com/specimen/Bricolage+Grotesque)
+  (SIL Open Font License 1.1), alojada en `assets/fonts/` para no hacer peticiones a terceros.
+- **Fotos:** se muestran teñidas con el color de su tienda (`mix-blend-mode: color`) y
+  recuperan sus colores al pasar el ratón o al abrir la ficha del producto.
+
 ## Imágenes de los productos
 
 Las fotos son la **imagen principal de artículos de Wikipedia** (y archivos de Wikimedia

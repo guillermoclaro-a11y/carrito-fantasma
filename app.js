@@ -1145,6 +1145,19 @@
     else { raf = null; ctx.clearRect(0, 0, canvas.width, canvas.height); }
   }
 
+  /* ---------- fantasmita que sale del botón al añadir al carrito ---------- */
+  function ghostPuff(from) {
+    if (reduce || isProcessing || !from || !from.getBoundingClientRect) return;
+    const r = from.getBoundingClientRect();
+    const g = document.createElement('span');
+    g.className = 'ghost-puff'; g.textContent = '👻'; g.setAttribute('aria-hidden', 'true');
+    g.style.left = (r.left + r.width / 2) + 'px';
+    g.style.top = (r.top - 6) + 'px';
+    document.body.appendChild(g);
+    g.addEventListener('animationend', () => g.remove());
+    setTimeout(() => g.remove(), 1500);
+  }
+
   /* ---------- contador: las ofertas duran hasta medianoche ---------- */
   function msToMidnight() {
     const d = new Date();
@@ -1203,7 +1216,7 @@
         renderModal();
         break;
       case 'close-modal': closeModal(); break;
-      case 'add': addToCart(tgt.dataset.id); break;
+      case 'add': addToCart(tgt.dataset.id); ghostPuff(tgt); break;
       case 'open-cart': openCart(); break;
       case 'close-cart': closeCart(); break;
       case 'inc': setQty(tgt.dataset.id, 1); break;
