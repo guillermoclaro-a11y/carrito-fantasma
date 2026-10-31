@@ -1055,18 +1055,26 @@
 
   /* ---------- toast ---------- */
   let toastTimer;
+  // El toast es solo informativo: si el HTML no tuviera #toastText (por ejemplo,
+  // una versión antigua desplegada), el carrito y el checkout deben seguir
+  // funcionando igual. Por eso nunca se asume que el nodo existe.
+  const toastText = () => $('#toastText') || $('#toast');
   function hideToast() {
     clearTimeout(toastTimer);
     const tst = $('#toast');
+    if (!tst) return;
     tst.classList.remove('show');
-    $('#toastText').textContent = '';
+    const txt = toastText();
+    if (txt) txt.textContent = '';
     $$('.toast-action', tst).forEach(btn => btn.remove());
   }
   function toast(msg, action) {
     const tst = $('#toast');
+    if (!tst) return;
     clearTimeout(toastTimer);
     $$('.toast-action', tst).forEach(btn => btn.remove());
-    $('#toastText').textContent = msg;
+    const txt = toastText();
+    if (txt) txt.textContent = msg;
     if (action) {
       const btn = document.createElement('button');
       btn.type = 'button'; btn.className = 'toast-action'; btn.dataset.action = action.action; btn.textContent = action.label;
