@@ -1,5 +1,14 @@
 /* ============ Carrito Fantasma — estilos ============ */
+/* Tipografía de titulares, alojada en el propio sitio (sin peticiones a terceros).
+   Bricolage Grotesque · SIL Open Font License 1.1 */
+@font-face{
+  font-family:"Bricolage Grotesque";
+  src:url("assets/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+  font-weight:600 800; font-style:normal; font-display:swap;
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
 :root{
+  --display:"Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
   color-scheme:light dark;
   --bg:#f5f5fb;
   --card:#ffffff;
@@ -42,7 +51,8 @@ button{ font:inherit; cursor:pointer; }
 a{ color:inherit; text-decoration:none; }
 .muted{ color:var(--muted); }
 .tiny{ font-size:.8rem; }
-h1,h2,h3{ line-height:1.15; margin:0 0 .4em; }
+h1,h2,h3{ line-height:1.15; margin:0 0 .4em; font-family:var(--display); font-weight:800; letter-spacing:-.015em; }
+.card-title, .price, .stat .n{ font-family:var(--display); }
 
 /* ---------- salto de contenido ---------- */
 .skip-link{
@@ -62,8 +72,12 @@ h1,h2,h3{ line-height:1.15; margin:0 0 .4em; }
   backdrop-filter:saturate(160%) blur(14px);
   border-bottom:1px solid var(--line);
 }
-.brand{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:1.1rem; white-space:nowrap; border-radius:10px; }
-.brand-mark{ font-size:1.4rem; }
+.brand{ display:flex; align-items:center; gap:9px; font-family:var(--display); font-weight:800; font-size:1.2rem; letter-spacing:-.01em; white-space:nowrap; border-radius:10px; }
+/* el fantasma-carrito toma el color de la tienda activa y flota suavemente */
+.brand-mark{ width:34px; height:34px; flex:none; color:var(--accent); transition:color .4s; }
+.brand-mark path:nth-of-type(2), .brand-mark ellipse{ animation:ghost-float 3.2s ease-in-out infinite; }
+.brand:hover .brand-mark path:nth-of-type(2), .brand:hover .brand-mark ellipse{ animation-duration:1.1s; }
+@keyframes ghost-float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-1.4px); } }
 .brand-name em{ font-style:normal; color:var(--accent-text); transition:color .4s; }
 .modes{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; padding:2px; }
 .modes::-webkit-scrollbar{ display:none; }
@@ -185,12 +199,12 @@ h1,h2,h3{ line-height:1.15; margin:0 0 .4em; }
 .catalog-head{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin-bottom:8px; }
 .catalog-head h1{ margin:0; font-size:clamp(1.6rem,3.4vw,2.3rem); }
 .toolbar{ display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 22px; }
-.toolbar input, .toolbar select{
+.toolbar input[type="search"], .toolbar select{
   border:1px solid var(--line); background:var(--card); border-radius:12px;
   min-height:44px; padding:11px 14px; font:inherit; color:var(--ink);
 }
-.toolbar input{ flex:1; min-width:180px; }
-.toolbar input:focus, .toolbar select:focus{ border-color:var(--accent); }
+.toolbar input[type="search"]{ flex:1; min-width:180px; }
+.toolbar input[type="search"]:focus, .toolbar select:focus{ border-color:var(--accent); }
 .filter-check{
   display:inline-flex; align-items:center; gap:8px; min-height:44px;
   padding:8px 14px; border:1px solid var(--line); border-radius:12px;
@@ -548,7 +562,7 @@ body.cart-open .drawer{ transform:none; }
   .savings-copy{ gap:2px; }
   .pill{ padding:8px 10px; }
   .toolbar > *{ flex:1 1 100%; }
-  .toolbar input{ min-width:0; }
+  .toolbar input[type="search"]{ min-width:0; }
   .row > .primary, .row > .ghost{ flex:1 1 100%; }
   .share-row .primary{ max-width:none; }
   .modal{ padding:10px; }
@@ -627,7 +641,7 @@ body.cart-open .drawer{ transform:none; }
     border:1px solid var(--line);
     box-shadow:var(--shadow-lg);
   }
-  .toolbar input,.toolbar select,.field input,.qty button,.ghost,.icon,.pill,.filter-check{
+  .toolbar input[type="search"],.toolbar select,.field input,.qty button,.ghost,.icon,.pill,.filter-check{
     background:linear-gradient(180deg, color-mix(in srgb, var(--card) 92%, #ffffff 8%) 0%, var(--card) 100%);
     color:var(--ink);
     border:1px solid color-mix(in srgb, var(--line) 98%, transparent);
@@ -664,3 +678,34 @@ body.cart-open .drawer{ transform:none; }
   .history li{ gap:10px; padding:10px 12px; }
   .history-emojis{ display:none; }
 }
+
+/* ---------- fotos "fantasma": monocromo con el color de cada tienda ----------
+   Las fotos vienen de Wikipedia y cada una tiene su propio estilo; teñirlas con
+   el acento de su tienda las unifica. Al pasar el ratón el fantasma "se
+   materializa" y recupera sus colores; en la ficha de producto, también. */
+.card-img::after, .modal-img::after, .line-img::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:var(--c); mix-blend-mode:color;
+  transition:opacity .45s ease;
+}
+.card-img .photo, .line-img .photo{ filter:brightness(1.12) contrast(.94); transition:filter .45s ease, transform .6s ease; }
+.card-img .badge{ z-index:2; }
+.card:hover .card-img::after, .card:focus-within .card-img::after{ opacity:0; }
+.card:hover .card-img .photo, .card:focus-within .card-img .photo{ filter:none; transform:scale(1.04); }
+/* sin foto (respaldo con emoji) no hay nada que teñir */
+.card-img:not(:has(.photo))::after, .modal-img:not(:has(.photo))::after, .line-img:not(:has(.photo))::after{ display:none; }
+/* ficha de producto: arranca teñida y se materializa (sin animación → a color) */
+.modal-img::after{ opacity:0; animation:materialize .9s ease .15s backwards; }
+@keyframes materialize{ from{ opacity:1; } to{ opacity:0; } }
+
+/* ---------- fantasmita que sale del botón al añadir ---------- */
+.ghost-puff{
+  position:fixed; z-index:90; pointer-events:none; font-size:1.5rem; line-height:1;
+  animation:ghost-puff .9s ease-out forwards;
+}
+@keyframes ghost-puff{
+  0%{ opacity:0; transform:translate(-50%,0) scale(.5); }
+  20%{ opacity:.95; transform:translate(-50%,-14px) scale(1); }
+  100%{ opacity:0; transform:translate(calc(-50% + 10px),-70px) scale(1.15) rotate(8deg); }
+}
+@media (prefers-color-scheme:dark){ .brand-mark{ color:var(--accent-text); } }
