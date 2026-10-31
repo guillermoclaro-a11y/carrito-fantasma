@@ -475,6 +475,10 @@ const PRODUCT_I18N = {
     a7:  { name: 'Cloned Dinosaur',    desc: 'Warning: may eat the cart.' },
     a8:  { name: 'Gold Ice Cream',     desc: 'Melts just as fast as your salary.' },
     a9:  { name: 'Black Hole',         desc: 'Ships in 1-2 eons. Non-refundable.' },
-    a10: { name: 'Work of Art',        desc: 'A painting of a sad dog. Priceless.' },
+    a10: { name: 'Work of Art',        desc: 'She smiles because she knows you will never hang her.' },
+    a11: { name: 'Time Machine',       desc: 'Go back to before this purchase. Or to 2019, your call.' },
+    a12: { name: 'Eiffel Tower',       desc: '330 meters of iron. Home assembly not included.' },
+    a13: { name: 'Space Rocket',       desc: 'Launches on time, unlike your courier.' },
+    a14: { name: 'Your Own Volcano',   desc: 'Central heating included. A lot of it.' },
   },
 };

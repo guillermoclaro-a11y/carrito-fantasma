@@ -26,14 +26,14 @@ const MODES = [
 const PRODUCTS = [
   // ---------------- MODA ----------------
   { id: 'm1',  mode: 'moda', name: 'Zapatillas Nube',      emoji: '👟', price: 89.99,  oldPrice: 129.99, rating: 4.8, reviews: 2143, badge: 'Oferta',   desc: 'Caminas por las nubes. Nunca tocarás el suelo real.' },
-  { id: 'm2',  mode: 'moda', name: 'Sudadera Oversize',    emoji: '🧥', price: 45.00,  rating: 4.6, reviews: 812,  desc: 'Comodidad absoluta para no salir de casa.' },
+  { id: 'm2',  mode: 'moda', name: 'Sudadera Oversize',    emoji: '👕', price: 45.00,  rating: 4.6, reviews: 812,  desc: 'Comodidad absoluta para no salir de casa.' },
   { id: 'm3',  mode: 'moda', name: 'Vaquero Perfecto',     emoji: '👖', price: 59.90,  rating: 4.4, reviews: 1330, desc: 'El que nunca te quedará igual que en la foto.' },
   { id: 'm4',  mode: 'moda', name: 'Chaqueta de Cuero',    emoji: '🧥', price: 149.00, oldPrice: 199.00, rating: 4.7, reviews: 402, badge: 'Top ventas', desc: 'Actitud instantánea, cero gasto real.' },
   { id: 'm5',  mode: 'moda', name: 'Gafas de Sol Retro',   emoji: '🕶️', price: 29.99,  rating: 4.3, reviews: 967,  desc: 'Para mirar tus finanzas con estilo.' },
   { id: 'm6',  mode: 'moda', name: 'Bolso de Mano',        emoji: '👜', price: 120.00, rating: 4.9, reviews: 289,  desc: 'Espacioso para llevar todas tus compras imaginarias.' },
   { id: 'm7',  mode: 'moda', name: 'Gorra Minimal',        emoji: '🧢', price: 19.90,  rating: 4.2, reviews: 1540, desc: 'Un clásico. También de mentira.' },
   { id: 'm8',  mode: 'moda', name: 'Reloj Elegante',       emoji: '⌚', price: 210.00, oldPrice: 260.00, rating: 4.8, reviews: 176, badge: 'Oferta', desc: 'Marca la hora de no comprar nada.' },
-  { id: 'm9',  mode: 'moda', name: 'Abrigo de Invierno',   emoji: '🧥', price: 99.00,  rating: 4.5, reviews: 623,  desc: 'Calentito, aunque el frío de la tarjeta no existe.' },
+  { id: 'm9',  mode: 'moda', name: 'Abrigo de Invierno',   emoji: '🧣', price: 99.00,  rating: 4.5, reviews: 623,  desc: 'Calentito, aunque el frío de la tarjeta no existe.' },
   { id: 'm10', mode: 'moda', name: 'Vestido de Verano',    emoji: '👗', price: 39.99,  rating: 4.6, reviews: 1888, desc: 'Ligero como tu cartera después de ir de compras.' },
 
   // ---------------- COMIDA ----------------
@@ -74,5 +74,9 @@ const PRODUCTS = [
   { id: 'a7',  mode: 'absurdo', name: 'Dinosaurio Clonado', emoji: '🦖', price: 3400000,  rating: 5.0, reviews: 27,  badge: 'Nuevo', desc: 'Advertencia: puede comerse el carrito.' },
   { id: 'a8',  mode: 'absurdo', name: 'Helado de Oro',      emoji: '🍨', price: 6500,    rating: 4.2, reviews: 1400, desc: 'Se derrite igual de rápido que tu sueldo.' },
   { id: 'a9',  mode: 'absurdo', name: 'Agujero Negro',      emoji: '🕳️', price: 999999999, rating: 3.9, reviews: 9, badge: 'Peligro', desc: 'Envío en 1-2 eones. No reembolsable.' },
-  { id: 'a10', mode: 'absurdo', name: 'Obra de Arte',       emoji: '🖼️', price: 250000,  rating: 4.5, reviews: 73,  desc: 'Un cuadro de un perro triste. Invaluable.' },
+  { id: 'a10', mode: 'absurdo', name: 'Obra de Arte',       emoji: '🖼️', price: 250000,  rating: 4.5, reviews: 73,  desc: 'Sonríe porque sabe que nunca la vas a colgar.' },
+  { id: 'a11', mode: 'absurdo', name: 'Máquina del Tiempo', emoji: '⏳', price: 88000000, rating: 4.9, reviews: 1985, badge: 'Exclusivo', desc: 'Vuelve a antes de esta compra. O a 2019, tú sabrás.' },
+  { id: 'a12', mode: 'absurdo', name: 'Torre Eiffel',       emoji: '🗼', price: 450000000, rating: 4.7, reviews: 1889, desc: '330 metros de hierro. Montaje en casa no incluido.' },
+  { id: 'a13', mode: 'absurdo', name: 'Cohete Espacial',    emoji: '🚀', price: 62000000, oldPrice: 75000000, rating: 4.6, reviews: 312, desc: 'Despega a tiempo, a diferencia de tu repartidor.' },
+  { id: 'a14', mode: 'absurdo', name: 'Volcán Propio',      emoji: '🌋', price: 15500000, rating: 4.3, reviews: 58,  badge: 'Peligro', desc: 'Calefacción central incluida. Mucha.' },
 ];

@@ -25,7 +25,7 @@ carrito-fantasma/
 ├── en/index.html         # versión EN con canonical y hreflang propios
 ├── styles.css            # estilos (modo claro/oscuro, responsive)
 ├── data.js               # catálogo y tiendas (edítalo para añadir productos)
-├── i18n.js               # traducciones ES/EN (textos, tiendas y 44 productos)
+├── i18n.js               # traducciones ES/EN (textos, tiendas y 48 productos)
 ├── app.js                # lógica: carrito, pago ficticio, seguimiento, ahorro
 ├── robots.txt            # SEO: permite el rastreo e indica el sitemap
 ├── sitemap.xml           # SEO: mapa del sitio (con hreflang ES/EN)

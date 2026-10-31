@@ -88,7 +88,7 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 > 1/ Hay un pequeño truco psicológico para las ganas de comprar: darle al cerebro
 >    la experiencia completa (elegir, llenar el carrito, "pagar") **sin** el gasto.
 >
-> 2/ Así que construí Carrito Fantasma: 44 productos reales, carrito, pago falso y
+> 2/ Así que construí Carrito Fantasma: 48 productos reales, carrito, pago falso y
 >    hasta un seguimiento de envío que nunca llega. 🚚
 >
 > 3/ Cuenta lo que "ahorras": dinero, pedidos y hasta calorías imaginarias. 😄
@@ -114,7 +114,7 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 > Buenas. Soy un poco comprador impulsivo y me di cuenta de que muchas veces lo que
 > busco no es el producto, es el *momento*: elegir, llenar el carrito, pagar.
 >
-> Me hice una tienda falsa para darle eso al cerebro sin gastar: 44 productos, carrito,
+> Me hice una tienda falsa para darle eso al cerebro sin gastar: 48 productos, carrito,
 > pago ficticio, confeti y seguimiento de envío. Al final te dice cuánto "ahorraste".
 >
 > Es gratis, sin anuncios, sin cookies y sin guardar datos (todo en tu navegador).
@@ -143,7 +143,7 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 > Like a lot of people I get the itch to buy things I don't need. Most of the time
 > it's not the object I want, it's the ritual: browsing, adding to cart, checking out.
 >
-> So I built **Carrito Fantasma** ("Ghost Cart"): a fake store with 44 real products,
+> So I built **Carrito Fantasma** ("Ghost Cart"): a fake store with 48 real products,
 > a cart, a fake checkout, confetti, and a fake delivery tracker that never arrives.
 > At the end it tallies up what you "saved".
 >
@@ -181,7 +181,7 @@ rastreadores en la web. Sustituye el enlace del post por el que corresponda:
 
 **Body:**
 
-> Static site (HTML/CSS/JS, no build, no backend). 4 store modes, 44 products,
+> Static site (HTML/CSS/JS, no build, no backend). 4 store modes, 48 products,
 > cart + fake checkout + fake tracking, savings tally, localStorage persistence,
 > real product photos from Wikimedia (with credits page). Bilingual ES/EN with a
 > header toggle and an `/en/` deep link.

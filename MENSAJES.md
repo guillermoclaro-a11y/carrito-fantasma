@@ -60,7 +60,7 @@ Hay un truco psicológico para las ganas de comprar: darle al cerebro la experie
 ```
 
 ```
-Así que construí Carrito Fantasma: 44 productos reales, carrito, pago falso y hasta un seguimiento de envío que nunca llega 🚚👻
+Así que construí Carrito Fantasma: 48 productos reales, carrito, pago falso y hasta un seguimiento de envío que nunca llega 🚚👻
 ```
 
 ```
