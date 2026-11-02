@@ -242,7 +242,7 @@
     $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
     $$('[data-i18n-title]').forEach(el => el.setAttribute('title', t(el.dataset.i18nTitle)));
     const lt = $('#langToggle');
-    if (lt) { lt.textContent = state.lang === 'es' ? 'EN' : 'ES'; lt.setAttribute('title', t('lang_toggle')); lt.setAttribute('aria-label', t('lang_toggle')); }
+    if (lt) { lt.textContent = state.lang === 'es' ? 'EN' : 'ES'; lt.setAttribute('title', t('lang_toggle')); lt.setAttribute('aria-label', t('lang_toggle')); lt.lang = state.lang === 'es' ? 'en' : 'es'; }
     applyMeta();
   }
   function setLang(l) {
@@ -435,9 +435,9 @@
     const old = p.oldPrice ? `<s><span class="sr-only">${t('price_was')} </span>${money(p.oldPrice)}</s>` : '';
     return `
     <article class="card" data-id="${p.id}">
-      <button class="card-open" data-action="product" data-id="${p.id}" aria-label="${t('view_aria', { name: pname(p) })}">
+      <button class="card-open" data-action="product" data-id="${p.id}">
         <span class="card-img" style="--c:${acc(p)}">
-          <span class="emoji">${p.emoji}</span>
+          <span class="emoji" aria-hidden="true">${p.emoji}</span>
           ${photo(p)}
           ${p.badge ? `<span class="badge">${pbadge(p)}</span>` : ''}
         </span>
@@ -554,23 +554,25 @@
     <section class="page checkout">
       <button class="link-back" data-action="open-cart">${t('back_cart')}</button>
       <h1>${t('checkout_h1')}</h1>
-      <div class="steps-ind" aria-label="${t('step_progress', { n: step })}"><span class="sr-only">${t('step_progress', { n: step })}</span>${[1, 2, 3].map(n => `<span class="dot ${n <= step ? 'on' : ''}" aria-hidden="true"></span>`).join('')}</div>
+      <div class="steps-ind"><span class="sr-only">${t('step_progress', { n: step })}</span>${[1, 2, 3].map(n => `<span class="dot ${n <= step ? 'on' : ''}" aria-hidden="true"></span>`).join('')}</div>
 
       ${step === 1 ? `
-        <form class="panel" id="addressForm" autocomplete="off">
+        <form class="panel" id="addressForm" autocomplete="off" novalidate>
           <h2>${t('st1')}</h2>
           <p class="form-note muted tiny">${t('fake_data_note')}</p>
-          <div class="field"><label for="f-name">${t('f_name')}</label><input id="f-name" name="name" autocomplete="off" enterkeyhint="next" required maxlength="80" placeholder="${t('f_name_ph')}" value="${esc(a.name)}"></div>
-          <div class="field"><label for="f-address">${t('f_address')}</label><input id="f-address" name="address" autocomplete="off" enterkeyhint="next" required maxlength="120" placeholder="${t('f_address_ph')}" value="${esc(a.address)}"></div>
-          <div class="field"><label for="f-city">${t('f_city')}</label><input id="f-city" name="city" autocomplete="off" enterkeyhint="done" required maxlength="80" placeholder="${t('f_city_ph')}" value="${esc(a.city)}"></div>
+          <div class="field"><label for="f-name">${t('f_name')}</label><input id="f-name" name="name" autocomplete="off" enterkeyhint="next" required maxlength="80" placeholder="${t('f_name_ph')}" value="${esc(a.name)}" aria-describedby="f-name-err"><p class="field-error" id="f-name-err" hidden>${t('field_required')}</p></div>
+          <div class="field"><label for="f-address">${t('f_address')}</label><input id="f-address" name="address" autocomplete="off" enterkeyhint="next" required maxlength="120" placeholder="${t('f_address_ph')}" value="${esc(a.address)}" aria-describedby="f-address-err"><p class="field-error" id="f-address-err" hidden>${t('field_required')}</p></div>
+          <div class="field"><label for="f-city">${t('f_city')}</label><input id="f-city" name="city" autocomplete="off" enterkeyhint="done" required maxlength="80" placeholder="${t('f_city_ph')}" value="${esc(a.city)}" aria-describedby="f-city-err"><p class="field-error" id="f-city-err" hidden>${t('field_required')}</p></div>
           <button class="link fill-fake" type="button" data-action="fill-fake">${t('fill_fake')}</button>
           <button class="primary big" type="submit">${t('continue')}</button>
         </form>` : ''}
 
       ${step === 2 ? `
         <div class="panel">
-          <h2>${t('st2')}</h2>
-          ${methods.map((m, i) => `<label class="radio"><input type="radio" name="pay" value="${i}" ${state.checkout.pay === i ? 'checked' : ''}> ${m}</label>`).join('')}
+          <fieldset class="pay-methods">
+            <legend><h2>${t('st2')}</h2></legend>
+            ${methods.map((m, i) => `<label class="radio"><input type="radio" name="pay" value="${i}" ${state.checkout.pay === i ? 'checked' : ''}> ${m}</label>`).join('')}
+          </fieldset>
           <div class="row">
             <button class="ghost" data-action="step" data-step="1">${t('back')}</button>
             <button class="primary" data-action="step" data-step="3">${t('continue')}</button>
@@ -649,6 +651,7 @@
             <div><b>${s[0]}</b><small>${s[1]}</small></div>
           </li>`).join('')}
       </ul>
+      <p class="sr-only" id="trackStatus" role="status" aria-live="polite" aria-atomic="true"></p>
       <div class="track-note" id="tracknote" hidden>
         ${t('track_note')}
       </div>
@@ -1073,21 +1076,34 @@
     const steps = $$('#tracking .step');
     if (!steps.length) return;
     steps.forEach((s, i) => s.classList.toggle('active', i === 0));
+    const status = $('#trackStatus');
+    const announce = i => {
+      if (!status) return;
+      const st = steps[i].querySelector('b');
+      status.textContent = t('track_status', { n: i + 1, total: steps.length, step: st ? st.textContent : '' });
+    };
     let i = 0;
+    announce(0);
     trackTimer = setInterval(() => {
       if (i < steps.length - 1) {
         steps[i].classList.remove('active'); steps[i].classList.add('done');
         i++;
         steps[i].classList.add('active');
+        announce(i);
       } else {
         clearInterval(trackTimer);
-        const note = $('#tracknote'); if (note) note.hidden = false;
+        const note = $('#tracknote');
+        if (note) {
+          note.hidden = false;
+          if (status) status.textContent = note.textContent.trim();
+        }
       }
     }, 1400);
   }
 
   /* ---------- toast ---------- */
   let toastTimer;
+  let toastDelay = 2400;
   // El toast es solo informativo: si el HTML no tuviera #toastText (por ejemplo,
   // una versión antigua desplegada), el carrito y el checkout deben seguir
   // funcionando igual. Por eso nunca se asume que el nodo existe.
@@ -1114,7 +1130,24 @@
       tst.appendChild(btn);
     }
     tst.classList.add('show');
-    toastTimer = setTimeout(hideToast, action ? 4500 : 2400);
+    toastDelay = action ? 4500 : 2400;
+    // si el ratón o el foco ya están sobre el toast, sigue en pausa
+    if (tst.matches(':hover') || tst.contains(document.activeElement)) return;
+    toastTimer = setTimeout(hideToast, toastDelay);
+  }
+  {
+    const tst = $('#toast');
+    if (tst) {
+      const pause = () => clearTimeout(toastTimer);
+      const resume = () => {
+        if (!tst.classList.contains('show') || tst.matches(':hover') || tst.contains(document.activeElement)) return;
+        clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, toastDelay);
+      };
+      tst.addEventListener('mouseenter', pause);
+      tst.addEventListener('focusin', pause);
+      tst.addEventListener('mouseleave', resume);
+      tst.addEventListener('focusout', () => setTimeout(resume, 0));
+    }
   }
 
   /* ---------- confeti ---------- */
@@ -1249,6 +1282,7 @@
         $('#f-name').value = t('f_name_ph');
         $('#f-address').value = t('f_address_ph');
         $('#f-city').value = t('f_city_ph');
+        ['#f-name', '#f-address', '#f-city'].forEach(id => setFieldError($(id), false));
         $('#f-name').focus();
         toast(t('fake_filled'));
         break;
@@ -1274,6 +1308,10 @@
   document.addEventListener('submit', e => {
     if (e.target.id !== 'addressForm') return;
     e.preventDefault();
+    const fields = ['f-name', 'f-address', 'f-city'].map(id => $('#' + id)).filter(Boolean);
+    const invalid = fields.filter(f => !f.value.trim());
+    fields.forEach(f => setFieldError(f, invalid.includes(f)));
+    if (invalid.length) { invalid[0].focus(); return; }
     saveAddress();
     state.checkout.step = 2;
     render({ scroll: false, focus: true });
@@ -1285,8 +1323,15 @@
     if (e.target.name === 'pay') state.checkout.pay = +e.target.value;
   });
 
+  function setFieldError(input, on) {
+    const err = $('#' + input.id + '-err');
+    if (on) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+    if (err) err.hidden = !on;
+  }
+
   document.addEventListener('input', e => {
     if (e.target.id === 'searchInput') { state.query = e.target.value; updateGrid(); }
+    if (e.target.closest && e.target.closest('#addressForm') && e.target.value.trim()) setFieldError(e.target, false);
   });
 
   function updateGrid() {

@@ -66,7 +66,7 @@
 
   <a class="skip-link" href="#app" data-i18n="skip_content">Ir al contenido</a>
   <header class="topbar">
-    <a class="brand" href="#" data-action="nav" data-view="home" data-i18n-aria="nav_home" aria-label="Inicio">
+    <a class="brand" href="#" data-action="nav" data-view="home" data-i18n-aria="nav_home" aria-label="Carrito Fantasma, inicio">
       <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false"><path d="M2.5 7.5h3l2.4 4.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 15C8 9.2 12.4 5.5 18 5.5S28 9.2 28 15v8.5c-1.3 2.4-3.8 2.4-5 0-1.3 2.4-3.7 2.4-5 0-1.3 2.4-3.7 2.4-5 0-1.2 2.4-3.7 2.4-5 0Z" fill="currentColor"/><ellipse cx="15" cy="13.2" rx="1.5" ry="2.2" fill="#fff"/><ellipse cx="21" cy="13.2" rx="1.5" ry="2.2" fill="#fff"/><ellipse cx="18" cy="18.4" rx="1.3" ry="1.5" fill="#fff" opacity=".9"/><circle cx="12.5" cy="28.3" r="2" stroke="currentColor" stroke-width="1.8" opacity=".4"/><circle cx="23.5" cy="28.3" r="2" stroke="currentColor" stroke-width="1.8" opacity=".4"/></svg>
       <span class="brand-name">Carrito<em>Fantasma</em></span>
     </a>
@@ -74,8 +74,8 @@
     <nav class="modes" id="modesNav" data-i18n-aria="stores" aria-label="Tiendas"></nav>
 
     <div class="top-actions">
-      <button class="pill lang" id="langToggle" data-action="lang" data-i18n-title="lang_toggle" aria-label="Switch to English" title="Switch to English">EN</button>
-      <button class="pill savings-btn" data-action="nav" data-view="savings" data-i18n-aria="saved_title" data-i18n-title="saved_title" aria-label="Lo que te has ahorrado" title="Lo que te has ahorrado">
+      <button class="pill lang" id="langToggle" data-action="lang" data-i18n-title="lang_toggle" aria-label="EN · Switch to English" title="EN · Switch to English" lang="en">EN</button>
+      <button class="pill savings-btn" data-action="nav" data-view="savings" data-i18n-title="saved_title" title="Lo que te has ahorrado">
         <span class="savings-icon" aria-hidden="true">💸</span><span class="savings-copy"><span data-i18n="saved_label">Ahorrado:</span> <b id="savingsTop">$0</b></span>
       </button>
       <button class="cart-btn" id="cartBtn" data-action="open-cart" data-i18n-aria="cart_open" aria-label="Abrir carrito" aria-controls="cartDrawer" aria-expanded="false">
@@ -124,7 +124,7 @@
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" hidden></div>
 
   <!-- Processing overlay -->
-  <div class="processing" id="processing" role="status" aria-live="assertive" aria-atomic="true" hidden>
+  <div class="processing" id="processing" role="status" aria-live="polite" aria-atomic="true" hidden>
     <div class="proc-card">
       <div class="spinner" aria-hidden="true"></div>
       <p id="procText" data-i18n="proc_default">Procesando pago fantasma…</p>

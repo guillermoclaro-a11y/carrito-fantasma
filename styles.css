@@ -16,6 +16,7 @@
   --ink:#15142b;
   --muted:#5d5c78;
   --line:#e2e1ef;
+  --field-line:#8a88a6; /* bordes de campos: ≥3:1 (WCAG 1.4.11) */
   --accent:#5b4bd8;
   --accent-ink:#ffffff;
   --accent-text:#5b4bd8;
@@ -200,7 +201,7 @@ h1,h2,h3{ line-height:1.15; margin:0 0 .4em; font-family:var(--display); font-we
 .catalog-head h1{ margin:0; font-size:clamp(1.6rem,3.4vw,2.3rem); }
 .toolbar{ display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 22px; }
 .toolbar input[type="search"], .toolbar select{
-  border:1px solid var(--line); background:var(--card); border-radius:12px;
+  border:1px solid var(--field-line); background:var(--card); border-radius:12px;
   min-height:44px; padding:11px 14px; font:inherit; color:var(--ink);
 }
 .toolbar input[type="search"]{ flex:1; min-width:180px; }
@@ -288,7 +289,7 @@ body.cart-open .scrim{ opacity:1; visibility:visible; }
 .drawer{
   position:fixed; top:0; right:0; height:100vh; height:100dvh; width:min(420px,100%);
   background:var(--card); color:var(--ink); z-index:80;
-  transform:translateX(105%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+  transform:translateX(calc(100% + 100px)); transition:transform .35s cubic-bezier(.4,0,.2,1);
   display:flex; flex-direction:column; box-shadow:var(--shadow-lg);
 }
 body.cart-open .drawer{ transform:none; }
@@ -335,11 +336,15 @@ body.cart-open .drawer{ transform:none; }
 .field{ margin-bottom:14px; display:flex; flex-direction:column; gap:6px; }
 .field label{ font-weight:600; font-size:.9rem; }
 .field input{
-  border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+  border:1px solid var(--field-line); border-radius:12px; padding:12px 14px;
   min-height:44px; font:inherit; background:var(--card); color:var(--ink);
 }
 .field input:focus{ border-color:var(--accent); }
 .form-note{ margin:0 0 14px; }
+.field input[aria-invalid="true"]{ border-color:var(--danger); border-width:2px; }
+.field-error{ margin:2px 0 0; color:var(--danger); font-size:.86rem; font-weight:600; }
+.pay-methods{ border:0; margin:0; padding:0; min-width:0; }
+.pay-methods legend{ padding:0; }
 .fill-fake{ padding:4px 0 12px; color:var(--accent-text); font-weight:700; }
 .radio{
   display:flex; gap:10px; align-items:center; padding:13px; border:1px solid var(--line);
@@ -558,7 +563,7 @@ body.cart-open .drawer{ transform:none; }
   .topbar{ gap:8px; padding:10px 14px; flex-wrap:wrap; }
   .top-actions{ gap:6px; margin-left:auto; }
   .modes{ order:3; flex-basis:100%; }
-  .savings-btn .savings-copy > span:first-child{ display:none; }
+  .savings-btn .savings-copy > span:first-child{ position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
   .savings-copy{ gap:2px; }
   .pill{ padding:8px 10px; }
   .toolbar > *{ flex:1 1 100%; }
@@ -576,14 +581,14 @@ body.cart-open .drawer{ transform:none; }
   /* catálogo a 2 columnas en móvil, como cualquier tienda real */
   .grid, .grid.deals{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
   .card-img .emoji{ font-size:2.8rem; }
-  .badge{ top:8px; left:8px; font-size:.68rem; padding:3px 8px; }
+  .badge{ top:8px; left:8px; font-size:.75rem; padding:3px 8px; }
   .card-body{ padding:10px 10px 52px; gap:4px; }
   .card-title{ font-size:.92rem; }
-  .card-body .desc{ font-size:.78rem; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .rate{ font-size:.76rem; gap:4px; }
+  .card-body .desc{ font-size:.8rem; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .rate{ font-size:.8rem; gap:4px; }
   .price{ font-size:.98rem; }
   .price s{ display:block; margin-left:0; }
-  .add{ width:40px; height:40px; right:8px; bottom:8px; }
+  .add{ width:44px; height:44px; right:6px; bottom:6px; }
 }
 
 /* ---------- accesibilidad / motion ---------- */
@@ -602,6 +607,7 @@ body.cart-open .drawer{ transform:none; }
     --ink:#f7f6ff;
     --muted:#c7c5e6;
     --line:#4a476d;
+    --field-line:#827fab;
     --accent-text:color-mix(in srgb, var(--accent) 55%, #ffffff);
     --inverse-bg:#08070f;
     --inverse-ink:#f7f6ff;
@@ -646,6 +652,7 @@ body.cart-open .drawer{ transform:none; }
     color:var(--ink);
     border:1px solid color-mix(in srgb, var(--line) 98%, transparent);
   }
+  .toolbar input[type="search"],.toolbar select,.field input{ border-color:var(--field-line); }
   .icon{ background:var(--surface-soft); }
   .manifesto{ background:radial-gradient(800px 400px at 50% 0%, #151326 0%, #05040b 100%); border:1px solid color-mix(in srgb, var(--line) 85%, transparent); color:var(--ink); }
   .primary:hover{ filter:brightness(1.18); }
