@@ -339,15 +339,26 @@
     if (activeMode && nav && nav.scrollWidth > nav.clientWidth) {
       nav.scrollTo({ left: activeMode.offsetLeft - (nav.clientWidth - activeMode.offsetWidth) / 2, behavior: 'auto' });
     }
+    updateModesFade();
     if (state.view === 'tracking') startTracking();
     if (state.view === 'confirm') celebrate();
     if (state.view === 'credits') loadCredits();
   }
 
+  // degradado en los bordes del menú de tiendas cuando queda contenido por deslizar
+  function updateModesFade() {
+    const nav = $('#modesNav'); if (!nav) return;
+    const max = nav.scrollWidth - nav.clientWidth;
+    nav.classList.toggle('more-left', nav.scrollLeft > 2);
+    nav.classList.toggle('more-right', max - nav.scrollLeft > 2);
+  }
+  $('#modesNav').addEventListener('scroll', updateModesFade, { passive: true });
+  addEventListener('resize', updateModesFade);
+
   function renderModesNav() {
     $('#modesNav').innerHTML = MODES.map(m => `
       <button class="mode-btn ${state.mode === m.id ? 'active' : ''}" data-action="mode" data-mode="${m.id}" aria-current="${state.mode === m.id ? 'page' : 'false'}">
-        <span>${m.emoji}</span> ${mname(m)}
+        <span aria-hidden="true">${m.emoji}</span> ${mname(m)}
       </button>`).join('');
   }
 
